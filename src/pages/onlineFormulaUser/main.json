@@ -1,0 +1,10 @@
+{
+    "usingComponents": {
+        "van-icon": "/static/vant/icon/index",
+        "van-field": "/static/vant/field/index",
+        "van-picker": "/static/vant/picker/index",
+        "van-popup": "/static/vant/popup/index",
+        "van-toast": "/static/vant/toast/index"
+    },
+    "navigationBarTitleText": " 在线配方" 
+}

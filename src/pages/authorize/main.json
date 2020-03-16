@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+      "van-button": "/static/vant/button/index",
+      "van-toast": "/static/vant/toast/index"
+    },
+    "navigationBarTitleText": "授权登录"
+}

@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "van-icon": "/static/vant/icon/index",
+        "van-progress": "/static/vant/progress/index"
+    },
+    "navigationBarTitleText": "我的信息"
+}

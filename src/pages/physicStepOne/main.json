@@ -1,0 +1,10 @@
+{
+    "usingComponents": {
+        "van-steps": "/static/vant/steps/index",
+        "van-field": "/static/vant/field/index",
+        "van-picker": "/static/vant/picker/index",
+        "van-popup": "/static/vant/popup/index",
+        "van-toast": "/static/vant/toast/index"
+    },
+    "navigationBarTitleText": "评测" 
+}

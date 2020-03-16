@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+        "van-dialog": "/static/vant/dialog/index",
+        "van-toast": "/static/vant/toast/index"
+    
+    },
+    "navigationBarTitleText": "配方详情" 
+}

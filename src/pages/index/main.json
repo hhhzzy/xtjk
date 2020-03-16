@@ -1,0 +1,9 @@
+
+  {
+    "usingComponents": {
+        "van-grid": "/static/vant/grid/index",
+        "van-grid-item": "/static/vant/grid-item/index",
+        "van-notice-bar": "/static/vant/notice-bar/index"
+      },
+      "navigationBarTitleText": " 新太健康服务中心" 
+  }

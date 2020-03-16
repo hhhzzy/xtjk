@@ -1,0 +1,11 @@
+{
+    "usingComponents": {
+        "van-icon": "/static/vant/icon/index",
+        "van-field": "/static/vant/field/index",
+        "van-picker": "/static/vant/picker/index",
+        "van-popup": "/static/vant/popup/index",
+        "van-button": "/static/vant/button/index",
+        "van-toast": "/static/vant/toast/index"
+    },
+    "navigationBarTitleText": "吐槽" 
+}

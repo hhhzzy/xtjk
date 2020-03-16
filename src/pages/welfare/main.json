@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+    
+    },
+    "navigationBarTitleText": "公益新闻" ,
+    "enablePullDownRefresh": true
+}

@@ -1,0 +1,9 @@
+{
+    "usingComponents": {
+        "van-popup": "/static/vant/popup/index",
+        "van-radio": "/static/vant/radio/index",
+        "van-checkbox": "/static/vant/checkbox/index",
+        "van-toast": "/static/vant/toast/index"
+    },
+    "navigationBarTitleText": "公益捐赠" 
+}
