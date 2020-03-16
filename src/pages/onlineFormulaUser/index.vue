@@ -63,14 +63,15 @@
                         placeholder="请选择调理方向"
                     />
                     <van-field
-                        label="是否有糖尿病："
                         readonly
                         :value="formData.diabetesText"
                         :is-link="true"
                         :arrow-direction="right"
                         @click="showDiabetesPopup"
                         placeholder="请选择是否有糖尿病"
-                    />
+                    >
+                    <van-button slot="label" size="small" type="primary">是否有糖尿病：<i>（包含以往病史）</i></van-button>
+                    </van-field>
                     <van-field
                         label="个人体质："
                         readonly
@@ -79,7 +80,9 @@
                         :arrow-direction="right"
                         @click="showBodyPopup"
                         placeholder="请选择个人体质"
-                    />
+                    >
+                    </van-field>
+                    <span class="form-tip">（如评测结果含多项体质，选最高项填写）</span>
                 </van-cell-group>
                 <!-- 性别弹窗 -->
                 <van-popup  :show="sexShow"  
@@ -353,7 +356,9 @@ export default {
         margin: 0 auto;
         margin-bottom: 20px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+        background-color: #fff;
         border-radius: 8px;
+        padding: 15px 0;
         .main-title{
             font-size: 17px;
             position: relative;
@@ -377,6 +382,27 @@ export default {
                 background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
                 top: 15px;
             }
+        }
+        /deep/ .van-cell__title{
+            min-width:100px!important;
+        }
+        van-button{
+            i{
+                font-style: normal;
+                font-size: 12px;
+                line-height: 12px;
+                color: #999;
+            }
+        }
+        .form-tip{
+            background-color: #fff;
+            display: block;
+            font-size: 12px;
+            color: #999;
+            position: relative;
+            top: -12px;
+            left: 3px;
+
         }
     }
     .footer-box{

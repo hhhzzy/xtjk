@@ -36,7 +36,8 @@ export default {
                 method:'get'
             }).then( res => {
                 if(res.data.rows){
-                    this.list = res.data.rows.map( item => {
+                    this.list = this.list.concat(res.data.rows); 
+                    this.list = this.list.map( item => {
                         item.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(item.imgUrl);
                         return item;
                     });
@@ -44,11 +45,11 @@ export default {
             } )
         },
     },
-    mounted(){
+    onShow(){
+        this.list = [];
         this.getList();
     },
     onReachBottom () {
-        console.log('上拉加载')
         this.offset++;
         this.getList();
 
@@ -78,7 +79,7 @@ ul{
             height: 65px;
             display: block;
             float: right;
-            background-color: red;
+            background-color: #f2f2f2;
         }
     }
 }

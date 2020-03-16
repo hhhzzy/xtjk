@@ -16,7 +16,7 @@
             <div class="result">
                 <p class="tit">测试结果：</p>
                 <div class="content">
-                    <span v-for="(item,index) in info" :key="index">{{index}}{{item?item+'0分':'0分'}}、</span> 
+                    <span v-for="(item,index) in info" :key="index">{{item.key}}{{item.value?item.value+'0分':'0分'}}、</span> 
                 </div>
             </div>
             <p class="get-result">针对您的体质，可在线调配适宜食补药物，<a href="../formula/main">点此获取</a></p>
@@ -61,9 +61,23 @@ export default {
                 url:'api/evaluation/getEvaluationResult?memberEvaluationId='+Number(this.memberEvaluationId),
                 method:'get'
             }).then( res => {
-                console.log(res)
                 if(res.data.code ==1){
                     this.info = res.data.data;
+                    const temp = [];
+                    for( var key in this.info ){
+                        temp.push({key:key,value:this.info[key]})
+                    }
+                    for( var i = 0; i < temp.length-1; i++ ){
+                        for(var j = 0; j<temp.length-i-1;j++ ){
+                            if(Number(temp[j].value)>Number(temp[j+1].value)){
+                                //把大的数字放到后面
+                                var swap = temp[j];
+                                temp[j] = temp[j+1];
+                                temp[j+1] = swap;
+                            }
+                        }
+                    }
+                    this.info = temp;
                 }
             } )
         },

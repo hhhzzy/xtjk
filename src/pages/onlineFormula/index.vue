@@ -27,7 +27,7 @@
             </div>
         </div>
         <p class="content">
-            以下配方是根据您目前的身体情况私人定制，一人一方，建议每日摄入热量维持在{{hotNum}}以内，按配方服用。
+            以下配方是根据您目前的身体情况私人定制，一人一方，建议每日摄入热量维持在{{hotNum}}Kcal以内，按配方服用。
         </p>
         <div class="btn-box">
             <p :class="['one',currentIndex == 1?'current':'']" @click="switchFormula('one')">配方一</p>
@@ -40,11 +40,13 @@
            </div>
            <p class="title">该配方包含食材{{foodNum}}种，总热量{{hotNum*formulaData.overDay}}Kcal。</p>
            <p class="food-btn" @click="seeDetail">
-               {{seeText}}
+               {{seeText}} 
+               <img v-if="seeText !='点击查看详细'" class="current" src="../../../static/images/down.png" alt="">
+               <img v-else  src="../../../static/images/down.png" alt="">
            </p>
            <div class="food-tip">
                以优惠<span>￥{{formulaData.discountPrice / 1000}}</span>
-               小计<i>￥{{formulaData.recipePrice / 1000}}</i>
+               小计<i>￥{{formulaData.recipePrice*formulaData.overDay / 1000}}</i>
            </div>
         </div>
         <div class="tj-box">
@@ -76,7 +78,7 @@
             <p class="save-p" @click="savePf">保存配方</p>
             <p class="buy-p" @click="buySave">
                 立即购买
-                <span>(共计￥{{formulaData.recipePrice / 1000}})</span>
+                <span>(共计￥{{formulaData.recipePrice*formulaData.overDay / 1000}})</span>
             </p>
         </div>
         <van-toast id="van-toast" />
@@ -379,6 +381,15 @@ export default {
         height: 55px;
         line-height: 55px;
         color: #4A4A4AFF;
+        img{
+            display: inline-block;
+            width: 12px;
+            height: 6px
+        }
+        .current{
+            transform: rotate(180deg);
+            margin-bottom: 2px;
+        }
     }
     .food-tip{
         height: 55px;

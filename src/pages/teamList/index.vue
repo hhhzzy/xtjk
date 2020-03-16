@@ -21,7 +21,9 @@ export default {
     data(){
         return{
 		    imgBaseUrl:imgBaseUrl,
-            teamList:[]
+            teamList:[],
+            limit:8,
+            offset:1
         }
     },
     components: {
@@ -29,19 +31,18 @@ export default {
     },
     methods:{
         
-        // 获取健康资讯
+        // 获取名医团队
         getTeamList(){
             axios({
-                url:'api/index/getIndexMessage?messageType=2',
+                url:'api/document/getMessageList?messageType=2&limit='+this.limit+'&offset='+this.offset,
                 method:'get'
             }).then( res => {
-                if(res.data.code ==1){
-                    if(res.data.data){
-                        this.teamList = res.data.data.map( item => {
-                            item.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(item.imgUrl);
-                            return item;
-                        });
-                    }
+                if(res.data.rows){
+                    this.teamList = this.teamList.concat(res.data.rows);
+                    this.teamList = this.teamList.map( item => {
+                        item.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(item.imgUrl);
+                        return item;
+                    });
                 }
             } )
         },

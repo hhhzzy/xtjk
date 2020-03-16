@@ -29,6 +29,11 @@
                     </ul>
                 </div>
             </div>
+            <div class="detail">
+               <p>会员积分获取途径：</p> 
+               <p>1、推荐好友注册 </p>
+               <p>2、购买平台商品</p>
+            </div>
     </div>
 </template>
 <script>
@@ -148,6 +153,18 @@ export default {
                         border-right: 1px solid #FFF7F7F7;
                     }
                 }
+            }
+        }
+        .detail{
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+            background-color: #fff;
+            width: 317px;
+            margin: 0 auto;
+            padding: 10px 15px 10px 18px;
+            border-radius: 8px;
+            p{
+                font-size: 13px;
+                color: rgba(141, 141, 141, 1);
             }
         }
 }

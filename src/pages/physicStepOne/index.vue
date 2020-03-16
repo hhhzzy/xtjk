@@ -211,7 +211,7 @@ export default {
         height: 10px;
         background-color: #4CDBC5;
         top: 66px;
-        left: 66px;
+        left: 65px;
         border-radius: 50%;
     }
 }

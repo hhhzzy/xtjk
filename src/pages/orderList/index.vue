@@ -5,37 +5,33 @@
             我的订单
         </p>
         <ul>
-            <li @click="gotoInfo">
-                <p class="one">订单号：322123142</p>
+            <li @click="gotoInfo" v-for="(item,index) in list" :key="index">
+                <p class="one">订单号：{{item.orderNumber}}</p>
                 <div class="two">
                     <div class="left">
-                        <p class="name">王思聪</p>
-                        <p class="info">调理方向：癌症</p>
+                        <p class="name">{{item.userName}}</p>
+                        <p class="info">调理方向：{{item.condiName}}</p>
                     </div>
-                    <div class="right">￥502.20</div>
+                    <div class="right">￥{{item.transactionMoney / 1000}}</div>
                 </div>
-                <p class="three current">去支付</p>
+                <p v-if="item.state == 0" class="three current">去支付</p>
+                <p v-else-if="item.state == 1" class="three">已付款</p>
+                <p v-else class="three">已完成</p>
             </li>
-            <li>
-                <p class="one">订单号：322123142</p>
-                <div class="two">
-                    <div class="left">
-                        <p class="name">王思聪</p>
-                        <p class="info">调理方向：癌症</p>
-                    </div>
-                    <div class="right">￥502.20</div>
-                </div>
-                <p class="three">已完成</p>
-            </li>
+            
         </ul>
     </div>
 </template>
 <script>
+import store from '../../store'
+import axios from '../../utils/request.js'
 import navbar from '../../components/navbar'
 export default {
     data(){
         return{
-
+            limit:8,
+            offset:1,
+            list:[]
         }
     },
     components: {
@@ -44,7 +40,28 @@ export default {
     methods:{
         gotoInfo(){
             mpvue.navigateTo({ url:'../orderInfo/main' });
+        },
+        GetList(){
+            axios({
+                url: 'api/recipe/queryRecipeList?limit='+this.limit+'&offset='+this.offset+'&memberId='+store.state.user.userInfo.id,
+                method: 'get',
+            }).then( res => {
+                if(res.data.rows){
+                    if(res.data.rows.length){
+                        this.list = this.list.concat(res.data.rows); 
+                    }
+                }
+            } )
         }
+    },
+     onShow(){
+        this.list = [];
+        this.GetList();
+    },
+    onReachBottom () {
+        this.offset++;
+        this.GetList();
+
     }
 }
 </script>

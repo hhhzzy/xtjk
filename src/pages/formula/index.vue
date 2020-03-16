@@ -59,7 +59,6 @@ export default {
                 url:'api/recipe/queryRecipeList?memberId='+store.state.user.userInfo.id+'&offset='+this.offset+'&limit='+this.limit,
                 method:'GET',
             }).then( res => {
-                console.log(res.data.rows,'888')
                 if(res.data.pages >= this.offset){
                     if(res.data.rows.length){
                         this.list = this.list.concat(res.data.rows); 

@@ -12,9 +12,9 @@
                         <img src="../../../static/images/设置.png" alt="">
                     </p>
                     <div class="level">
-                        <span>{{userInfo.nowGradeName}}</span>
+                        <span><a href="../integralDetail/main">{{userInfo.nowGradeName}}</a></span>
                         <p class="process"></p>
-                        <span>{{userInfo.nextGradeName}}</span>
+                        <span><a href="../integralDetail/main">{{userInfo.nextGradeName}}</a></span>
                     </div>
                     <div class="number">
                         <p class="num"><a href="../integralDetail/main">{{userInfo.memberIntegral}}分</a></p>
@@ -67,7 +67,7 @@
             </ul>
         </div> 
         <div class="mine-order mine-member">
-            <p class="main-title">会员 服务</p>
+            <p class="main-title">会员服务</p>
             <ul class="list-ul">
                 <li>
                     <a href="javascript:;" @click="goPhysic">
@@ -75,6 +75,14 @@
                             <img src="../../../static/images/wdcp.png" alt="">
                         </p>
                         <span>我的测评</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../formula/main">
+                        <p class="img">
+                            <img src="../../../static/images/zxpy.png" alt="">
+                        </p>
+                        <span>只能配方</span>
                     </a>
                 </li>
                 <li>
@@ -86,11 +94,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../formula/main">
+                    <a href="../recommend/main">
                         <p class="img">
-                            <img src="../../../static/images/zxpy.png" alt="">
+                            <img src="../../../static/images/tjhy.png" alt="">
                         </p>
-                        <span>在线配药</span>
+                        <span>推荐好友</span>
                     </a>
                 </li>
                 <li>
@@ -99,14 +107,6 @@
                             <img src="../../../static/images/tsjy.png" alt="">
                         </p>
                         <span>投诉建议</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="../recommend/main">
-                        <p class="img">
-                            <img src="../../../static/images/tjhy.png" alt="">
-                        </p>
-                        <span>推荐好友</span>
                     </a>
                 </li>
                 <li>

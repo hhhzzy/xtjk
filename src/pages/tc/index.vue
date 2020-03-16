@@ -1,7 +1,7 @@
 <template>
     <div class="tc-box">
-        <navbar :backVisible="true" :title="'我的推荐'"></navbar>
-        <p class="tips">快生活，就要一吐为快！随心所欲，想说的话，来吐槽吧～经我们筛选公开发表的吐槽，还有红包拿哟～～</p>
+        <navbar :backVisible="true" :title="title"></navbar>
+        <p class="tips">意见反馈（让我们更好）</p>
         <van-cell-group>
             <van-field
                 label="联系人："
@@ -33,7 +33,8 @@ import Toast from '../../../static/vant/toast/toast';
 export default {
     data(){
         return{
-            formData:{}
+            formData:{},
+            title:'我要吐槽'
         }
     },
     components: {
@@ -74,6 +75,13 @@ export default {
             } )
         }   
     },
+    onShow(){
+        if(getCurrentPages()[0].route.indexOf('mine') > -1){
+            this.title='在线反馈';
+        }else{
+            this.title='我要吐槽';
+        }
+    }
 }
 </script>
 <style lang="less" scoped>
@@ -81,11 +89,29 @@ export default {
     height: 100%;
     background-color: #fff;
     .tips{
-        font-size: 14px;
-        color: #333;
-        padding: 10px;
-        border-bottom: 4px solid #f2f2f2;
-        border-top: 4px solid #f2f2f2;
+        font-size: 17px;
+        position: relative;
+        height: 25px;
+        line-height: 25px;
+        position: relative;
+        color: #000;
+        font-weight: bold;
+        padding: 10px 20px;
+        padding-right: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+        &::before{
+            content: '';
+            position: absolute;
+            display: block;
+            width: 5px;
+            height: 16px;
+            background-color: #0099ff;
+            left: 10px;
+            background-image: url("../../../static/images/矩形.png");
+            background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
+            top: 15px;
+        }
     }
     .foter-box{
         position: fixed;

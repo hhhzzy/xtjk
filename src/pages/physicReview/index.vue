@@ -61,9 +61,23 @@ export default {
                 url: 'api/evaluation/getEvaluationList?memberId='+Number(store.state.user.userInfo.id),
                 method: 'get',
             }).then( res => {
-                console.log(res)
                 if(res.data.data){
-                    this.list = res.data.data;
+                    this.list = res.data.data.map( item => {
+                        const temp = item.resultList;
+                        for( var i = 0; i < temp.length-1; i++ ){
+                            for(var j = 0; j<temp.length-i-1;j++ ){
+                                if(Number(temp[j].score)>Number(temp[j+1].score)){
+                                    //把大的数字放到后面
+                                    var swap = temp[j];
+                                    temp[j] = temp[j+1];
+                                    temp[j+1] = swap;
+                                }
+                            }
+                        }
+                        item.resultList = temp;
+                        return item;
+                    } );
+                    
                 }
             })
         },

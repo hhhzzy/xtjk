@@ -21,7 +21,9 @@ export default {
     data(){
         return{
 		    imgBaseUrl:imgBaseUrl,
-            healthList:[]
+            healthList:[],
+            limit:8,
+            offset:1
         }
     },
   components: {
@@ -32,22 +34,27 @@ export default {
         // 获取健康资讯
         getNewsList(){
             axios({
-                url:'api/index/getIndexMessage?messageType=1',
+                url:'api/document/getMessageList?messageType=1&limit='+this.limit+'&offset='+this.offset,
                 method:'get'
             }).then( res => {
-                if(res.data.code ==1){
-                    if(res.data.data){
-                        this.healthList = res.data.data.map( item => {
-                            item.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(item.imgUrl);
-                            return item;
-                        });
-                    }
+                if(res.data.rows){
+                    this.healthList = this.healthList.concat(res.data.rows);
+                    this.healthList = this.healthList.map( item => {
+                        item.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(item.imgUrl);
+                        return item;
+                    });
                 }
             } )
         },
     },
-    mounted(){
+    onShow(){
+        this.list = [];
         this.getNewsList();
+    },
+    onReachBottom () {
+        this.offset++;
+        this.getNewsList();
+
     }
 }
 </script>
@@ -74,7 +81,7 @@ ul{
             height: 65px;
             display: block;
             float: right;
-            background-color: red;
+            background-color: #f2f2f2;
         }
     }
 }
