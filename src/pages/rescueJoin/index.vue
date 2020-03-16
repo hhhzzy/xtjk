@@ -176,7 +176,7 @@ export default {
         .con{
             padding: 10px;
             font-size: 14px;
-            height: 80px;
+            min-height: 80px;
             border-bottom: 2px solid #f2f2f2;
             color: #868686FF;
         }

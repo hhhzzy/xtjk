@@ -1,8 +1,12 @@
 <template>
     <div class="physic-step-box">
-        <navbar :backVisible="false" :title="'测评'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
+        <navbar :backVisible="false" :title="'体质测评'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
         <div class="bg">
             <img src="../../../static/images/cp-bg.jpg" alt="">
+             <p class="one">已完成</p>
+            <p class="two">已完成</p>
+            <p class="three">获取结果</p>
+            <span class="point"></span>
         </div>
         <div class="content">
             <div class="icon">
@@ -81,10 +85,59 @@ export default {
     height: 100%;
 }
 .bg{
+    position: relative;
     img{
         display: block;
         width: 100%;
         height: 126px;
+    }
+    p{
+        float: left;
+        font-size: 12px;
+        position: absolute;
+        top: 85px;
+        color: #fff;
+        &:nth-of-type(1){
+            left: 45px;
+        }
+        &:nth-of-type(2){
+            left: 158px;
+        }
+        &:nth-of-type(3){
+            right: 45px;
+        }
+    }
+    .point{
+        display: block;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #4CDBC5;
+        top: 66px;
+        left: 182px;
+        border-radius: 50%;
+    }
+    &::after{
+        content: '';
+        display: block;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #4CDBC5;
+        top: 66px;
+        right: 65px;
+        border-radius: 50%;
+    }
+    &::before{
+        content: '';
+        display: block;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #4CDBC5;
+        top: 66px;
+        left: 65px;
+        border-radius: 50%;
     }
 }
 .content{

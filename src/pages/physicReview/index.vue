@@ -27,7 +27,7 @@
                             <p class="sex">{{item.evaluationSex}}男</p>
                         </div>
                         <div class="btn">
-                            <p class="one">去调理</p>
+                            <p class="one" v-if="item.isFinish">去调理</p>
                             <p class="two" v-if="!item.isFinish" @click="add(item.isFinish,index)">继续测评</p>
                             <p class="two" v-else @click="add">重新评测</p>
                         </div>

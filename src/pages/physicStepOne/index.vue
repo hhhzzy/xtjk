@@ -1,8 +1,11 @@
 <template>
     <div class="physic-step-box">
-        <navbar :backVisible="true" :title="'测评'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
+        <navbar :backVisible="true" :title="'体质测评'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
         <div class="bg">
             <img src="../../../static/images/cp-bg.jpg" alt="">
+            <p class="one">信息收集</p>
+            <p class="two">体质测评</p>
+            <p class="three">获取结果</p>
         </div>
         <div class="content">
             <div class="step-box">
@@ -178,10 +181,38 @@ export default {
     height: 100%;
 }
 .bg{
+    position: relative;
     img{
         display: block;
         width: 100%;
         height: 126px;
+    }
+    p{
+        float: left;
+        font-size: 12px;
+        position: absolute;
+        top: 85px;
+        color: #fff;
+        &:nth-of-type(1){
+            left: 42px;
+        }
+        &:nth-of-type(2){
+            left: 158px;
+        }
+        &:nth-of-type(3){
+            right: 42px;
+        }
+    }
+    &::after{
+        content: '';
+        display: block;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #4CDBC5;
+        top: 66px;
+        left: 66px;
+        border-radius: 50%;
     }
 }
 .content{

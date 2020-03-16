@@ -104,15 +104,10 @@ export default {
                 &:first-child{
                     width: 20%;
                 }
-                &:not(:last-child){
-                    border-right: 1px solid #FFF7F7F7;
-                }
             }
         }
     }
     p{
-        border-right:1px solid #e4e4e4;
-        border-bottom:1px solid #e4e4e4;
         float: left;
         width: 33%;
         text-align: center;

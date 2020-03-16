@@ -46,11 +46,15 @@
                 <p class="tips">*不可低于10元</p>
                 <div class="checked-box">
                     <van-checkbox icon-size="16px"   shape="square"  checked-color="#07c160" :value="checked" @change="onChange">
-                        我同意《公益捐助》规则，点此查看>>
+                        我同意<span class="one">《公益捐助》</span>规则，
                     </van-checkbox>
+                    <a class="two" @click="seeClick">点此查看>></a>
                 </div>
                 <div class="donate-sure" @click="donate">确定捐赠</div> 
             </div>
+        </van-popup>
+        <van-popup :show="seeShow" closeable @close="onSeeClose">
+            <div class="see-box"></div>
         </van-popup>
         <van-toast id="van-toast" />
     </div>
@@ -72,7 +76,8 @@ export default {
             current:null,
             formData:{
             },
-            publicAccountMoney:null
+            publicAccountMoney:null,
+            seeShow:false
         }
     },
     components: {
@@ -144,6 +149,13 @@ export default {
                    this.getDonate();
                 }
             } )
+        },
+        // 查看详细
+        seeClick(){
+            this.seeShow = true;
+        },
+        onSeeClose(){
+            this.seeShow = false;
         }
     },
     mounted(){
@@ -182,6 +194,21 @@ page{
         padding: 0 10px;
         span{
             font-size: 14px;
+        }
+    }
+    .checked-box{
+        overflow: hidden;
+        .two{
+            color: #000;
+            font-size: 14px;
+            float: left;
+        }
+    }
+    /deep/ van-checkbox{
+        float: left;
+        font-size: 14px;
+        .one{
+            color: #b8dfec;
         }
     }
     ul{
@@ -229,6 +256,12 @@ page{
         color: #333;
         margin-left: 10px;
     }
+}
+.see-box{
+    background-color: #fff;
+    width: 345px;
+    margin: 0 auto;
+    height: 500px;
 }
 .img{
     width: 332px;
