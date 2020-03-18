@@ -198,18 +198,18 @@ export default {
         async buySave(){
             const form = {};
             form.memberId = store.state.user.userInfo.id;
+            form.memberRecipeId = this.id;
             // 1. 生成订单
             new Promise( (resolve,reject) => {
-                // axios({
-                //     url:'api/memberOrder/addMemberOrder',
-                //     method:'post',
-                //     data:form
-                // }).then( res => {
-                //     console.log(res);
-                //     if(res.data.code ==1){
-                      
-                //     }
-                // } )
+                axios({
+                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+this.id,
+                        method:'GET'
+                    }).then( res => {
+                        console.log(res);
+                        if(res.data.code == 1){
+                            
+                        }
+                    } )
             } )
             // 2.支付
 

@@ -5,7 +5,7 @@
             我的订单
         </p>
         <ul>
-            <li @click="gotoInfo" v-for="(item,index) in list" :key="index">
+            <li @click="gotoInfo(item.id)" v-for="(item,index) in list" :key="index">
                 <p class="one">订单号：{{item.orderNumber}}</p>
                 <div class="two">
                     <div class="left">
@@ -38,12 +38,12 @@ export default {
         navbar
     },
     methods:{
-        gotoInfo(){
-            mpvue.navigateTo({ url:'../orderInfo/main' });
+        gotoInfo(id){
+            mpvue.navigateTo({ url:'../orderInfo/main?orderId='+ id});
         },
         GetList(){
             axios({
-                url: 'api/recipe/queryRecipeList?limit='+this.limit+'&offset='+this.offset+'&memberId='+store.state.user.userInfo.id,
+                url: 'api/memberOrder/queryOrderList?limit='+this.limit+'&offset='+this.offset+'&memberId='+store.state.user.userInfo.id,
                 method: 'get',
             }).then( res => {
                 if(res.data.rows){

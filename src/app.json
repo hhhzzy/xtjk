@@ -1,10 +1,9 @@
 {
   "pages": [
-
+    "pages/onlineFormula/main",
     "pages/index/main",
     "pages/orderList/main",
     "pages/formula/main",
-    "pages/onlineFormula/main",
     "pages/onlineFormulaUser/main",
     "pages/physicReview/main",
     "pages/physicStepOne/main",

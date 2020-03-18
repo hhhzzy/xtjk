@@ -100,6 +100,7 @@ export default {
                     console.log(res.code);
                     console.log(this.userInfo)
                     this.code = res.code;
+                    wx.setStorageSync('code', this.code);
                     // 可以传给后台，再经过解析获取用户的 openid
                     // 或者可以直接使用微信的提供的接口直接获取 openid ，方法如下：
                     this.info = {
@@ -126,8 +127,8 @@ export default {
                 return;
             }
             // 获取openid
-            const appid = 'wx13eb21ac1e3c3d02';
-            const secret = '98804218ba6ed5472d45d372a072158b';
+            const appid = 'wxd81d6b44c20f7e1f';
+            const secret = '90b0268e365267167154827e401b2130';
             await new Promise( (resolve,reject) => {
                 wx.request({
                     url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + this.code + '&grant_type=authorization_code',
@@ -147,6 +148,9 @@ export default {
                     type: 'fail',
                     message: '授权失效，请重新授权',
                     onClose: () => {
+                        clearTimeout(this.timer);
+                        this.boolYzm = true;
+                        this.yzmText="获取验证码";
                         this.boolLogin= false;
                     }
                 });
