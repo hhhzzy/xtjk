@@ -328,16 +328,16 @@ export default {
         height: 55px;
         line-height: 55px;
         text-align: center;
-        background-color: #F0F0F0FF;
+        background-color: #F0F0F0;
         color: #333;
         font-size: 17px;
-        color: #B5B5B5FF;
+        color: #B5B5B5;
     }
     .current{
-        background: -webkit-linear-gradient(top,#82F4A3FF,#4CDBC5); /* Safari 5.1-6.0 */
-        background: -o-linear-gradient(bottom,#82F4A3FF,#4CDBC5); /* Opera 11.1-12.0 */
-        background: -moz-linear-gradient(bottom,#82F4A3FF,#4CDBC5);/* Firefox 3.6-15 */
-        background: linear-gradient(to bottom,#82F4A3FF,#4CDBC5); /* 标准语法 */
+        background: -webkit-linear-gradient(top,#82F4A3,#4CDBC5); /* Safari 5.1-6.0 */
+        background: -o-linear-gradient(bottom,#82F4A3,#4CDBC5); /* Opera 11.1-12.0 */
+        background: -moz-linear-gradient(bottom,#82F4A3,#4CDBC5);/* Firefox 3.6-15 */
+        background: linear-gradient(to bottom,#82F4A3,#4CDBC5); /* 标准语法 */
         line-height: 60px;
         color: #fff;
     }

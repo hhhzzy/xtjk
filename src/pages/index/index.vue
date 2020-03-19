@@ -219,14 +219,15 @@ export default {
 	// 获取轮播图
 	async getBanner(){
 		await axios({
-			url:'api/index/getAllPicture',
+			url:'api/index/getAllPicture?type=1',
 			method:'get'
 		}).then( res => {
 			if(res.data.code ==1){
 				this.bannerList = res.data.data.map( item => {
 					item.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(item.imgUrl);
 					return item;
-				});
+                });
+                console.log(res)
 			}
 		} )
 	},
@@ -282,7 +283,6 @@ export default {
 						return item;
 					});
 				}
-				console.log(this.teamList)
 			}
 		} )
 	},
@@ -301,7 +301,8 @@ export default {
 				console.log(res)
 			}
 		} )
-	}
+	},
+    
   },
 
   mounted () {
@@ -314,7 +315,10 @@ export default {
 	this.getNewsList();
 	// 获取团队展示
 	this.getTeamList();
-	this.getGY();
+    this.getGY();
+    wx.showShareMenu({
+      withShareTicket: true
+    })
 	
   },
 }

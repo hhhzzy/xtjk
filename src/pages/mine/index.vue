@@ -82,7 +82,7 @@
                         <p class="img">
                             <img src="../../../static/images/zxpy.png" alt="">
                         </p>
-                        <span>只能配方</span>
+                        <span>智能配方</span>
                     </a>
                 </li>
                 <li>

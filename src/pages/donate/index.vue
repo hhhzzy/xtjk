@@ -3,7 +3,7 @@
         <navbar :title="'公益捐赠'"></navbar>
         <div class="donate-content">
             <div class="img"> 
-                <img src="" alt="">
+                <img :src="imgList" alt="">
             </div>
             <div class="donate-money">
                 <p class="money">
@@ -68,6 +68,7 @@ import navbar from '../../components/navbar'
 export default {
     data(){
         return{
+            imgBaseUrl:imgBaseUrl,
             show:false,
             checkNum:1,
             donateList:[],
@@ -77,7 +78,8 @@ export default {
             formData:{
             },
             publicAccountMoney:null,
-            seeShow:false
+            seeShow:false,
+            imgList:''
         }
     },
     components: {
@@ -156,13 +158,25 @@ export default {
         },
         onSeeClose(){
             this.seeShow = false;
-        }
+        },
+        async GetImg(){
+            await axios({
+                url:'api/index/getAllPicture?type=2',
+                method:'get'
+            }).then( res => {
+                    console.log(res)
+                if(res.data.code ==1){
+                    this.imgList = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(res.data.data[0].imgUrl);
+                }
+            } )
+        },
     },
     mounted(){
         this.getDonate();
     },
     onShow(){
         this.getPublicAccountMoney();
+        this.GetImg();
     }
 }
 </script>
@@ -266,7 +280,6 @@ page{
 .img{
     width: 332px;
     height: 190px;
-    background-color: red;
     margin: 0 auto;
     margin-top: 10px;
     border-radius: 10px;

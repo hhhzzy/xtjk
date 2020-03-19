@@ -3,7 +3,7 @@
         <navbar :title="'申请加入'"></navbar>
         <div class="donate-content">
             <div class="img"> 
-                <img src="" alt="">
+                <img :src="imgList" alt="">
             </div>
             <div class="donate-con">
                 捐赠说明文本、介绍或吸引用户的文本在这里。
@@ -43,17 +43,20 @@
 <script>
 import axios from '../../utils/request.js'
 import store from '../../store'
+import {imgBaseUrl} from '../../utils/common.js'
 import Toast from '../../../static/vant/toast/toast';
 import navbar from '../../components/navbar'
 export default {
     data(){
         return{
+            imgBaseUrl:imgBaseUrl,
             info:{},
             isOk:{
                 one:false,
                 two:false,
                 three:false
-            }
+            },
+            imgList:''
         }
     },
     components: {
@@ -110,10 +113,22 @@ export default {
             } else{
                 Toast.fail('上诉条件未完成');
             }
-        }
+        },
+        async GetImg(){
+            await axios({
+                url:'api/index/getAllPicture?type=3',
+                method:'get'
+            }).then( res => {
+                    console.log(res)
+                if(res.data.code ==1){
+                    this.imgList = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(res.data.data[0].imgUrl);
+                }
+            } )
+        },
     },
     onShow(){
         this.getDonate();
+        this.GetImg();
     }
 }
 </script>
@@ -138,10 +153,9 @@ page{
     .img{
         width: 345px;
         height: 190px;
-        background-color: red;
         position: relative;
         img{
-            width: 332px;
+            width: 345px;
             height: 190px;
         }
     }
