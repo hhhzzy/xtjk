@@ -41,7 +41,7 @@
                     <van-field
                         label="体重："
                         @input="weightTest"
-                        :value="formData.userWeight"
+                        :value="weight"
                         placeholder="请输入体重（kg）"
                     />
                     <van-field
@@ -166,7 +166,8 @@ export default {
             body:[],
             bodyList:[],
             bodyShow:false,
-            formData:{}
+            formData:{},
+            weight:null
         }
     },
     components: {
@@ -250,6 +251,7 @@ export default {
         },
         weightTest(event){
             this.formData.userWeight = Number(event.mp.detail) * 1000;
+            this.weight = Number(event.mp.detail);
         },
         nameTest(event){
             this.formData.userName = event.mp.detail;

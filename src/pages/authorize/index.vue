@@ -100,6 +100,7 @@ export default {
                     console.log(res.code);
                     console.log(this.userInfo)
                     this.code = res.code;
+                    wx.setStorageSync('code', this.code);
                     // 可以传给后台，再经过解析获取用户的 openid
                     // 或者可以直接使用微信的提供的接口直接获取 openid ，方法如下：
                     this.info = {

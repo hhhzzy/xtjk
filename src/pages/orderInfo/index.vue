@@ -5,30 +5,27 @@
             <li>
                 <p class="title">订单详情</p>
                 <div class="content">
-                    <p>订单编号：323232323232323</p>
-                    <p>创建时间：2019-12-16  13：26：15</p>
-                    <p>支付时间：2019-12-19  13：26：15</p>
+                    <p><span class="tit">订单编号：</span><span class="con">{{info.orderNumber}}</span></p>
+                    <p><span class="tit">创建时间：</span><span class="con">{{info.createTime}}</span></p>
+                    <p><span class="tit">支付时间：</span><span class="con">2019-12-19  13：26：15</span></p>
                 </div>
             </li>
-            <li>
+            <li v-if="info.orderState">
                 <p class="title">物流信息</p>
                 <div class="content">
-                    <p>订单编号：323232323232323</p>
-                    <p>物流单号：申通快递 4545454545 <span>复制</span></p>
-                    <p>支付时间：2019-12-19  13：26：15</p>
+                    <p><span class="tit">发货时间：</span><span class="con">{{info.goodsTime}}</span></p>
+                    <p><span class="tit">物流单号：</span><span class="con">{{info.goodsCompany}} {{info.goodsOrder}}</span> <i>复制</i></p>
+                    <p><span class="tit">备注信息：</span><span class="con">{{info.goodsRemark}}</span></p>
                 </div>
             </li>
             <li>
                 <p class="title">配方情况</p>
+                <p class="tips">该配方包含食材{{foodNum}}种，总热量{{foodHot}}Kcal。</p>
                 <div class="content">
-                    <p>订单编号：323232323232323</p>
-                    <p>创建时间：2019-12-16  13：26：15</p>
-                    <p>支付时间：2019-12-19  13：26：15</p>
+                    <p v-for="(item,index) in info.foodMap" :key="index"><span class="tit">热源{{index+1}}:</span><span class="con">{{item.foodName}} X {{item.foodWeight * info.overDay}}克</span></p>
                 </div>
-                <div class="content" style="border-top:1px solid #f2f2f2;">
-                    <p>订单编号：323232323232323</p>
-                    <p>创建时间：2019-12-16  13：26：15</p>
-                    <p>支付时间：2019-12-19  13：26：15</p>
+                <div class="content fs-box">
+                    <p v-for="(item,index) in info.foodMap" :key="index"><span class="tit">热源{{index+1}}:</span><span class="con">{{item.foodName}} X {{item.foodWeight * info.overDay}}克</span></p>
                 </div>
             </li>
         </ul>
@@ -37,24 +34,97 @@
         </div>
         <div class="footer-box">
             <p class="tips">
-                <span class="one">￥2718.17</span>
-                <span class="two">已优惠￥320.1</span>
+                <span class="one">￥{{info.transactionMoney}}</span>
+                <span class="two">已优惠￥{{info.discountMoney}}</span>
             </p>
-            <p class="button-p">立即付款</p>
+            <p class="button-p" @click="buy">立即付款</p>
         </div>
     </div>
 </template>
 <script>
+import store from '../../store'
+import axios from '../../utils/request.js'
 import navbar from '../../components/navbar'
+import { resolve } from 'url'
+import { rejects } from 'assert'
 export default {
     data(){
         return{
-
+            id:null,
+            info:{},
+            foodNum:null,
+            foodHot:null,
+            code:null
         }
     },
     components: {
         navbar
     },
+    methods:{
+        GetInfo(){
+            axios({
+                url: 'api/memberOrder/queryMemberOrderDetail?memberOrderId='+Number(this.id),
+                method: 'get',
+            }).then( res => {
+                console.log(res.data.data);
+                if(res.data.code == 1){
+                    this.info = res.data.data;
+                    this.foodNum = this.info.foodMap.length;
+                    this.info.foodMap.forEach(item => {
+                        this.foodHot += item.foodHot * this.info.overDay;
+                    });
+                }
+            } )
+        },
+        // 购买
+        async buy(){
+           await  new Promise( (resolve,reject) => {
+                wx.login({
+                    success: async res => {
+                        // 获取到用户的 code 之后：res.code
+                        console.log(res.code);
+                        this.code = res.code;
+                        resolve();
+                    }
+                });
+            } )
+            axios({
+                url: 'api/weixinpay/getSin?memberId='+store.state.user.userInfo.id+'&memberOrderId='+this.info.memberOrderId+'&body=保健商品'+'&code='+this.code+'&total_fee=1',
+                method: 'get',
+                data:{
+                    memberId:store.state.user.userInfo.id,
+                    memberOrderId:this.info.memberOrderId,
+                    body:'保健商品',
+                    code:wx.getStorageSync('code'),
+                    total_fee:1
+                }
+            }).then( res => { 
+                const data = res.data.data;
+                console.log(data)
+                wx.requestPayment({
+                    timeStamp: data.timeStamp,
+                    nonceStr: data.nonceStr,
+                    package: data.package,
+                    signType: 'MD5',
+                    paySign: data.paySign,
+                    success (res) { 
+                        console.log(res,'成功')
+                        
+                    },
+                    fail (res) { 
+                        console.log(res,'失败')
+                    }
+                })
+            } )
+        }
+    },
+    onShow(){
+        this.GetInfo();
+    },
+    onLoad(options){
+        console.log(options)
+        this.id = options.orderId;
+    }
 }
 </script>
 <style lang="less" scoped>
@@ -62,6 +132,14 @@ ul{
     li{
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
         margin-bottom: 12px;
+        background-color: #fff;
+    }
+    
+    .tips{
+        color: rgba(77, 77, 77, 1);
+        font-size: 16px;
+        padding: 0 20px;
+        background-color: #fff;
     }
 }
 .title{
@@ -88,17 +166,36 @@ ul{
         top: 15px;
     }
 }
+.fs-box{
+    border-top:1px solid rgba(245, 245, 245, 1);
+    padding: 15px 0;
+}
 .content{
-    padding: 15px 10px;
-    background-color: #fff;
+    margin: 15px 20px;
     p{
         font-size: 14px;
         color: #333;
         margin-bottom: 10px;
-        span{
+        overflow: hidden;
+        height: 22px;
+        font-size: 16px;
+        line-height: 22px;
+        i{
             float: right;
             color: red;
             text-decoration: underline;
+            font-style: normal;
+        }
+        .tit{
+            width: 80px;
+            display: block;
+            float: left;
+            color: rgba(179, 179, 179, 1);
+        }
+        .con{
+            margin-left: 5px;
+            color: rgba(77, 77, 77, 1);
+            font-weight: bold;
         }
     }
 }
