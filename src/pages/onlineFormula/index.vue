@@ -60,8 +60,8 @@
                         </p>
                         <div class="info">
                             <p class="name">{{item.foodName}}</p>
-                            <p class="one">￥{{item.foodPrice}}</p>
-                            <p class="two">￥{{item.discountPrice}}</p>
+                            <p class="one">￥{{item.foodPrice / 1000}}</p>
+                            <p class="two">￥{{item.discountPrice / 1000}}</p>
                         </div>
                         <div class="select"></div>
                     </div>

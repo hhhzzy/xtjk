@@ -1,10 +1,7 @@
 <template>
     <div class="comp-navbar">
             <!-- 导航栏主体 -->
-            <div
-            class="navbar"
-            :style="{height: navBarHeight + 'px',background:'linear-gradient(to bottom,'+linearOne+','+linearTwo+')'}"
-            >
+            <div class="navbar" :style="{height: navBarHeight + 'px',background:'linear-gradient(to bottom,'+linearOne+','+linearTwo+')'}">
                 <!-- 状态栏 -->
                 <div class="nav-statusbar" :style="{height: statusBarHeight + 'px'}"></div>
                 <!-- 标题栏 -->
@@ -12,12 +9,12 @@
                     <!-- homek键及关闭键及后退键 -->
                     <div class="bar-options">
                         <div v-if="backVisible" class="opt opt-back" @click="backClick()">
-                            <cover-image class="back-image" src="../../static/images/返回.png"></cover-image>
+                            <img class="back-image" src="../../static/images/goBack.png" >
                         </div>
                         <!-- <cover-view class="line" v-if="backVisible && homePath"></cover-view> -->
-                        <div v-if="homeIshide" class="opt opt-home" @click="homeClick()">
-                            <cover-image class="home-image" src="../../static/images/home.png"></cover-image>
-                        </div>
+                        <!-- <div v-if="homeIshide" class="opt opt-home" @click="homeClick()">
+                            <img class="home-image" src="../../static/images/home.png" >
+                        </div> -->
                     </div>
                     <!-- 标题 -->
                     <div class="bar-title" :style="[{color:titleColor}]">{{title}}</div>
@@ -128,20 +125,15 @@ export default {
     width: 100%;
     z-index: 999;
     .nav-titlebar {
-      // border: 1px solid green;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       .bar-options {
-        // width: 87px;
-        // height: 30px;
         width: 50rpx;
         height: 60rpx;
         display: flex;
-        // border: 1px solid hsla(0, 0%, 100%, .25);
-        // border: 1px solid #ededed;
         box-sizing: border-box;
         align-items: center;
         justify-content: space-around;
@@ -149,7 +141,6 @@ export default {
         left: 7px;
         display: flex;
         align-items: center;
-        // background: hsla(0, 0%, 100%, 0.6);
         border-radius: 27px;
         padding-right: 5px;
         .opt {
@@ -189,7 +180,6 @@ export default {
     }
   }
   .placeholder-bar {
-    // background-color: #434343;
     width: 100%;
   }
 }

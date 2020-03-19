@@ -26,6 +26,7 @@ export async function wxpay(memberId,memberOrderId,text,total_fee){
      *  code：登录的code
      *  total_fee：总的价格
      * */ 
+    console.log(memberId,memberOrderId,text,total_fee)
     axios({
         url: 'api/weixinpay/getSin?memberId='+memberId+'&memberOrderId='+memberOrderId+'&body='+text+'&code='+code+'&total_fee='+total_fee,
         method: 'get',
@@ -60,5 +61,4 @@ export async function wxpay(memberId,memberOrderId,text,total_fee){
     } ).catch( err => {
         reject(err);
     } )
-    console.log(7878888)
 }

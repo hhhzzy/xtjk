@@ -69,7 +69,6 @@ export default {
 .order-list-box{
     height: 100%;
     background-color: #f2f2f2;
-    overflow: hidden;
     .main-title{
         font-size: 17px;
         position: relative;
