@@ -46,16 +46,24 @@ export async function wxpay(memberId,memberOrderId,text,total_fee){
                 wx.showToast({
                     title: '支付成功',
                     icon: 'success',
-                    duration: 1000
+                    duration: 1000,
+                    success:function(){
+                        mpvue.navigateTo({ url:'../orderInfo/main?orderId='+memberOrderId })
+                    }
                 })
-                setTimeout(()=>{
-                    wx.reLaunch({
-                        url: '../orderList/main'
-                    })
-                },1000)
             },
             fail (res) { 
-                console.log(res,'失败')
+                wx.showModal({
+                    title: '提示',
+                    content: '付款失败，请重新支付！',
+                    success (res) {
+                      if (res.confirm) {
+                        mpvue.navigateTo({ url:'../orderInfo/main?orderId='+memberOrderId })
+                      } else if (res.cancel) {
+                        mpvue.navigateTo({ url:'../orderInfo/main?orderId='+memberOrderId })
+                      }
+                    }
+                })
             }
         })
     } ).catch( err => {

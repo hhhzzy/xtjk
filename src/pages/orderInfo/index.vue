@@ -7,15 +7,15 @@
                 <div class="content">
                     <p><span class="tit">订单编号：</span><span class="con">{{info.orderNumber}}</span></p>
                     <p><span class="tit">创建时间：</span><span class="con">{{info.createTime}}</span></p>
-                    <p><span class="tit">支付时间：</span><span class="con">2019-12-19  13：26：15</span></p>
+                    <!-- <p><span class="tit">支付时间：</span><span class="con">2019-12-19  13：26：15</span></p> -->
                 </div>
             </li>
             <li v-if="info.orderState">
                 <p class="title">物流信息</p>
                 <div class="content">
-                    <p><span class="tit">发货时间：</span><span class="con">{{info.goodsTime}}</span></p>
-                    <p><span class="tit">物流单号：</span><span class="con">{{info.goodsCompany}} {{info.goodsOrder}}</span> <i>复制</i></p>
-                    <p><span class="tit">备注信息：</span><span class="con">{{info.goodsRemark}}</span></p>
+                    <p v-if="info.goodsTime"><span class="tit">发货时间：</span><span class="con">{{info.goodsTime}}</span></p>
+                    <p v-if="info.goodsOrder"><span class="tit">物流单号：</span><span class="con">{{info.goodsCompany}} {{info.goodsOrder}}</span> <i>复制</i></p>
+                    <p v-if="info.goodsRemark"><span class="tit">备注信息：</span><span class="con">{{info.goodsRemark}}</span></p>
                 </div>
             </li>
             <li>
@@ -25,23 +25,31 @@
                     <p v-for="(item,index) in info.foodMap" :key="index"><span class="tit">热源{{index+1}}:</span><span class="con">{{item.foodName}} X {{item.foodWeight * info.overDay}}克</span></p>
                 </div>
                 <div class="content fs-box">
-                    <p v-for="(item,index) in info.foodMap" :key="index"><span class="tit">热源{{index+1}}:</span><span class="con">{{item.foodName}} X {{item.foodWeight * info.overDay}}克</span></p>
+                    <p v-for="(item,index) in info.foodList" :key="index"><span class="tit">辅助食{{index+1}}:</span><span class="con">{{item}}</span></p>
                 </div>
             </li>
         </ul>
         <div class="del">
-            <a href="javascript:;">点此删除订单（慎重，操作后不可恢复）</a>
+            <a href="javascript:;" @click="delOrder">点此删除订单（慎重，操作后不可恢复）</a>
         </div>
-        <div class="footer-box">
+        <div class="footer-box" v-if="!info.orderState">
             <p class="tips">
-                <span class="one">￥{{info.transactionMoney}}</span>
-                <span class="two">已优惠￥{{info.discountMoney}}</span>
+                <span class="one">￥{{info.transactionMoney / 1000}}</span>
+                <span class="two">已优惠￥{{info.discountMoney / 1000}}</span>
             </p>
             <p class="button-p" @click="buy">立即付款</p>
         </div>
+        <div class="footer-box current" v-else>
+            <p class="tips">
+                <span class="one">￥{{info.transactionMoney / 1000}}</span>
+                <span class="two">已优惠￥{{info.discountMoney / 1000}}</span>
+            </p>
+        </div>
+        <van-dialog id="van-dialog" />
     </div>
 </template>
 <script>
+import Dialog from '../../../static/vant/dialog/dialog';
 import store from '../../store'
 import axios from '../../utils/request.js'
 import navbar from '../../components/navbar'
@@ -63,6 +71,10 @@ export default {
     },
     methods:{
         GetInfo(){
+            // 加载数据
+            wx.showLoading({
+                title: '加载中',
+            })   
             axios({
                 url: 'api/memberOrder/queryMemberOrderDetail?memberOrderId='+Number(this.id),
                 method: 'get',
@@ -75,7 +87,31 @@ export default {
                         this.foodHot += item.foodHot * this.info.overDay;
                     });
                 }
+                wx.hideLoading() 
             } )
+        },
+        // 删除订单
+        delOrder(){
+            Dialog.confirm({
+                title: '提示',
+                message: '是否删除该订单？'
+            }).then(() => {
+                axios({
+                    url:'api/memberOrder/deleteMemberOrder?memberId='+store.state.user.userInfo.id+'&memberOrderId='+this.info.memberOrderId,
+                    method:'get',
+                }).then( res => {
+                    console.log(res)
+                    if(res.data.code == 1){
+                        wx.showToast({
+                            title: '删除成功！',
+                            icon: 'success',
+                            success:function(){
+                                mpvue.navigateTo({ url:'../orderList/main'});
+                            }
+                        })
+                    }
+                } )
+            })
         },
         // 购买
         async buy(){
@@ -128,6 +164,8 @@ export default {
     },
     onShow(){
         this.GetInfo();
+        this.foodNum = null;
+        this.foodHot = null
     },
     onLoad(options){
         console.log(options)
@@ -141,6 +179,7 @@ ul{
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
         margin-bottom: 12px;
         background-color: #fff;
+        overflow:hidden;
     }
     
     .tips{
@@ -220,6 +259,12 @@ ul{
 }
 .footer-box{
     overflow: hidden;
+    &.current{
+        .tips{
+            width: 100%;
+            padding-left: 0;
+        }
+    }
     .tips{
         float: left;
         width: 227px;

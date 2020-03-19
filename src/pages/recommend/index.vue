@@ -3,8 +3,8 @@
         <navbar :title="'我的推荐'"></navbar>
         <div class="detail">
             <p><em>我的推广账号：</em><i>{{user.memberPhone}}</i></p>
-            <p><em>我的推广链接：</em><i></i><span>复制</span> </p>
-            <p><em>专属推荐二维码：</em> <span>下载图片</span></p>
+            <p><em>我的推广链接：</em><i>{{link}}</i><span @click="copy">复制</span> </p>
+            <p><em>专属推荐二维码：</em>  <span @click="upload">下载图片</span></p>
         </div>
         <p class="title">
             推荐用户列表
@@ -28,12 +28,15 @@
 <script>
 import store from '../../store'
 import axios from '../../utils/request.js'
+import {imgBaseUrl} from '../../utils/common.js'
 import navbar from '../../components/navbar'
 export default {
     data(){
         return{
             info:{},
-            user:{}
+            user:{},
+            link:'这是链接',
+            src:"../../../static/images/yzf.png"
         }
     },
     components: {
@@ -50,7 +53,26 @@ export default {
                     this.info = res.data.data;
                 }
             } )
-        }   
+        },
+        // 复制
+        copy(){
+            wx.setClipboardData({
+                data: this.link,
+                success: function (res) {
+                    console.log(res)
+                }
+            })
+        },
+        // 下载图片
+        upload(){
+            // wx.downloadFile({
+            //     url: this.src, //仅为示例，并非真实的资源
+            //     success: (res) => {
+            //         console.log(res)
+            //         let image = res.tempFilePath;
+            //     }
+            // })
+        }
     },
     onShow(){
         this.GetInfo();

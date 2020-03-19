@@ -33,7 +33,7 @@
             <p class="main-title">我的订单</p>
             <ul class="list-ul">
                 <li>
-                    <a href="../orderList/main">
+                    <a href="../orderList/main?type=wait">
                         <p class="img">
                             <img src="../../../static/images/dfk.png" alt="">
                         </p>
@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../orderList/main">
+                    <a href="../orderList/main?type=paied">
                         <p class="img">
                             <img src="../../../static/images/yzf.png" alt="">
                         </p>
@@ -49,7 +49,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../orderList/main">
+                    <a href="../orderList/main?type=done">
                         <p class="img">
                             <img src="../../../static/images/ywc.png" alt="">
                         </p>

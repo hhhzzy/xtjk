@@ -91,6 +91,7 @@ import Toast from '../../../static/vant/toast/toast';
 import store from '../../store'
 import {imgBaseUrl} from '../../utils/common.js'
 import { resolve } from 'url';
+import { wxpay } from '../../utils/common.js'
 export default {
     data(){
         return{
@@ -168,6 +169,7 @@ export default {
                 this.tjForm.push(data);
                 
             }
+            console.log(this.tjForm)
         },
         // 保存配方
         savePf(){
@@ -196,25 +198,50 @@ export default {
         },
         // 购买配方
         async buySave(){
-            //1.生成配方
-
-            const form = {};
-            form.memberId = store.state.user.userInfo.id;
-            form.memberRecipeId = this.id;
-            // 2. 生成订单
-            new Promise( (resolve,reject) => {
+            //1.保存配方
+            const form = Object.assign({},this.userInfo);
+            form.recipeList = encodeURI(this.formulaData.recipeList);
+            form.recipeName = this.recipeName;
+            form.recipePrice = this.formulaData.recipePrice;
+            let memberRecipeId = null;
+            await new Promise( (resolve,reject) => {
                 axios({
-                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+this.id,
+                    url:'api/recipe/saveMemberRecipe',
+                    method:'post',
+                    data:form
+                }).then( res => {
+                    console.log(res);
+                    if(res.data.code ==1){
+                        memberRecipeId = res.data.data;
+                    }
+                    resolve();
+                } )
+            } )
+            console.log(memberRecipeId)
+            // 2. 生成订单
+            let memberOrderId = null;
+            let foodId = [];
+            if(this.tjForm.length){
+                this.tjForm.forEach(item => {
+                    foodId.push(item.id)
+                });
+            }
+            console.log(foodId)
+            await new Promise( (resolve,reject) => {
+                axios({
+                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+memberRecipeId+'&foodId='+foodId.toString(),
                         method:'GET'
                     }).then( res => {
                         console.log(res);
                         if(res.data.code == 1){
-                            
+                            memberOrderId = res.data.data.memberOrderId;
                         }
+                        resolve();
                     } )
             } )
+            console.log(store.state.user.userInfo.id,memberOrderId,'配方订单支付',1)
             // 3.支付
-
+            wxpay(store.state.user.userInfo.id,memberOrderId,'配方订单支付',1);
         }
     },
     mounted(){

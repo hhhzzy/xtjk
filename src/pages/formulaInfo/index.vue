@@ -56,7 +56,7 @@
         
         <div class="footer-box">
             <p class="del-p" @click="del">删除配方</p>
-            <p class="add-p" @click="buy">共￥{{info.recipePrice}}，立即付款</p>
+            <p class="add-p" @click="buy">共￥{{info.recipePrice*info.overDay / 1000}}，立即付款</p>
         </div>
         <van-toast id="van-toast" />
         <van-dialog id="van-dialog" />
@@ -156,6 +156,10 @@ export default {
     onLoad(options){
         console.log(options)
         this.id = options.id;
+    },
+    onShow(){
+        this.foodNum = null;
+        this.hotNum = null;
     }
 }
 </script>

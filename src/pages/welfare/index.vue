@@ -31,10 +31,14 @@ export default {
     methods:{
          // 获取健康资讯
         getList(){
+            wx.showLoading({
+                title: '加载中',
+            })
             axios({
                 url:'api/public/getPublicMessageList?limit='+this.limit+'&offset='+this.offset,
                 method:'get'
             }).then( res => {
+                wx.hideLoading();
                 if(res.data.rows){
                     this.list = this.list.concat(res.data.rows); 
                     this.list = this.list.map( item => {

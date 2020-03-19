@@ -22,7 +22,7 @@ ajax.defaults.adapter = function (config){
             header = {
                 'content-type': 'application/json'// 默认值
             }
-        }
+        }     
         wx.request({
           url:url+config.url,
           method:config.method,
@@ -36,7 +36,6 @@ ajax.defaults.adapter = function (config){
               }else{
                 return resolve(res);
               }
-              
           },
           fail:(err)=>{
             return reject(err)
@@ -64,6 +63,7 @@ ajax.interceptors.response.use(
     },
     // 状态码提示
     error => {
+        wx.hideLoading()
         return Promise.reject(error);
     }
 )

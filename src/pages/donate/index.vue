@@ -76,6 +76,7 @@ export default {
             moneyList:[10,20,30,40,50],
             current:null,
             formData:{
+                transactionMoney:null
             },
             publicAccountMoney:null,
             seeShow:false,
@@ -114,6 +115,7 @@ export default {
             } )
         },
         showDonate(){
+            console.log(1)
             this.show = true;
         },
         onChange(event){
@@ -130,26 +132,75 @@ export default {
             this.formData.transactionMoney = Number(event.mp.detail.value);
             this.current = null;
         },
-        donate(){
+        async donate(){
             if(!this.checked){
                 Toast.fail('请选择我同意');
                 return;
             }
-            if(this.formData.transactionMoney <10){
+            if(Number(this.formData.transactionMoney) <10){
                 Toast.fail('不能小于10元');
                 return;
             }
             this.formData.updateUserId = store.state.user.userInfo.id;
+            console.log(Number(this.formData.transactionMoney))
+            wx.showLoading({
+                title: '支付中请稍后',
+            })
+            let code = null;
+            let that = this;
+            // 1.获取code
+            await  new Promise( (resolve,reject) => {
+                wx.login({
+                    success: async res => {
+                        // 获取到用户的 code 之后：res.code
+                        console.log(res.code);
+                        code = res.code;
+                        resolve();
+                    }
+                });
+            } )
             axios({
-                url:'api/public/addPublicTransaction',
-                method:'post',
-                data:this.formData
-            }).then( res => {
-                if(res.data.code ==1){
-                   Toast.success('捐赠成功！');
-                   this.show = false;
-                   this.getDonate();
-                }
+                url: 'api/weixinpay/getPublicSign?memberId='+store.state.user.userInfo.id+'&body=用户捐赠'+'&code='+code+'&total_fee='+1,
+                method: 'get',
+            }).then( res => { 
+                const data = res.data.data;
+                console.log(data)
+                wx.hideLoading();
+                // 3.调取二维码支付
+                wx.requestPayment({
+                    timeStamp: data.timeStamp,
+                    nonceStr: data.nonceStr,
+                    package: data.package,
+                    signType: 'MD5',
+                    paySign: data.paySign,
+                    success (res) { 
+                        wx.showLoading({
+                            title: '加载中',
+                        })
+                        axios({
+                            url:'api/public/addPublicTransaction',
+                            method:'post',
+                            data:that.formData
+                        }).then( res => {
+                            wx.hideLoading();
+                            if(res.data.code ==1){
+                                Toast.success('捐赠成功！');
+                                that.show = false;
+                                that.getDonate();
+                            }
+                        } )
+                        
+                    },
+                    fail (res) { 
+                        console.log(that)
+                        wx.showModal({
+                            title: '提示',
+                            content: '付款失败，请重新支付！',
+                        })
+                    }
+                })
+            } ).catch( err => {
+                reject(err);
             } )
         },
         // 查看详细

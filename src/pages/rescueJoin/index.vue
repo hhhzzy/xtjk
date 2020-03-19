@@ -120,7 +120,6 @@ export default {
                     } )
         },
         application(){
-            console.log(this.formData)
             this.formData.memberId = store.state.user.userInfo.id;
             const tempUrl = [];
             this.fileListArray.forEach(item => {
@@ -131,24 +130,29 @@ export default {
                 Toast.fail('请填写情况说明');
                 return;
             }
-            if(!this.formData.tempUrl){
+            if(!this.formData.imgUrl){
                 Toast.fail('请上传附件');
                 return;
             }
             if(this.formData.applyName != undefined && this.formData.applyPhone != undefined){
+                wx.showLoading({
+                    title: '加载中',
+                })
                 axios({
                     url: 'api/public/addMemberApplyRescue',
                     method: 'post',
                     data:this.formData
                 }).then( data => {
+                    wx.hideLoading();
                     if(data.data.code == 1){
                         Toast.success({
-                                mask: false,
-                                message: '新增成功',
-                                onClose: () => {
-                                    mpvue.navigateTo({ url:'../index/main' })
-                                }
-                            });
+                            mask: false,
+                            message: '新增成功',
+                            onClose: () => {
+                                console.log(5555)
+                                mpvue.switchTab({ url:'../index/main' })
+                            }
+                        });
                         }
                     } )
             }

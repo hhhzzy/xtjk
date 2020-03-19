@@ -42,6 +42,10 @@ export default {
             mpvue.navigateTo({ url:'../orderInfo/main?orderId='+ id});
         },
         GetList(){
+            // 加载数据
+            wx.showLoading({
+                title: '加载中',
+            })     
             axios({
                 url: 'api/memberOrder/queryOrderList?limit='+this.limit+'&offset='+this.offset+'&memberId='+store.state.user.userInfo.id,
                 method: 'get',
@@ -51,6 +55,7 @@ export default {
                         this.list = this.list.concat(res.data.rows); 
                     }
                 }
+                wx.hideLoading()    
             } )
         }
     },
