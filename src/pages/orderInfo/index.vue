@@ -47,6 +47,7 @@ import axios from '../../utils/request.js'
 import navbar from '../../components/navbar'
 import { resolve } from 'url'
 import { rejects } from 'assert'
+import { wxpay } from '../../utils/common.js'
 export default {
     data(){
         return{
@@ -78,6 +79,11 @@ export default {
         },
         // 购买
         async buy(){
+            console.log(22)
+            // 支付
+            wxpay(store.state.user.userInfo.id,this.info.memberOrderId,'配方订单支付',1);
+            return;
+            // 1.获取code
            await  new Promise( (resolve,reject) => {
                 wx.login({
                     success: async res => {
@@ -88,6 +94,7 @@ export default {
                     }
                 });
             } )
+            // 2.生成订单
             axios({
                 url: 'api/weixinpay/getSin?memberId='+store.state.user.userInfo.id+'&memberOrderId='+this.info.memberOrderId+'&body=保健商品'+'&code='+this.code+'&total_fee=1',
                 method: 'get',
@@ -101,6 +108,7 @@ export default {
             }).then( res => { 
                 const data = res.data.data;
                 console.log(data)
+                // 3.调取二维码支付
                 wx.requestPayment({
                     timeStamp: data.timeStamp,
                     nonceStr: data.nonceStr,

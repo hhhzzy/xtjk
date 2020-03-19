@@ -196,10 +196,12 @@ export default {
         },
         // 购买配方
         async buySave(){
+            //1.生成配方
+
             const form = {};
             form.memberId = store.state.user.userInfo.id;
             form.memberRecipeId = this.id;
-            // 1. 生成订单
+            // 2. 生成订单
             new Promise( (resolve,reject) => {
                 axios({
                         url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+this.id,
@@ -211,7 +213,7 @@ export default {
                         }
                     } )
             } )
-            // 2.支付
+            // 3.支付
 
         }
     },

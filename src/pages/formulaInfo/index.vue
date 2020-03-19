@@ -68,13 +68,15 @@ import axios from '../../utils/request.js'
 import store from '../../store'
 import Dialog from '../../../static/vant/dialog/dialog';
 import Toast from '../../../static/vant/toast/toast';
+import { wxpay } from '../../utils/common.js'
 export default {
     data(){
         return{
            id:null,
            info:{},
            hotNum:null, //总热量
-           foodNum:null
+           foodNum:null,
+           memberOrderId:null, // 订单号
         }
     },
     components: {
@@ -127,19 +129,25 @@ export default {
             });
         },
         // 购买
-        buy(){
-            const form = {};
-            form.memberId = store.state.user.userInfo.id;
-            form.memberRecipeId = this.id;
-            axios({
-                    url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+this.id,
-                    method:'GET'
-                }).then( res => {
-                    console.log(res);
-                    if(res.data.code == 1){
-                        
-                    }
-                } )
+        async buy(){
+            // 生成订单
+            await new Promise( (resolve,reject) => {
+                const form = {};
+                form.memberId = store.state.user.userInfo.id;
+                form.memberRecipeId = this.id;
+                axios({
+                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+this.id,
+                        method:'GET'
+                    }).then( res => {
+                        console.log(res);
+                        if(res.data.code == 1){
+                            this.memberOrderId = res.data.data.memberOrderId;
+                        }
+                        resolve();
+                    } )
+            } )
+            // 支付
+            wxpay(store.state.user.userInfo.id,this.memberOrderId,'配方订单支付',1);
         }
     },
     mounted(){
