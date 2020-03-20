@@ -148,9 +148,6 @@ export default {
                     type: 'fail',
                     message: '授权失效，请重新授权',
                     onClose: () => {
-                        clearTimeout(this.timer);
-                        this.boolYzm = true;
-                        this.yzmText="获取验证码";
                         this.boolLogin= false;
                     }
                 });

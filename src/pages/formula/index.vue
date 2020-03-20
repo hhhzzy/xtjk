@@ -76,6 +76,8 @@ export default {
     },
     onShow(){
         this.list = [];
+        this.offset = 1;
+        this.limit = 15;
         this.GetList();
     },
     onReachBottom () {

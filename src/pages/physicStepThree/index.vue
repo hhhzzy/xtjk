@@ -100,6 +100,7 @@ export default {
 }
 .bg{
     position: relative;
+    margin-top: -1px;
     img{
         display: block;
         width: 100%;

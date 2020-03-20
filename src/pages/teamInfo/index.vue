@@ -5,11 +5,11 @@
             <p class="title">{{detail.title}}</p>
             <p class="time">{{detail.updateTime}}</p>
         </div>
-        <div class="content-box">
+        <!-- <div class="content-box">
             <p class="title">公益金支出情况</p>
             <p class="con">支出情况：￥3179.55</p>
             <p class="con">支出情况：￥3179.55</p>
-        </div>
+        </div> -->
         <div class="detail-box">
             <img :src="detail.imgUrl" alt="">
             <wxParse :content="detail.content" />

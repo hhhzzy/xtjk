@@ -75,7 +75,7 @@ ul{
             height: 65px;
             display: block;
             float: right;
-            background-color: red;
+            background-color: #f2f2f2;
         }
     }
 }

@@ -1,6 +1,7 @@
 {
     "usingComponents": {
-        "van-dialog": "/static/vant/dialog/index"
+        "van-dialog": "/static/vant/dialog/index",
+        "van-toast": "/static/vant/toast/index"
     },
     "navigationBarTitleText": "订单详情" 
 }

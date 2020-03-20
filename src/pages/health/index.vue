@@ -22,7 +22,7 @@ export default {
         return{
 		    imgBaseUrl:imgBaseUrl,
             healthList:[],
-            limit:8,
+            limit:15,
             offset:1
         }
     },
@@ -49,6 +49,8 @@ export default {
     },
     onShow(){
         this.list = [];
+        this.offset = 1;
+        this.limit = 15;
         this.getNewsList();
     },
     onReachBottom () {

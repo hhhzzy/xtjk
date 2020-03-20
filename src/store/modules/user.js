@@ -38,7 +38,7 @@ const actions  = {
                 } else {
                     Toast({
                         type: 'fail',
-                        message: '登录失败，请重新登录',
+                        message: data.data.msg,
                         onClose: () => {
                             mpvue.navigateTo({ 
                                 url: '../authorize/main'

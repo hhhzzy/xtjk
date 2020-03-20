@@ -31,7 +31,8 @@ export default {
         return{
             limit:8,
             offset:1,
-            list:[]
+            list:[],
+            orderState:null, // 订单状态
         }
     },
     components: {
@@ -47,7 +48,7 @@ export default {
                 title: '加载中',
             })     
             axios({
-                url: 'api/memberOrder/queryOrderList?limit='+this.limit+'&offset='+this.offset+'&memberId='+store.state.user.userInfo.id,
+                url: 'api/memberOrder/queryOrderList?limit='+this.limit+'&offset='+this.offset+'&memberId='+store.state.user.userInfo.id+'&orderState='+this.orderState,
                 method: 'get',
             }).then( res => {
                 if(res.data.rows){
@@ -59,9 +60,21 @@ export default {
             } )
         }
     },
-     onShow(){
+    onShow(options){
         this.list = [];
+        this.offset = 1;
+        this.limit = 15;
         this.GetList();
+    },
+    onLoad(options){
+        if(options.type == 'wait'){
+            this.orderState = 1;
+        } else if(options.type == 'paied') {
+            this.orderState = 2;
+        } else {
+            this.orderState = 3;
+        }
+
     },
     onReachBottom () {
         this.offset++;

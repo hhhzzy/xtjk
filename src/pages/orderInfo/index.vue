@@ -29,7 +29,7 @@
                 </div>
             </li>
         </ul>
-        <div class="del">
+        <div class="del" v-if="!info.orderState">
             <a href="javascript:;" @click="delOrder">点此删除订单（慎重，操作后不可恢复）</a>
         </div>
         <div class="footer-box" v-if="!info.orderState">
@@ -46,6 +46,7 @@
             </p>
         </div>
         <van-dialog id="van-dialog" />
+        <van-toast id="van-toast" />
     </div>
 </template>
 <script>
@@ -56,6 +57,7 @@ import navbar from '../../components/navbar'
 import { resolve } from 'url'
 import { rejects } from 'assert'
 import { wxpay } from '../../utils/common.js'
+import Toast from '../../../static/vant/toast/toast';
 export default {
     data(){
         return{
@@ -108,6 +110,11 @@ export default {
                             success:function(){
                                 mpvue.navigateTo({ url:'../orderList/main'});
                             }
+                        })
+                    }else{
+                        Toast({
+                            type:'success',
+                            message: res.data.msg,
                         })
                     }
                 } )
