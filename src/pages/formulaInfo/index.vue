@@ -60,6 +60,15 @@
         </div>
         <van-toast id="van-toast" />
         <van-dialog id="van-dialog" />
+        <van-popup  :show="addressShow"  
+                    position="bottom" 
+                    @close="closeAddressPopup">
+            <van-picker :columns="addressList"
+                        show-toolbar
+                        title="请选择地址" 
+                        @cancel="onCancel"
+                        @confirm="onConfirm"  />
+        </van-popup>
     </div>
 </template>
 <script>
@@ -78,6 +87,11 @@ export default {
            hotNum:null, //总热量
            foodNum:null,
            memberOrderId:null, // 订单号
+           addressShow:false,
+           addressList:[],
+           addressData:[],
+           receiveAddressId:null,
+
         }
     },
     components: {
@@ -138,29 +152,40 @@ export default {
                         url:'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
                         method:'GET'
                     }).then( res => {
-                        console.log(res);
+                        console.log(res,'');
                         if(res.data.code == 1 && res.data.data.length >= 1){
                             this.boolBuy = true
+                            this.addressShow = true;
+                            this.addressData = res.data.data;
+                            this.addressList = res.data.data.map( item => {
+                                return item.receiveAddress;
+                            } )
                         } else {
                             Toast({
                                 type: 'fail',
                                 message: '请选择收货地址',
                                 onClose: () => {
-                                    mpvue.navigateTo({ url:'../addressList/main'});
+                                    mpvue.navigateTo({ url:'../addressAdd/main?type=formula&formulaId='+this.id});
                                 }
                             });
                         }
                         resolve();
                     } )
             } )
-            return;
+        },
+        closeAddressPopup(){
+            this.addressShow = false;
+        },
+        async onConfirm(value){
+            this.receiveAddressId = this.addressData[value.mp.detail.index].id;
+            this.addressShow = false;
             // 生成订单
             await new Promise( (resolve,reject) => {
                 const form = {};
                 form.memberId = store.state.user.userInfo.id;
                 form.memberRecipeId = this.id;
                 axios({
-                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+this.id,
+                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+this.id+'&receiveAddressId='+this.receiveAddressId,
                         method:'GET'
                     }).then( res => {
                         console.log(res);
@@ -172,16 +197,19 @@ export default {
             } )
             // 支付
             wxpay(store.state.user.userInfo.id,this.memberOrderId,'配方订单支付',1);
+        },
+        onCancel(){
+            this.addressShow = false;
         }
     },
     mounted(){
-        this.GetInfo();
     },
     onLoad(options){
         console.log(options)
         this.id = options.id;
     },
     onShow(){
+        this.GetInfo();
         this.foodNum = null;
         this.hotNum = null;
     }

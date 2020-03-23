@@ -35,6 +35,7 @@
                 label="收货地址："
                 icon="arrow"
                 readonly
+                :value="address.receiveAddress"
                 @click="gotoAddress"
                 placeholder="请添加收货地址"
             />
@@ -60,7 +61,8 @@ export default {
         return{
             userInfo:{},
             sex:['男','女'],
-            sexShow:false
+            sexShow:false,
+            address:{}
         }
     },
     components: {
@@ -95,10 +97,26 @@ export default {
         },
         gotoAddress(){
             mpvue.navigateTo({ url:'../addressList/main' })
+        },
+        GetAddress(){
+            axios({
+                url:'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
+                method:'GET'
+            }).then( res => {
+                console.log(res,'');
+                if(res.data.code == 1 && res.data.data.length >= 1){
+                    res.data.data.forEach(item => {
+                        if(item.isDefault == 1) {
+                            this.address = item;
+                        }
+                    });
+                }
+            } )
         }
     },
     mounted(){
         this.getUserInfo();
+        this.GetAddress();
 
     }
 }

@@ -39,10 +39,10 @@
         </van-cell-group>
         <div class="footer-box">
             <div class="edit-box" v-if="type=='edit'">
-                <p class="del-p">删除</p>
-                <p class="save-p">保存</p>
+                <p class="del-p" @click="delAddress">删除</p>
+                <p class="save-p" @click="saveAddress">保存</p>
             </div>
-            <div class="save-box" v-if="type=='add'">
+            <div class="save-box" v-if="type=='add' || type=='formula' || type=='online'">
                 <p class="save-p" @click="saveAddress">保存</p>
             </div>
         </div>
@@ -78,7 +78,9 @@ export default {
                 errorTel:'',//
                 errorName:'',
                 errorAddress:''
-            }
+            },
+            id:null,
+            option:{}
         }
     },
     components: {
@@ -114,29 +116,36 @@ export default {
         },
         // 新增地址
         saveAddress(){
-            this.address.memberId = store.state.user.userInfo.id;
+            this.address.memberId = String(store.state.user.userInfo.id);
             this.address.isDefault = this.address.default == '是'? 1 : 0;
+            this.address.id = this.id?this.id:'';
             console.log(this.address)
-            if(!this.address.isDefault || !this.address.receivePhone || !this.address.receiveAddress){
+            if(!this.address.receivePhone || !this.address.receiveAddress){
                 Toast.fail('以上数据请必填');
                 return;
             }
-            // return;
             axios({
                 url: 'api/personal/insertOrUpdateReceiveAddress',
                 method: 'post',
                 data:this.address
             }).then( data => {
+                console.log(data,'555555')
                 if(data.data.code == 1){
-                   Toast.success({
+                    Toast.success({
                         mask: false,
-                        message: '新增成功',
+                        message: '提交成功',
                         onClose: () => {
-                            mpvue.navigateTo({ url:'../addressList/main' })
+                            if(this.type == 'formula'){
+                                mpvue.navigateTo({ url:'../formulaInfo/main?id='+this.option.formulaId })
+                            }
+                            else if(this.type == 'online'){
+                                mpvue.navigateTo({ url:'../onlineFormula/main' })
+                            } else {
+                                mpvue.navigateTo({ url:'../addressList/main'})
+                            }
                         }
                     });
                 }
-                console.log(data)
             } )
         },
         testTel(value){
@@ -163,6 +172,43 @@ export default {
                 this.error.errorAddress = '';
             }
             this.address.receiveAddress = value.mp.detail;
+        },
+        // 获取地址
+        GetAddress(value){
+            axios({
+                url: 'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
+                method: 'get',
+            }).then( data => {
+                if(data.data.code == 1){
+                    data.data.data.forEach(item => {
+                        if(item.id == value){
+                            this.address = item;
+                        } 
+                    });
+                    this.address.default = this.address.isDefault == 1?'是':'否';
+                    console.log(this.address,'7777')
+                }
+            } )
+        },
+        // 删除地址
+        delAddress(){
+            if(!this.id){
+                return;
+            }
+            // axios({
+            //     url: 'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
+            //     method: 'get',
+            // }).then( data => {
+            //     if(data.data.code == 1){
+            //         data.data.data.forEach(item => {
+            //             if(item.id == value){
+            //                 this.address = item;
+            //             } 
+            //         });
+            //         this.address.default = this.address.isDefault == 1?'是':'否';
+            //         console.log(this.address,'7777')
+            //     }
+            // } )
         }
     },
     mounted(){
@@ -171,6 +217,11 @@ export default {
     onLoad(option){
         console.log(option)
         this.type = option.type;
+        this.id = option.id;
+        if(this.id){
+            this.GetAddress(this.id);
+        }
+        this.option = option;
     }
 }
 </script>
@@ -188,14 +239,13 @@ export default {
         overflow: hidden;
         width: 375px;
         p{
-            width: 175px;
+            width: 50%;
             text-align: center;
         }
         .del-p{
             float: left;
             background-color: rgb(204, 204, 204);
-            color: #000;
-            margin-left: 5px;
+            color: #fff;
         }
         .save-p{
             float: right;
@@ -204,7 +254,6 @@ export default {
             background: -moz-linear-gradient(bottom,#82F4A3,#4CDBC5);/* Firefox 3.6-15 */
             background: linear-gradient(to bottom,#82F4A3,#4CDBC5); /* 标准语法 */
             color: #fff;
-            margin-right: 5px;
         }
     }
     .save-box{

@@ -1,7 +1,9 @@
 {
     "usingComponents": {
         "van-dialog": "/static/vant/dialog/index",
-        "van-toast": "/static/vant/toast/index"
+        "van-toast": "/static/vant/toast/index",
+        "van-picker": "/static/vant/picker/index",
+        "van-popup": "/static/vant/popup/index"
     
     },
     "navigationBarTitleText": "配方详情" 

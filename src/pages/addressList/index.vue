@@ -12,11 +12,11 @@
                         <p class="name">{{item.receiveName}}</p>
                         <p class="tel">{{item.receivePhone}}</p>
                     </div>
-                    <div class="address current">
+                    <div :class="['address',item.isDefault?'current':'']">
                         {{item.receiveAddress}}
                     </div>
                 </div>
-                <p class="edit">编辑</p>
+                <p class="edit" @click="GoEdit(item.id)">编辑</p>
             </li>
             <!-- <li>
                 <p class="img">
@@ -84,6 +84,9 @@ export default {
                 }
                 console.log(this.addressList)
             } )
+        },
+        GoEdit(value){
+            mpvue.navigateTo({ url:'../addressAdd/main?type=edit&id='+value })
         }
     },
     mounted(){

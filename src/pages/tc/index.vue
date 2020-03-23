@@ -63,6 +63,9 @@ export default {
                     Toast.fail('输入电话');
                     return;
                 }
+            } else {
+                this.formData.contactName = '';
+                this.formData.contactPhone = '';
             }
             axios({
                 url: 'api/personal/addFeedback',

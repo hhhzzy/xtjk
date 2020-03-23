@@ -82,6 +82,15 @@
             </p>
         </div>
         <van-toast id="van-toast" />
+        <van-popup  :show="addressShow"  
+                    position="bottom" 
+                    @close="closeAddressPopup">
+            <van-picker :columns="addressList"
+                        show-toolbar
+                        title="请选择地址" 
+                        @cancel="onCancel"
+                        @confirm="onConfirm"  />
+        </van-popup>
     </div>
 </template>
 <script>
@@ -109,6 +118,10 @@ export default {
             tjIndex:[],
             tjForm:[], // 推荐表单
             recipeName:'配方一',
+            addressShow:false,
+            addressList:[],
+            addressData:[],
+            receiveAddressId:null,
            
         }
     },
@@ -202,6 +215,36 @@ export default {
         },
         // 购买配方
         async buySave(){
+            // 获取收获地址
+            await new Promise( (resolve,reject) => {
+                axios({
+                        url:'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
+                        method:'GET'
+                    }).then( res => {
+                        console.log(res,'');
+                        if(res.data.code == 1 && res.data.data.length >= 1){
+                            this.boolBuy = true
+                            this.addressShow = true;
+                            this.addressData = res.data.data;
+                            this.addressList = res.data.data.map( item => {
+                                return item.receiveAddress;
+                            } )
+                        } else {
+                            Toast({
+                                type: 'fail',
+                                message: '请选择收货地址',
+                                onClose: () => {
+                                    mpvue.navigateTo({ url:'../addressAdd/main?type=online'});
+                                }
+                            });
+                        }
+                        resolve();
+                    } )
+            } )
+        },
+        async onConfirm(value){
+            this.receiveAddressId = this.addressData[value.mp.detail.index].id;
+            this.addressShow = false;
             //1.保存配方
             const form = Object.assign({},this.userInfo);
             form.recipeList = encodeURI(this.formulaData.recipeList);
@@ -231,7 +274,7 @@ export default {
             }
             await new Promise( (resolve,reject) => {
                 axios({
-                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+memberRecipeId+'&foodId='+foodId.toString(),
+                        url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+memberRecipeId+'&foodId='+foodId.toString()+'&receiveAddressId='+this.receiveAddressId,
                         method:'GET'
                     }).then( res => {
                         console.log(res);
@@ -244,6 +287,9 @@ export default {
             console.log(store.state.user.userInfo.id,memberOrderId,'配方订单支付',1)
             // 3.支付
             wxpay(store.state.user.userInfo.id,memberOrderId,'配方订单支付',1);
+        },
+        onCancel(){
+            this.addressShow = false;
         }
     },
     mounted(){
@@ -272,7 +318,7 @@ export default {
     background: linear-gradient(to bottom,#63e6b5,#4CDBC5); /* 标准语法 */
     position: fixed;
     width: 100%;
-    z-index: 999;
+    z-index: 99;
 }
 .user-box{
     width: 354px;

@@ -68,11 +68,11 @@ export default {
     },
     onLoad(options){
         if(options.type == 'wait'){
-            this.orderState = 1;
+            this.orderState = 0;
         } else if(options.type == 'paied') {
-            this.orderState = 2;
+            this.orderState = 1;
         } else if(options.type == 'done') {
-            this.orderState = 3;
+            this.orderState = 2;
         } else {
             this.orderState = '';
         }

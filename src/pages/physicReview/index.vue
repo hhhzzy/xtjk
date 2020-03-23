@@ -16,7 +16,7 @@
                 </p>
             </div>
             <ul>
-                <li v-for="(item,index) in list" :key="index" @longpress="clickLong">
+                <li v-for="(item,index) in list" :key="index" @longpress="clickLong(item.id)">
                     <p class="img">
                         <img src="" alt="">
                         <span>{{item.evaluationName}}</span>
@@ -98,7 +98,7 @@ export default {
            
         },
         // 长按
-        clickLong(){
+        clickLong(id){
             console.log(11111)
             Dialog.confirm({
                 title: '提示',
@@ -106,11 +106,11 @@ export default {
             })
             .then(() => {
                 axios({
-                    url: '',
+                    url: 'api/evaluation/deleteEvaluation?memberEvaluationId='+id,
                     method: 'get',
                 }).then( res => {
-                    console.log(res.data.data)
-                    
+                    console.log(res)
+                    this.getList();
                 })
             })
         }
