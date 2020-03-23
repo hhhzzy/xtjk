@@ -45,13 +45,13 @@
                         placeholder="请输入体重（kg）"
                     />
                     <van-field
-                        label="工作性质："
+                        label="活动强度："
                         readonly
                         :value="formData.workText"
                         @click="showWorkPopup"
                         :is-link="true"
                         :arrow-direction="right"
-                        placeholder="请选择工作性质"
+                        placeholder="请选择活动强度"
                     />
                     <van-field
                         label="调理方向："
@@ -100,7 +100,7 @@
                             @close="closeWorkPopup">
                     <van-picker :columns="work"
                                 show-toolbar
-                                title="选择工作性质" 
+                                title="请选择活动强度" 
                                 @cancel="onCancel"
                                 @confirm="onWorkConfirm"  />
                 </van-popup>
@@ -110,7 +110,7 @@
                             @close="closeDirectionPopup">
                     <van-picker :columns="direction"
                                 show-toolbar
-                                title="选择工作性质" 
+                                title="请选择调理方向" 
                                 @cancel="onCancel"
                                 @confirm="onDirectionConfirm"  />
                 </van-popup>

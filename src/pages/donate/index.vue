@@ -15,7 +15,9 @@
                 <p class="btn" @click="showDonate">爱心捐赠</p>
             </div>
             <div class="donate-con">
-                捐赠说明文本、介绍或吸引用户的文本在这里。
+                <p>健呗公益互助项目，旨在弘扬中华民族“互帮互助”的传统美德，帮助平台内会员在特殊情况下渡过难关，解决问题。我们的公益理念是“我为人人，人人为我”。救助对象实行权限制，即你需要先成为【公益会员】,才能发起公益救助申请。</p> 
+                <p>如何成为【公益会员】？</p>
+                <p>捐赠不低于20元公益金，自捐赠日开始一定时间后，自动升级为公益会员。</p>
             </div>
         </div>
         <div class="donate-list">
@@ -54,7 +56,21 @@
             </div>
         </van-popup>
         <van-popup :show="seeShow" closeable @close="onSeeClose">
-            <div class="see-box"></div>
+            <div class="see-box">
+                <p style="margin-top:25px;">捐赠不低于20元公益金，自捐赠日开始一定时间后，自动升级为公益会员。</p> 
+                <p>【公益会员享受以下权益：】</p> 
+                <p class="con">1、可提交满足救助规则的救助申请；</p> 
+                <p class="con">2、可申请成为公益监督员，监督平台公益金使用。</p> 
+                <p>【公益基金池的来源：】</p> 
+                <p class="con">1、平台营收留存公益金；</p> 
+                <p class="con">2、平台会员捐赠。</p> 
+                <p>【公益金支出方向：】</p> 
+                <p class="con">1、平台内【有病无钱医】的会员本人公益救助；</p> 
+                <p class="con">2、平台内【有病无处医】的会员本人公益救助；</p> 
+                <p class="con">3、平台内公益会员医患纠纷免费法律援助；</p> 
+                <p class="con">4、平台组织的其他公益项目，如慰问敬老院等活动；</p> 
+
+            </div>
         </van-popup>
         <van-toast id="van-toast" />
     </div>
@@ -239,7 +255,7 @@ page{
     height: 100%;
     background-color: #f2f2f2;
     overflow: hidden;
-    padding-bottom: 60px;
+    padding-bottom: 100px;
 }
 .donate-content{
     width: 345px;
@@ -324,9 +340,16 @@ page{
 }
 .see-box{
     background-color: #fff;
-    width: 345px;
+    width: 325px;
     margin: 0 auto;
-    height: 500px;
+    height: 400px;
+    padding: 10px;
+    p{
+        font-size: 14px;
+    }
+    .con{
+        padding-left: 5px;
+    }
 }
 .img{
     width: 332px;
@@ -389,8 +412,7 @@ page{
 .donate-con{
     font-size: 14px;
     color: rgba(141, 141, 141, 1);
-    line-height: 30px;
-    height: 30px;
+    line-height: 20px;
     padding: 10px 20px;
 }
 .donate-list{

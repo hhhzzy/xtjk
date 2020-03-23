@@ -16,7 +16,7 @@
                         <span>{{userInfo.userAge}}岁</span>
                     </p>
                     <p class="one">
-                        <i>病症</i>
+                        <i>调理目标</i>
                         <span>{{userInfo.directionText}}</span>
                     </p>
                     <p class="two">
@@ -26,8 +26,8 @@
                 </div>
             </div>
         </div>
-        <p class="content">
-            以下配方是根据您目前的身体情况私人定制，一人一方，建议每日摄入热量维持在{{hotNum}}Kcal以内，按配方服用。
+        <p class="content" v-if="hotNum">
+            以下配方是根据您目前的身体情况私人定制，一人一方，建议每日摄入热量维持在<i>{{hotNum}}Kcal</i>以内，按配方服用。
         </p>
         <div class="btn-box">
             <p :class="['one',currentIndex == 1?'current':'']" @click="switchFormula('one')">配方一</p>
@@ -51,7 +51,7 @@
         </div>
         <div class="tj-box">
             <p class="title">推荐辅食</p>
-            <p class="tips">亲~科学食疗搭配合理的茶饮及其他健康产品，能提升身体调理的效果哟，以下是针对您的情况为您挑选的一些组合:</p>
+            <p class="tips">以下推荐食疗产品是根据您自身实际健康状况和需求严格甄选而来，配合以上配方食用，能更大限度提升调理效果，请根据自身消费能力选择！</p>
             <ul>
                 <li v-for="(item,index) in recommend" :key="index" @click="selectTj(item,index)">
                     <div class="top">
@@ -69,7 +69,7 @@
                         {{item.memo}}
                     </p>
                     <p class="select-p">
-                        <img :src="'../../static/images/select-'+tjIndex[index]+'.png'" alt="">
+                        <img :src="'../../static/images/select'+tjIndex[index]+'.png'" alt="">
                     </p>
                 </li>
             </ul>
@@ -128,6 +128,10 @@ export default {
                 this.recipeName = '配方二';
             }
             this.foodNum = this.formulaData.foodMap?this.formulaData.foodMap.length:0;
+            this.hotNum = null;
+            this.formulaData.foodMap.forEach(item => {
+                this.hotNum += item.foodHot;
+            });
         },
         // 查看详细
         seeDetail(){
@@ -217,7 +221,6 @@ export default {
                     resolve();
                 } )
             } )
-            console.log(memberRecipeId)
             // 2. 生成订单
             let memberOrderId = null;
             let foodId = [];
@@ -226,7 +229,6 @@ export default {
                     foodId.push(item.id)
                 });
             }
-            console.log(foodId)
             await new Promise( (resolve,reject) => {
                 axios({
                         url:'api/memberOrder/addMemberOrder?memberId='+form.memberId+'&memberRecipeId='+memberRecipeId+'&foodId='+foodId.toString(),
@@ -343,6 +345,12 @@ export default {
     margin: 0 auto;
     margin-top: 155px;
     width: 338px;
+    i{
+        color: red;
+        font-style: normal;
+        display: inline;
+        font-size: 16px;
+    }
 }
 .btn-box{
     margin: 0 auto;

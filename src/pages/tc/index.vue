@@ -1,19 +1,22 @@
 <template>
     <div class="tc-box">
         <navbar :backVisible="true" :title="title"></navbar>
-        <p class="tips">意见反馈（让我们更好）</p>
+        <p class="tips" v-if="!tcBool">意见反馈（让我们更好）</p>
+        <p class="tc-tips" v-if="tcBool">快生活，就要一吐为快！随心所欲，想说的话，来吐槽吧～经我们筛选公开发表的吐槽，还有红包拿哟～～</p>
         <van-cell-group>
             <van-field
                 label="联系人："
                 placeholder="请输入联系人"
                 v-model="formData.contactName"
                 @input="nameTest"
+                v-if="!tcBool"
             />
             <van-field
                 label="联系方式："
                 placeholder="请输入联系方式"
                 v-model="formData.contactPhone"
                 @input="telTest"
+                v-if="!tcBool"
             />
             
             <p class="title">问题描述:</p>
@@ -34,7 +37,8 @@ export default {
     data(){
         return{
             formData:{},
-            title:'我要吐槽'
+            title:'我要吐槽',
+            tcBool:false
         }
     },
     components: {
@@ -50,13 +54,15 @@ export default {
         subForm(){
             this.formData.memberId = store.state.user.userInfo.id;
             this.formData.questionType = 1;
-            if(!this.formData.contactName){
-                Toast.fail('输入联系人');
-                return;
-            }
-            if(!this.formData.contactPhone){
-                Toast.fail('输入电话');
-                return;
+            if(!this.tcBool){
+                if(!this.formData.contactName){
+                    Toast.fail('输入联系人');
+                    return;
+                }
+                if(!this.formData.contactPhone){
+                    Toast.fail('输入电话');
+                    return;
+                }
             }
             axios({
                 url: 'api/personal/addFeedback',
@@ -78,7 +84,9 @@ export default {
     onShow(){
         if(getCurrentPages()[0].route.indexOf('mine') > -1){
             this.title='在线反馈';
+            this.tcBool = false;
         }else{
+            this.tcBool = true;
             this.title='我要吐槽';
         }
     }
@@ -112,6 +120,12 @@ export default {
             background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
             top: 15px;
         }
+    }
+    .tc-tips{
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 10px;
     }
     .foter-box{
         position: fixed;

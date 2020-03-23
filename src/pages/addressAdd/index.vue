@@ -117,6 +117,10 @@ export default {
             this.address.memberId = store.state.user.userInfo.id;
             this.address.isDefault = this.address.default == '是'? 1 : 0;
             console.log(this.address)
+            if(!this.address.isDefault || !this.address.receivePhone || !this.address.receiveAddress){
+                Toast.fail('以上数据请必填');
+                return;
+            }
             // return;
             axios({
                 url: 'api/personal/insertOrUpdateReceiveAddress',

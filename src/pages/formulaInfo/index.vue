@@ -45,7 +45,7 @@
                 配方食材构成
             </p>
             <div class="info">
-                <p>该配方包含食材{{foodNum}}种，总热量{{hotNum*info.overDay}}Kcal。</p>
+                <p>该配方包含食材{{foodNum}}种，每日所需热量为{{hotNum}}Kcal，总热量{{hotNum*info.overDay}}Kcal。</p>
                 <div v-for="(item,index) in info.foodMap" :key="index">
                     <p class="title">热源{{index+1}}：</p>
                     <p class="cont">{{item.foodName}}   X {{item.foodWeight}}克 X {{info.overDay}}天</p>
@@ -69,6 +69,7 @@ import store from '../../store'
 import Dialog from '../../../static/vant/dialog/dialog';
 import Toast from '../../../static/vant/toast/toast';
 import { wxpay } from '../../utils/common.js'
+import { resolve } from 'url';
 export default {
     data(){
         return{
@@ -130,6 +131,29 @@ export default {
         },
         // 购买
         async buy(){
+            let boolBuy = false;
+            // 获取收获地址
+            await new Promise( (resolve,reject) => {
+                axios({
+                        url:'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
+                        method:'GET'
+                    }).then( res => {
+                        console.log(res);
+                        if(res.data.code == 1 && res.data.data.length >= 1){
+                            this.boolBuy = true
+                        } else {
+                            Toast({
+                                type: 'fail',
+                                message: '请选择收货地址',
+                                onClose: () => {
+                                    mpvue.navigateTo({ url:'../addressList/main'});
+                                }
+                            });
+                        }
+                        resolve();
+                    } )
+            } )
+            return;
             // 生成订单
             await new Promise( (resolve,reject) => {
                 const form = {};

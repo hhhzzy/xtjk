@@ -71,8 +71,10 @@ export default {
             this.orderState = 1;
         } else if(options.type == 'paied') {
             this.orderState = 2;
-        } else {
+        } else if(options.type == 'done') {
             this.orderState = 3;
+        } else {
+            this.orderState = '';
         }
 
     },

@@ -1,6 +1,7 @@
 {
     "usingComponents": {
-        "van-toast": "/static/vant/toast/index"
+        "van-toast": "/static/vant/toast/index",
+        "van-dialog": "/static/vant/dialog/index"
     
     },
     "navigationBarTitleText": "体质评测" 

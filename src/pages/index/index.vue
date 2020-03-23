@@ -19,7 +19,7 @@
 		</div>
 		<div class="tab-box online-box">
 			<p class="main-title">
-				在线诊疗
+				健康云服务
 			</p>
 			<div class="content">
 				<div class="left-con">
@@ -294,7 +294,7 @@ export default {
 		}).then( res => {
 			if(res.data.code ==1){
 			this.gyList = res.data.data.map( item => {
-							item.nickName = item.nickName.slice(0,1)+'**';
+							// item.nickName = item.nickName.slice(0,1)+'**';
 							this.gyInfo += item.nickName+'捐赠了'+item.transactionMoney+'元                                         ';
 							return item;
 						} );
@@ -330,18 +330,18 @@ export default {
 	padding-bottom: 10px;
 	.banner-box{
 		swiper{
-			height: 220px;
+			height: 170px;
 		}
 		.swiper-item{
-			height: 220px;
+			height: 170px;
 			a{
 				display: block;
-				height: 220px;
+				height: 170px;
 				background-color: #f2f2f2;
 				img{
 					width: 100%;
 					display: block;
-					height: 220px;
+					height: 170px;
 				}
 			}
 		}

@@ -4,7 +4,7 @@
         <p class="tips">
            <img src="../../../static/images/notice.png" alt="">
            <span>
-               本系统采用中医传统理论，结合黄帝内经……，请各位测试的小伙伴认真选择答案，以便于测验结果的准确性
+               本测试系统是根据国内著名专家团队多年的实践经验结合国家体质测试标准制定，请如实选择您的真实情况，以便于测试结果的准确性。
             </span> 
            </p>
         <p class="see-more">【调理建议】点此查看>></p>
@@ -16,7 +16,7 @@
                 </p>
             </div>
             <ul>
-                <li v-for="(item,index) in list" :key="index">
+                <li v-for="(item,index) in list" :key="index" @longpress="clickLong">
                     <p class="img">
                         <img src="" alt="">
                         <span>{{item.evaluationName}}</span>
@@ -24,7 +24,7 @@
                     <div class="right">
                         <div class="info">
                             <p class="year">{{item.evaluationAge}}岁</p>
-                            <p class="sex">{{item.evaluationSex}}男</p>
+                            <p class="sex">{{item.evaluationSex}}</p>
                         </div>
                         <div class="btn">
                             <p class="one" v-if="item.isFinish">去调理</p>
@@ -38,14 +38,16 @@
                 </li>
             </ul>
         </div>
+        <van-dialog id="van-dialog" />
     </div>
 </template>
 <script>
-import axios from '../../utils/request.js'
-import store from '../../store'
+import axios from '../../utils/request.js';
+import store from '../../store';
 import Toast from '../../../static/vant/toast/toast';
-import {imgBaseUrl} from '../../utils/common.js'
-import navbar from '../../components/navbar'
+import {imgBaseUrl} from '../../utils/common.js';
+import navbar from '../../components/navbar';
+import Dialog from '../../../static/vant/dialog/dialog';
 export default {
     data(){
         return{
@@ -86,7 +88,6 @@ export default {
         },
         // 添加测评
         add(value,index){
-            console.log(value)
             if(value){
                 mpvue.navigateTo({ url:'../physicStepOne/main' });
             }else {
@@ -95,6 +96,23 @@ export default {
                 mpvue.navigateTo({ url:'../physicStepTwo/main' });
             }
            
+        },
+        // 长按
+        clickLong(){
+            console.log(11111)
+            Dialog.confirm({
+                title: '提示',
+                message: '是否删除该条测评？删除后不可恢复！'
+            })
+            .then(() => {
+                axios({
+                    url: '',
+                    method: 'get',
+                }).then( res => {
+                    console.log(res.data.data)
+                    
+                })
+            })
         }
     },
     mounted(){
