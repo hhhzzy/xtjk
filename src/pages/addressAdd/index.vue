@@ -57,6 +57,7 @@
                         @confirm="onConfirm"  />
         </van-popup>
         <van-toast id="van-toast" />
+        <van-dialog id="van-dialog" />
     </div>
 </template>
 <script>
@@ -64,6 +65,7 @@ import axios from '../../utils/request.js'
 import store from '../../store'
 import Toast from '../../../static/vant/toast/toast';
 import navbar from '../../components/navbar'
+import Dialog from '../../../static/vant/dialog/dialog';
 export default {
     data(){
         return{
@@ -195,20 +197,19 @@ export default {
             if(!this.id){
                 return;
             }
-            // axios({
-            //     url: 'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
-            //     method: 'get',
-            // }).then( data => {
-            //     if(data.data.code == 1){
-            //         data.data.data.forEach(item => {
-            //             if(item.id == value){
-            //                 this.address = item;
-            //             } 
-            //         });
-            //         this.address.default = this.address.isDefault == 1?'是':'否';
-            //         console.log(this.address,'7777')
-            //     }
-            // } )
+            Dialog.confirm({
+                title: '提示',
+                message: '是否删除该收货地址？删除后不可恢复！'
+            })
+            .then(() => {
+                axios({
+                    url: 'api/personal/deleteAddress?memberId='+store.state.user.userInfo.id+'&receiveAddressId='+this.id,
+                    method: 'get',
+                }).then( data => {
+                   Toast.success('删除成功');
+                   this.GetAddress(this.id);
+                } )
+            })
         }
     },
     mounted(){

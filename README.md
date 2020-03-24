@@ -1,6 +1,6 @@
 # xtjk
 
-> A Mpvue project
+> 通过mpvue搭建的微信小程序，clone下来项目，运行npm run dev会生成一个dist文件夹，使用微信开发工具，打开dist文件里面的wx文件。
 
 ## Build Setup
 
