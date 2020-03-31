@@ -18,6 +18,9 @@
                             <p class="one">
                                 个人体质：{{item.bodyTypeName}}
                             </p>
+                            <p class="one">
+                                每日标准热量：{{item.bodyTypeName}}
+                            </p>
                         </view>
                         <div class="weui-cell__ft money">￥{{item.recipePrice / 1000}}</div>
                         <view class="weui-cell__ft weui-cell__ft_in-access"></view>

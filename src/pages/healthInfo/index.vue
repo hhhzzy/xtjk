@@ -9,13 +9,7 @@
             <img :src="detail.imgUrl" alt="">
             <wxParse :content="detail.content" />
         </div>
-        <div class="share-box">
-            <div class="left"><button open-type='share'>分享让更多人看到</button></div>
-            <div class="right">
-                <p class="list"><img src="../../../static/images/wx.png" alt=""></p>
-                <p class="list"><img src="../../../static/images/pyq.png" alt=""></p>
-            </div>
-        </div>
+        <share></share>
     </div>
 </template>
 <script>
@@ -23,17 +17,20 @@ import axios from '../../utils/request.js'
 import wxParse from 'mpvue-wxparse'
 import {imgBaseUrl} from '../../utils/common.js'
 import navbar from '../../components/navbar'
+import share from '../../components/share'
 export default {
     data(){
         return{
 		    imgBaseUrl:imgBaseUrl,
             id:'',
-            detail:{}
+            detail:{},
+
         }
     },
     components: {
         wxParse,
-        navbar
+        navbar,
+        share
     },
     methods:{
         getDetail(){
@@ -44,10 +41,9 @@ export default {
                 if(res.data.code ==1){
                    this.detail = res.data.data;
                    this.detail.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(this.detail.imgUrl);
-                   console.log(this.detail.imgUrl)
                 }
             } )
-        }
+        },
     },
     onLoad(options){
         console.log(options)
@@ -109,47 +105,6 @@ export default {
         font-size: 14px;
         color: #666;
         line-height: 25px;
-    }
-}
-.share-box{
-    overflow: hidden;
-    .left{
-        background-image: url("../../../static/images/矩形 2.png");
-        background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
-        width: 214px;
-        height: 45px;
-        float: left;
-        font-size: 16px;
-        color: #36D8A8;
-        text-align: center;
-        line-height: 45px;
-        font-weight: 600;
-        button{
-            background-color: transparent;
-            border:none;
-            font-size: 16px;
-            line-height: 45px;
-            color: #36D8A8;
-            text-align: center;
-            font-weight: 600;
-            &::after{
-                border:none;
-            }
-        }
-    }
-    .right{
-        float: right;
-        p{
-            height: 36px;
-            width: 36px;
-            margin-right: 20px;
-            float: left;
-            img{
-                display: block;
-                height: 36px;
-                width: 36px;
-            }
-        }
     }
 }
 </style>

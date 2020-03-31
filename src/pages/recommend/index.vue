@@ -4,7 +4,7 @@
         <div class="detail">
             <p><em>我的推广账号：</em><i>{{user.memberPhone}}</i></p>
             <p><em>我的推广链接：</em><i>{{link}}</i><span @click="copy">复制</span> </p>
-            <p><em>专属推荐二维码：</em>  <span @click="upload">下载图片</span></p>
+            <!-- <p><em>专属推荐二维码：</em> <img src="http://47.108.67.109/api/service/upload/getImg?imgUrl=C%3A%5Cworkspace%5Cth_management%5Cupload%5Cimg%5C1584688727161%E7%A8%BF%E5%AE%9A%E8%AE%BE%E8%AE%A1%E5%AF%BC%E5%87%BA-20200320-151839.png" alt="">  <span @click="upload">下载图片</span></p> -->
         </div>
         <p class="title">
             推荐用户列表
@@ -30,6 +30,7 @@ import store from '../../store'
 import axios from '../../utils/request.js'
 import {imgBaseUrl} from '../../utils/common.js'
 import navbar from '../../components/navbar'
+import { resolve } from 'url'
 export default {
     data(){
         return{
@@ -64,12 +65,43 @@ export default {
             })
         },
         // 下载图片
-        upload(){
-            // wx.downloadFile({
-            //     url: this.src, //仅为示例，并非真实的资源
+        async upload(){
+            // let path = '';
+            // await new Promise( (resolve,reject) => {
+            //         wx.downloadFile({
+            //             url: 'http://47.108.67.109/api/service/upload/getImg?imgUrl=C%3A%5Cworkspace%5Cth_management%5Cupload%5Cimg%5C1584688727161%E7%A8%BF%E5%AE%9A%E8%AE%BE%E8%AE%A1%E5%AF%BC%E5%87%BA-20200320-151839.png', //仅为示例，并非真实的资源
+            //             success: (res) => {
+            //                 path =  res.tempFilePath;
+            //                 resolve();
+            //             }
+            //         })
+            // } )
+            // wx.saveImageToPhotosAlbum({
+            //     filePath: path,
             //     success: (res) => {
-            //         console.log(res)
-            //         let image = res.tempFilePath;
+            //         wx.showToast({
+            //             title: '保存成功',
+            //             icon: 'none'
+            //         })
+                   
+            //     },
+            //     fail: (res) => {
+            //         wx.getSetting({
+            //             success: res => {
+            //                 let authSetting = res.authSetting
+            //                 if (!authSetting['scope.writePhotosAlbum']) {
+            //                     wx.showModal({
+            //                         title: '提示',
+            //                         content: '您未开启保存图片到相册的权限，请点击确定去开启权限！',
+            //                         success(res) {
+            //                         if (res.confirm) {
+            //                             wx.openSetting()
+            //                         }
+            //                         }
+            //                     })
+            //                 }
+            //             }
+            //         })
             //     }
             // })
         }

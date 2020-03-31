@@ -31,6 +31,10 @@
                     <p class="cont">{{info.condiName}}</p>
                 </li>
                 <li>
+                    <p class="title">每日标准热量:</p>
+                    <p class="cont">{{hotNum}}Kcal</p>
+                </li>
+                <li>
                     <p class="title">特殊告知:</p>
                     <p class="cont">{{info.isDiabetes?'有糖尿病':'无'}}</p>
                 </li>
@@ -45,7 +49,7 @@
                 配方食材构成
             </p>
             <div class="info">
-                <p>该配方包含食材{{foodNum}}种，每日所需热量为{{hotNum}}Kcal，总热量{{hotNum*info.overDay}}Kcal。</p>
+                <p>该配方包含食材{{foodNum}}种，总热量{{hotNum*info.overDay}}Kcal。</p>
                 <div v-for="(item,index) in info.foodMap" :key="index">
                     <p class="title">热源{{index+1}}：</p>
                     <p class="cont">{{item.foodName}}   X {{item.foodWeight}}克 X {{info.overDay}}天</p>
@@ -262,7 +266,7 @@ export default {
             }
             .title{
                 color: #B3B3B3FF;
-                width: 80px;
+                width: 108px;
             }
 
         }

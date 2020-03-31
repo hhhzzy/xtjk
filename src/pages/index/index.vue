@@ -592,7 +592,7 @@ export default {
 					font-weight: bold;
 				}
 				img{
-					width: 80px;
+					width: 65px;
 					height: 65px;
 					display: block;
 					float: right;
@@ -613,7 +613,7 @@ export default {
 				text-align: center;
 				img{
 					width: 100px;
-					height: 85px;
+					height: 110px;
 					background-color: #f2f2f2;
 					display: block;
 				}

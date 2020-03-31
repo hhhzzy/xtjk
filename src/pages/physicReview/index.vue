@@ -7,7 +7,7 @@
                本测试系统是根据国内著名专家团队多年的实践经验结合国家体质测试标准制定，请如实选择您的真实情况，以便于测试结果的准确性。
             </span> 
            </p>
-        <p class="see-more">【调理建议】点此查看>></p>
+        <a href="../condition/main" class="see-more">【调理建议】点此查看>></a>
         <div class="content">
             <div class="title-box">
                 <p class="con">测评列表</p>

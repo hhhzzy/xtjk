@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/condition/main",
+    "pages/recommend/main",
     "pages/addressList/main",
     "pages/orderList/main",
     "pages/mineInfo/main",
@@ -15,7 +17,6 @@
     "pages/public/main",
     "pages/formulaInfo/main",
     "pages/mine/main",
-    "pages/recommend/main",
     "pages/member/main",
     "pages/login/main",
     "pages/rescueJoin/main",
@@ -36,7 +37,6 @@
     "pages/healthInfo/main",
     "pages/health/main",
     "pages/logs/main",
-    "pages/counter/main",
     "pages/register/main"
   ],
   "window": {
@@ -57,17 +57,17 @@
       "pagePath": "pages/index/main",
       "iconPath": "static/tabs/two.png",
       "selectedIconPath": "static/tabs/two-active.png"
-    }, {
-      "text": "测评",
-      "pagePath": "pages/physicReview/main",
-      "iconPath": "static/tabs/one.png",
-      "selectedIconPath": "static/tabs/one-active.png"
-    }, {
-      "text": "商城",
-      "pagePath": "pages/logs/main",
+    },{
+      "text": "配方",
+      "pagePath": "pages/onlineFormulaUser/main",
       "iconPath": "static/tabs/three.png",
       "selectedIconPath": "static/tabs/three-active.png"
-    }, {
+    },{
+        "text": "测评",
+        "pagePath": "pages/physicReview/main",
+        "iconPath": "static/tabs/one.png",
+        "selectedIconPath": "static/tabs/one-active.png"
+    },{
       "text": "公众号",
       "pagePath": "pages/public/main",
       "iconPath": "static/tabs/three.png",

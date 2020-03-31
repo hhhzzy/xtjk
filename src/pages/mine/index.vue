@@ -12,9 +12,11 @@
                         <img src="../../../static/images/设置.png" alt="">
                     </p>
                     <div class="level">
-                        <span><a href="../integralDetail/main">{{userInfo.nowGradeName}}</a></span>
-                        <p class="process"></p>
-                        <span><a href="../integralDetail/main">{{userInfo.nextGradeName}}</a></span>
+                        <a href="../integralDetail/main"> 
+                            <span>{{userInfo.nowGradeName}}</span>
+                            <p class="process"></p>
+                            <span>{{userInfo.nextGradeName}}</span>
+                        </a>
                     </div>
                     <div class="number">
                         <p class="num"><a href="../integralDetail/main">{{userInfo.memberIntegral}}分</a></p>
@@ -109,14 +111,14 @@
                         <span>投诉建议</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="../tc/main">
                         <p class="img">
                             <img src="../../../static/images/zxfk.png" alt="">
                         </p>
                         <span>在线反馈</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div> 
     </div>
