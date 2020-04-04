@@ -1,7 +1,7 @@
 <template>
     <div class="physic-step-box">
         <navbar :backVisible="true" :title="'体质测评'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
-        <div class="bg">
+        <!-- <div class="bg">
             <img src="../../../static/images/cp-bg.jpg" alt="">
             <p class="one">已完成</p>
             <p class="two">{{qIndex}}/{{question.totalCount}}</p>
@@ -30,6 +30,31 @@
             <div class="footer-box">
                 <p :class="['begin-p',boolBtn?'current':'']" @click="gotoNext">{{btnText}}</p>
             </div>
+        </div> -->
+        <div class="question-box">
+            <scroll-view>
+                <div class="list" v-for="(item,index) in questionList">
+                    <div class="question-title">
+                        <p class="head-img"><img src="../../../static/images/user.png" alt=""></p>
+                        <div class="question">你的性别是什么？</div>
+                    </div>
+                    <div :class="['answer-list',item.show?'animante-show':'']">
+                        <ul>
+                            <li @click="clkAnswer(index)">男</li>
+                            <li>女</li>
+                        </ul>
+                    </div>
+                    <div :class="['question-answer',item.show?'animante-show':'answer-hide']">
+                        <p class="name">
+                            <span>男男男男男男男男男男男男男男男男男男男男男男男男男男男男男</span>
+                            <van-icon name="edit" @click="closeShow(index)" />
+                        </p>
+                        <p class="head-img">
+                            <img src="../../../static/images/user.png" alt="">
+                        </p>
+                    </div>
+                </div>
+            </scroll-view>
         </div>
         <van-toast id="van-toast" />
     </div>
@@ -50,6 +75,19 @@ export default {
             boolBtn:false,  // 是否提交
             formData:{},
             btnText:'下一题',
+            answerBool:false,
+            aaa:false,
+            questionList:[
+                {
+                    show:false
+                },
+                {
+                    show:false
+                },
+                {
+                    show:false
+                }
+            ]
         }
     },
     components: {
@@ -108,6 +146,15 @@ export default {
                 }
             } )
 
+        },
+        // 点击答案
+        clkAnswer(index){
+            this.questionList[index].show = true;
+        },
+        // 展示答案
+        closeShow(index){
+            console.log(11)
+            this.questionList[index].show = false;
         }
     },
     mounted(){
@@ -125,8 +172,174 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.question-box{
+    margin: 0 10px;
+    height: 80%;
+    scroll-view{
+        height: 100%;
+    }
+    .list{
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    .question-title{
+        overflow: hidden;
+        width: 100%;
+        .head-img{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            float: left;
+            img{
+                width: 50px;
+                height: 50px;
+            }
+        }
+        .question{
+            float: left;
+            margin-left: 10px;;
+            width: calc( 100% - 50px - 10px - 20px );
+            background-color: #fff;
+            padding: 8px 8px;
+            border-radius: 15px;
+            font-size: 14px;
+            margin-top: 8px;
+            position: relative;
+            &::after{
+                content: '';
+                display: block;
+                position: absolute;
+                border-right: 5px solid #fff;
+                border-bottom: 5px solid transparent;
+                border-top: 5px solid transparent;
+                left: -4px;
+                top: 14px;
+
+            }
+        }
+    }
+    .answer-list{
+       position: relative;
+       z-index: 99;
+       overflow: hidden;
+        ul{
+            background-color: #fff;
+            margin: 15px auto;
+            padding: 10px;
+            width: 335px;
+            border-radius: 15px;
+            opacity: 1;
+            position: relative;
+            right: 0;
+            top: 0;
+            min-height: 125px;
+            transition: all linear 0.35s;
+            overflow: hidden;
+            li{
+                height: 35px;
+                line-height: 35px;
+                border-radius: 15px;
+                text-align: center;
+                border:1px solid red;
+                color: red;
+                margin: 10px 0;
+                font-size: 14px;
+            }
+        }
+        &.animante-show{
+            z-index: 98;
+            position: absolute;
+            ul{
+                transform-origin: 300px 0;
+                transform: scale(0);
+            }
+            li{
+                display: none;
+            }
+        }
+    }
+    .question-answer{
+        float: right;
+        position: absolute;
+        z-index: 98;
+        opacity: 0;
+        margin-top: 10px;
+        transition: all linear 0.3s;
+        overflow: hidden;
+        display: block;
+        .name{
+            background-color: rgb(77,200,1);
+            width: calc( 100% - 50px - 10px - 20px );
+            display: inline-block;
+            padding: 8px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            min-width: 30px;
+            float: left;
+            margin-right: 10px;
+            position: relative;
+            margin-top: 8px;
+            transition: all linear 0.001s;
+            transition-delay: 0.5s;
+            transform: scale(0);
+            opacity: 0;
+            &::after{
+                content: '';
+                display: block;
+                position: absolute;
+                border-left: 5px solid rgb(77,200,1);
+                border-bottom: 5px solid transparent;
+                border-top: 5px solid transparent;
+                right: -4px;
+                top: 14px;
+
+            }
+            /deep/ van-icon{
+                font-size: 18px;
+                margin-left: 10px;
+            }
+        }
+        .head-img{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            float: left;
+            transition: all  linear 0.35s;
+            transition-delay: 0.1s;
+            position: absolute;
+            top: 20px;
+            right: 0;
+            img{
+                width: 50px;
+                height: 50px;
+            }
+        }
+        &.animante-show{
+            z-index: 99;
+            position: relative;
+            opacity: 1;
+            .name{
+                opacity: 1;
+                transform: scale(1);
+                transform-origin: 300px 0;
+            }
+            .head-img{
+                top: 0;
+            }
+        }
+    }
+    .answer-hide{
+        height: 0;
+    }
+}
+
+
+
 .physic-step-box{
     height: 100%;
+    background-color: #f2f2f2;
 }
 .bg{
     position: relative;

@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/physicStepTwo/main",
     "pages/index/main",
     "pages/condition/main",
     "pages/recommend/main",
@@ -12,7 +13,6 @@
     "pages/physicReview/main",
     "pages/physicStepOne/main",
     "pages/physicStepThree/main",
-    "pages/physicStepTwo/main",
     "pages/authorize/main",
     "pages/public/main",
     "pages/formulaInfo/main",
