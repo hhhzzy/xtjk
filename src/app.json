@@ -1,9 +1,11 @@
 {
   "pages": [
-    "pages/physicStepTwo/main",
     "pages/index/main",
-    "pages/condition/main",
+    "pages/physicStepTwo/main",
     "pages/recommend/main",
+    "pages/physicStepThree/main",
+    "pages/physicStepOne/main",
+    "pages/condition/main",
     "pages/addressList/main",
     "pages/orderList/main",
     "pages/mineInfo/main",
@@ -11,8 +13,6 @@
     "pages/formula/main",
     "pages/onlineFormulaUser/main",
     "pages/physicReview/main",
-    "pages/physicStepOne/main",
-    "pages/physicStepThree/main",
     "pages/authorize/main",
     "pages/public/main",
     "pages/formulaInfo/main",

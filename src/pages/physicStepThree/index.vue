@@ -1,28 +1,32 @@
 <template>
     <div class="physic-step-box">
         <navbar :backVisible="false" :title="'体质测评'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
-        <div class="bg">
-            <img src="../../../static/images/cp-bg.jpg" alt="">
-             <p class="one">已完成</p>
-            <p class="two">已完成</p>
-            <p class="three">获取结果</p>
-            <span class="point"></span>
+        <div class="one-box">
+            <div class="step-con">
+                <p class="step-p"><span></span></p>
+                <p class="title">经过健呗测评，您的的体质主要是</p>
+                <p class="main">{{name}}</p>
+            </div>
         </div>
         <div class="content">
-            <div class="icon">
-                <img src="../../../static/images/yes.png" alt="">
+            <p class="main-title">体质分析得分</p>
+            <div class="box">
+                <ul>
+                    <li v-for="(item,index) in info" :key="index">
+                        <span>{{item.key}}</span>
+                        <i :style="{'width':item.value / 100 * 230+'px'}"></i>
+                        <em>{{item.value}}</em>
+                    </li>
+                </ul>
+                <p class="con">*每种偏颇质总分100分，分值越高，偏颇程度越严重！</p>
             </div>
-            <p class="title">恭喜您，已完成测试。</p>
-            <div class="result">
-                <p class="tit">测试结果：</p>
-                <div class="content">
-                    <span v-for="(item,index) in info" :key="index">{{item.key}}{{item.value?item.value+'0分':'0分'}}、</span> 
-                </div>
-            </div>
-            <p class="get-result">针对您的体质，可在线调配适宜食补药物，<a href="../formula/main">点此获取</a></p>
-            <div class="footer-box">
-                <p class="begin-p" @click="finshCP">完成测试</p>
-            </div>
+        </div>
+        <p class="tips">
+            针对您的体质，可在线调配适宜食补药物，
+            <a href="javascript:;" @click="gotoGet">点击获取》</a>
+        </p>
+        <div class="footer-box">
+            <p class="begin-p" @click="finshCP">完成测试</p>
         </div>
         <van-toast id="van-toast" />
     </div>
@@ -35,7 +39,8 @@ export default {
     data(){
         return{
             memberEvaluationId:null,
-            info:[]
+            info:[],
+            name:''
         }
     },
     components: {
@@ -78,11 +83,16 @@ export default {
                         }
                     }
                     this.info = temp;
+                    this.name = this.info[0].key;
+                    console.log(this.info)
                 }
             } )
         },
         finshCP(){
             mpvue.switchTab({ url:'../physicReview/main'});
+        },
+        gotoGet(){
+           mpvue.switchTab({ url:'../onlineFormulaUser/main'}); 
         }
     },
     onShow(){
@@ -90,7 +100,8 @@ export default {
     },
     onLoad(options){
         console.log(options)
-        this.memberEvaluationId = options.memberEvaluationId;
+        // this.memberEvaluationId = options.memberEvaluationId;
+        this.memberEvaluationId = 62;
     }
 }
 </script>
@@ -98,124 +109,155 @@ export default {
 .physic-step-box{
     height: 100%;
 }
-.bg{
-    position: relative;
-    margin-top: -1px;
-    img{
-        display: block;
-        width: 100%;
-        height: 126px;
+.one-box{
+    width: 345px;
+    height: 188px;
+    overflow: hidden;
+    margin:0 auto;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+    background-color: #fff;
+    border-radius: 8px;
+    .step-con{
+        width: 345px;
+        height: 86px;
+        border-radius: 8px;
+        margin: 10px auto;
+        margin-top: 50px;
     }
-    p{
-        float: left;
-        font-size: 12px;
-        position: absolute;
-        top: 85px;
-        color: #fff;
-        &:nth-of-type(1){
-            left: 45px;
-        }
-        &:nth-of-type(2){
-            left: 158px;
-        }
-        &:nth-of-type(3){
-            right: 45px;
-        }
-    }
-    .point{
-        display: block;
-        position: absolute;
-        width: 10px;
+    .step-p{
+        width: 310px;
         height: 10px;
-        background-color: #4CDBC5;
-        top: 66px;
-        left: 182px;
-        border-radius: 50%;
+        background-color: rgba(245, 245, 245, 1);
+        margin: 0 auto;
+        border-radius: 5px;
+        position: relative;
+        margin-bottom: 20px;
+        span{
+            display: block;
+            position: absolute;
+            height: 10px;
+            border-radius: 5px;
+            background: -webkit-linear-gradient(left,#82F4A3,#4CDBC5); /* Safari 5.1-6.0 */
+            background: -o-linear-gradient(right,#82F4A3,#4CDBC5); /* Opera 11.1-12.0 */
+            background: -moz-linear-gradient(right,#82F4A3,#4CDBC5);/* Firefox 3.6-15 */
+            background: linear-gradient(to right,#82F4A3,#4CDBC5); /* 标准语法 */
+            left: 0;
+            top: 0;
+            width: 310px;
+            &::after{
+                content: '';
+                display: block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: #fff;
+                border:4px solid rgba(74, 219, 184, 1);
+                position: absolute;
+                top: -5px;
+                right: 0;
+            }
+        }
     }
-    &::after{
-        content: '';
-        display: block;
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: #4CDBC5;
-        top: 66px;
-        right: 65px;
-        border-radius: 50%;
+    .title{
+        color: #606060;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
     }
-    &::before{
-        content: '';
-        display: block;
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: #4CDBC5;
-        top: 66px;
-        left: 65px;
-        border-radius: 50%;
+    .main{
+        color: #FCD017;
+        font-weight: bold;
+        font-size: 30px;
+        text-align: center;
+        line-height: 42px;
     }
 }
 .content{
-    width: 323px;
+    width: 345px;
     margin: 0 auto;
     background-color: #fff;
     box-shadow: 0 3px 4px rgba(0, 0, 0, 0.11);
     margin-top: -1px;
     overflow: hidden;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    padding-bottom: 50px;
-}
-.icon{
-    text-align: center;
-    margin-top: 20px;
-    img{
-        width: 76px;
-        height: 76px;
-    }
-}
-.title{
-    font-size: 14px;
-    color: #8D8D8D;
     margin-top: 10px;
-    text-align: center;
-}
-.result{
-    margin-top: 30px;
-    padding: 0 25px;
-    margin-bottom: 12px;
-    .tit{
-        font-size: 15px;
-        color: #000000;
-        margin-bottom: 8px;
+    border-radius: 8px;
+    .main-title{
+        font-size: 17px;
+        position: relative;
+        height: 25px;
+        line-height: 25px;
+        position: relative;
+        color: #000;
+        font-weight: bold;
+        padding: 10px 20px;
+        padding-right: 10px;
+        &::before{
+            content: '';
+            position: absolute;
+            display: block;
+            width: 5px;
+            height: 16px;
+            background-color: #0099ff;
+            left: 10px;
+            background-image: url("../../../static/images/矩形.png");
+            background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
+            top: 15px;
+        }
     }
-    .content{
-        background-color: #F5F5F5;
-        border-radius: 4px;
-        padding: 5px 5px 20px 5px;
-        width: 260px;
-        min-height: 102px;
-        p{
-            font-size: 14px;
-            color: #8D8D8D;
-            line-height: 25px;
-            height: 25px;
+    .box{
+        padding: 10px;
+        margin-bottom: 10px;
+        ul{
+            li{
+                overflow: hidden;
+                line-height: 22px;
+                margin-bottom: 14px;
+                span{
+                    color: #222222;
+                    font-size: 15px;
+                    float: left;
+                }
+                i{
+                    width: 235px;
+                    float: left;
+                    display: block;
+                    height: 13px;
+                    background: -webkit-linear-gradient(top,#F9DA40,#F6C93C); /* Safari 5.1-6.0 */
+                    background: -o-linear-gradient(bottom,#F9DA40,#F6C93C); /* Opera 11.1-12.0 */
+                    background: -moz-linear-gradient(bottom,#F9DA40,#F6C93C);/* Firefox 3.6-15 */
+                    background: linear-gradient(to bottom,#F9DA40,#F6C93C); /* 标准语法 */
+                    margin: 0 5px;
+                    margin-top: 5px;
+                }
+                em{
+                    font-style: normal;
+                    color: #B8B8B8;
+                    font-size: 15px;
+                    float: left;
+                }
+            }
+        }
+        .con{
+            font-size: 13px;
+            color: #B8B8B8;
+            margin-top: 12px;
         }
     }
 }
-.get-result{
-    margin:0 10px;
-    font-size: 12px;
-    color:#868686;
-    margin-left: 20px;
+.tips{
+    text-align: center;
+    font-size: 13px;
+    color: #606060;
+    margin: 10px auto;
     a{
         color: red;
-        display: inline;    
+        display: inline;
     }
 }
+
 .footer-box{
-    position: fixed;
-    bottom: 10px;
+    margin: 10px auto;
     width: 345px;
     height: 45px;
     line-height: 45px;

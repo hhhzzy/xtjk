@@ -234,6 +234,9 @@ ul{
             span{
                 font-size: 14px;
                 color: #333;
+                width: 50px;
+                display: block;
+
             }
         }
         .right{

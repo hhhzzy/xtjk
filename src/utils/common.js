@@ -1,6 +1,6 @@
 import axios from './request.js'
 
-export const imgBaseUrl = 'http://47.108.67.109/';
+export const imgBaseUrl = 'https://www.xtjianbei.com/';
 
 export async function wxpay(memberId,memberOrderId,text,total_fee){
     wx.showLoading({

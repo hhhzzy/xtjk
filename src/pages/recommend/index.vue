@@ -7,6 +7,21 @@
             <!-- <p><em>专属推荐二维码：</em> <img src="http://47.108.67.109/api/service/upload/getImg?imgUrl=C%3A%5Cworkspace%5Cth_management%5Cupload%5Cimg%5C1584688727161%E7%A8%BF%E5%AE%9A%E8%AE%BE%E8%AE%A1%E5%AF%BC%E5%87%BA-20200320-151839.png" alt="">  <span @click="upload">下载图片</span></p> -->
         </div>
         <p class="title">
+            团队消费
+        </p>
+        <div class="table use-table">
+            <ul>
+                <li class="li-title">
+                    <p>年份</p>
+                    <p>金额</p>
+                </li>
+                <li v-for="(item,index) in use" :key="index">
+                    <p>{{index+1}}</p>
+                    <p>{{item}}</p>
+                </li>
+            </ul>
+        </div>
+        <p class="title">
             推荐用户列表
         </p>
         <div class="table">
@@ -37,7 +52,8 @@ export default {
             info:{},
             user:{},
             link:'这是链接',
-            src:"../../../static/images/yzf.png"
+            src:"../../../static/images/yzf.png",
+            use:[]
         }
     },
     components: {
@@ -52,6 +68,17 @@ export default {
                 console.log(res);
                 if(res.data.code == 1){
                     this.info = res.data.data;
+                }
+            } )
+        },
+        GetUse(){
+            axios({
+                url: 'api/personal/getTeamConsumList?memberId='+store.state.user.userInfo.id,
+                method: 'get'
+            }).then( res => {
+                console.log(res);
+                if(res.data.code == 1){
+                    this.use = res.data.data;
                 }
             } )
         },
@@ -108,15 +135,15 @@ export default {
     },
     onShow(){
         this.GetInfo();
+        this.GetUse();
         this.user = store.state.user.userInfo;
     }
 }
 </script>
 <style lang="less" scoped>
 .recommend-box{
-    height: 100%;
-    background-color: #f2f2f2f2;
-    overflow: hidden;
+    background-color: #fafafa;
+    margin-bottom: 20px;
     .detail{
         padding: 10px;
         background-color: #fff;
@@ -215,6 +242,18 @@ export default {
                     &:not(:last-child){
                         border-right: 1px solid #FFF7F7F7;
                     }
+                }
+            }
+        }
+    }
+}
+.use-table{
+    ul{
+        li{
+            width: 100%!important;
+            & {
+                p:first-child{
+                    width: 40%!important;
                 }
             }
         }

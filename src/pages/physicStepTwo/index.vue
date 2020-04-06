@@ -31,28 +31,46 @@
                 <p :class="['begin-p',boolBtn?'current':'']" @click="gotoNext">{{btnText}}</p>
             </div>
         </div> -->
+        <div class="step">
+            <div class="step-con">
+                <p class="title">完成进度{{stepOne*100}}%，还有{{stepTwo}}道题。</p>
+                <p class="step-p"><span :style="{'width':stepOne*310+'px'}"></span></p>
+            </div>
+        </div>
         <div class="question-box">
-            <scroll-view>
-                <div class="list" v-for="(item,index) in questionList">
-                    <div class="question-title">
-                        <p class="head-img"><img src="../../../static/images/user.png" alt=""></p>
-                        <div class="question">你的性别是什么？</div>
+            <scroll-view scroll-y="true" :scroll-into-view="scrollInView"  scroll-with-animation>
+                <div :class="['list',item.opacity == '1'?'list-show':'']" v-for="(item,index) in questionList" :key="index" :id="item.scrollId" :style="{'opacity':item.opacity}">
+                    <div :class="[item.scrollId == nowId?'question-container':'']">
+                        <div :class="['question-title',item.show?'animante-show':'']">
+                            <p class="head-img"><img src="../../../static/images/user.png" alt=""></p>
+                            <div :class="['question',index == 0 || !item.loading?'title-show':'']">
+                                <span  v-if="index == 0 || !item.loading">{{item.questionTitle}}</span> 
+                            </div>
+                            <p class="loading" v-if="index != 0 && item.loading"><img src="../../../static/images/loading.gif" alt=""></p>
+                        </div>
+                        <div :class="['question-content',index == 0 || !item.loading?'question-content-show':'']">
+                            <div :class="['answer-list',item.show?'animante-show':'']">
+                                <ul>
+                                    <li @click="clkAnswer(index,data.name,data.questionOption)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}}</li>
+                                </ul>
+                            </div> 
+                            <div :class="['question-answer',item.show?'animante-show':'answer-hide']">
+                                <p class="name">
+                                    <span>{{item.answerDetail}}</span>
+                                    <van-icon name="edit" @click="closeShow(index)" />
+                                </p>
+                                <p class="head-img">
+                                    <!-- <img src="../../../static/images/user.png" alt=""> -->
+                                    <img :src="userInfo.imgUrl" alt="">
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div :class="['answer-list',item.show?'animante-show':'']">
-                        <ul>
-                            <li @click="clkAnswer(index)">男</li>
-                            <li>女</li>
-                        </ul>
-                    </div>
-                    <div :class="['question-answer',item.show?'animante-show':'answer-hide']">
-                        <p class="name">
-                            <span>男男男男男男男男男男男男男男男男男男男男男男男男男男男男男</span>
-                            <van-icon name="edit" @click="closeShow(index)" />
-                        </p>
-                        <p class="head-img">
-                            <img src="../../../static/images/user.png" alt="">
-                        </p>
-                    </div>
+                </div>
+                <div class="finsh-box"  id="finsh" v-if="finsh">
+                    <img src="../../../static/images/yes.png" alt="">
+                    <p class="title">恭喜您，已完成测试</p>
+                    <a href="javascript:;" @click="gotoDetail">立即查看结果(2)</a>
                 </div>
             </scroll-view>
         </div>
@@ -64,30 +82,73 @@ import axios from '../../utils/request.js'
 import store from '../../store'
 import navbar from '../../components/navbar'
 import Toast from '../../../static/vant/toast/toast'
+import { resolve } from 'url'
+import { rejects } from 'assert'
 export default {
     data(){
         return{
             sex:['男','女'],
             sexShow:false,
             radio: 114,
-            qIndex:1,
+            qIndex:0, // 当前第几道题
+            nowIndex:0, // 数组中第几题了
             question:{},
             boolBtn:false,  // 是否提交
             formData:{},
             btnText:'下一题',
             answerBool:false,
-            aaa:false,
             questionList:[
-                {
-                    show:false
-                },
-                {
-                    show:false
-                },
-                {
-                    show:false
-                }
-            ]
+                // {
+                //     show:false,
+                //     scrollId:'a',
+                //     opacity:'1',
+                //     loading:true,
+                //     questionTitle:"475848468？？",
+                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
+                // },
+                // {
+                //     show:false,
+                //     scrollId:'c',
+                //     opacity:'0',
+                //     loading:false,
+                //     questionTitle:"475848468？？",
+                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
+                // },
+                // {
+                //     show:false,
+                //     scrollId:'d',
+                //     opacity:'0',
+                //     loading:false,
+                //     questionTitle:"475848468？？",
+                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
+                // },
+                // {
+                //     show:false,
+                //     scrollId:'b',
+                //     opacity:'0',
+                //     loading:false,
+                //     questionTitle:"475848468？？",
+                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
+                // },
+                // {
+                //     show:false,
+                //     scrollId:'e',
+                //     opacity:'0',
+                //     loading:false,
+                //     questionTitle:"475848468？？",
+                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
+                // }
+                
+            ],
+            scrollInView:'',
+            nowId:'',
+            boolNotFir:false,
+            a:1,
+            scrollTop:0,
+            stepOne:1,
+            stepTwo:null,
+            finsh:false,
+            userInfo:{}
         }
     },
     components: {
@@ -112,50 +173,115 @@ export default {
             this.formData.evaluationOptionId = Number(name);
             this.boolBtn = true;
         },
-        gotoNext(){
-            this.formData.memberId = store.state.user.userInfo.id;
-            this.formData.evaluationQuestionId = this.question.id;
-            this.formData.isEnd = this.question.isEnd;
-            if(!this.formData.evaluationOptionId){
-                Toast.fail('请选择答案');
-                return;
-            }
-            if(!this.boolBtn){
-                return;
-            }
-            axios({
-                url:'api/evaluation/addMemberEvaluationAnswer',
-                method:'POST',
-                data:this.formData
-            }).then( res => {
-                console.log(res)
-                if(res.data.code ==1){
-                    if(res.data.msg == '提交成功'){
-                        mpvue.navigateTo({ url:'../physicStepThree/main?memberEvaluationId='+ this.formData.memberEvaluationId});
-                    } else {
-                        this.question = res.data.data;
-                        this.question.optionList = this.question.optionList.map(item => {
-                            item.name = String(item.id);
-                            return item;
-                        });
-                        this.qIndex++;
-                        this.boolBtn = false;
-                    }
-                } else {
-                    Toast.fail(res.data.msg);
+        async gotoNext(){
+            this.a = this.a +1;
+            await new Promise( (resolve,reject) => {
+                this.formData.memberId = store.state.user.userInfo.id;
+                this.formData.evaluationQuestionId = this.question.id;
+                this.formData.isEnd = this.question.isEnd;
+                console.log(this.formData.evaluationOptionId)
+                if(!this.formData.evaluationOptionId){
+                    Toast.fail('请选择答案');
+                    return;
                 }
+                axios({
+                    url:'api/evaluation/addMemberEvaluationAnswer',
+                    method:'POST',
+                    data:this.formData
+                }).then( res => {
+                    console.log(res)
+                    if(res.data.code ==1){
+                        if(res.data.msg == '提交成功'){
+                            this.finsh = true;
+                            // // 获取测评结果
+                            // axios({
+                            //     url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
+                            //     method:'get'
+                            // })
+                            mpvue.navigateTo({ url:'../physicStepThree/main?memberEvaluationId='+ this.formData.memberEvaluationId});
+                        } else {
+                            this.question = res.data.data;
+                            wx.setStorageSync('question',res.data.data);
+                            this.question.optionList = this.question.optionList.map(item => {
+                                item.name = String(item.id);
+                                return item;
+                            });
+                            
+                            this.question.show = false;
+                            this.question.scrollId = 'scroll_'+this.question.id;
+                            this.question.opacity = '0';
+                            this.question.loading = true;
+                            // 删除后面的答题，从新开始
+                            console.log(this.questionList.length - this.nowIndex - 1,this.nowIndex)
+                            // this.questionList.splice(this.nowIndex,this.questionList.length - this.nowIndex - 1);
+                            this.questionList = this.questionList.filter( (item,index) => {
+                                return this.nowIndex >= index;
+                            } )
+                            this.questionList.push(this.question);
+
+                            // 进度条改变
+                            this.stepOne = ((this.qIndex - 1) / this.question.totalCount);
+                            this.stepTwo = this.question.totalCount - this.qIndex + 1;
+
+                            console.log(this.questionList)
+                            resolve();
+                        }
+                    } else {
+                        Toast.fail(res.data.msg);
+                    }
+                } )
             } )
 
         },
         // 点击答案
-        clkAnswer(index){
-            this.questionList[index].show = true;
+        async clkAnswer(index,evaluationOptionId,detail){
+            this.nowIndex = index;
+            // 调用提交函数
+            this.formData.evaluationOptionId = Number(evaluationOptionId);
+            // 吧答案保存在本地
+            this.questionList[index].answerDetail = detail.split('、')[1];
+            console.log(this.questionList[index],detail.split('、')[1])
+            this.qIndex++;
+            await this.gotoNext();
+            if(index <= this.questionList.length){
+                this.questionList[index].show = true;
+                this.nowId = !this.boolNotFir ? this.questionList[index+1].scrollId : '';
+                this.boolNotFir = this.boolNotFir ? false : false;
+                this.questionList[index+1].opacity = 1;
+                
+                setTimeout( () => {
+                    this.scrollInView = this.questionList[index+1].scrollId;
+                }, 1500 )
+                setTimeout( () => {
+                    const obj = Object.assign({},this.questionList[index+1]);
+                    this.questionList.splice(index+1,1);
+                    this.$set(obj,'loading',false)
+                    this.questionList[index+1] = obj;
+                },2100 )
+            }
         },
         // 展示答案
         closeShow(index){
-            console.log(11)
             this.questionList[index].show = false;
-        }
+            this.boolNotFir = true;
+        },
+        gotoDetail(){
+            mpvue.navigateTo({ url:'../physicStepThree/main?memberEvaluationId='+ this.formData.memberEvaluationId});
+        },
+        getUserInfo(){
+            // 获取用户信息
+            axios({
+                url: 'api/personal/getMemberInfo?memberId='+store.state.user.userInfo.id,
+                method: 'get',
+                data:{
+                    memberId:store.state.user.userInfo.id
+                }
+            }).then( data => {
+                if(data.data.code == 1){
+                    this.userInfo = data.data.data;
+                }
+            } )
+        },
     },
     mounted(){
         console.log(this.question)
@@ -168,23 +294,150 @@ export default {
             return item;
         });
         this.qIndex = this.question.nowQuestionNumber?this.question.nowQuestionNumber:1;
+        this.question.show = false;
+        this.question.scrollId = 'scroll_'+this.question.id;
+        this.question.opacity = '1';
+        this.question.loading = true;
+        this.questionList.push(this.question);
+        // 进度条改变
+        this.stepOne = ((this.qIndex - 1) / this.question.totalCount);
+        this.stepTwo = this.qIndex == 1? this.question.totalCount : this.question.totalCount - this.qIndex ;
+        console.log(this.qIndex,this.stepTwo)
+        this.getUserInfo();
     },
 }
 </script>
 <style lang="less" scoped>
+.step{
+    width: 100%;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    z-index: 999;
+    background-color: #fafafa;
+    .step-con{
+        width: 345px;
+        height: 86px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+        margin: 10px auto;
+        overflow: hidden;
+        background-color: #fff;
+    }
+    .title{
+        color: rgba(109, 109, 109, 1);
+        font-size: 15px;
+        text-align: center;
+        margin: 15px 0;
+    }
+    .step-p{
+        width: 310px;
+        height: 10px;
+        background-color: rgba(245, 245, 245, 1);
+        margin: 0 auto;
+        border-radius: 5px;
+        position: relative;
+        span{
+            display: block;
+            position: absolute;
+            height: 10px;
+            border-radius: 5px;
+            background: -webkit-linear-gradient(left,#82F4A3,#4CDBC5); /* Safari 5.1-6.0 */
+            background: -o-linear-gradient(right,#82F4A3,#4CDBC5); /* Opera 11.1-12.0 */
+            background: -moz-linear-gradient(right,#82F4A3,#4CDBC5);/* Firefox 3.6-15 */
+            background: linear-gradient(to right,#82F4A3,#4CDBC5); /* 标准语法 */
+            left: 0;
+            top: 0;
+            min-width: 10px!important;
+            &::after{
+                content: '';
+                display: block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: #fff;
+                border:4px solid rgba(74, 219, 184, 1);
+                position: absolute;
+                top: -5px;
+                right: 0;
+            }
+        }
+    }
+}
+.finsh-box{
+    width: 345px;
+    height: 255px;
+    background-color: #fff;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+    border-radius: 8px;
+    overflow: hidden;
+    display: none;
+    img{
+        width: 76px;
+        height: 76px;
+        display: block;
+        margin: 0 auto;
+        margin-top: 36px;
+    }
+    .title{
+        text-align: center;
+        color: #222222;
+        font-size: 15px;
+        margin-top: 12px;
+        margin-bottom: 30px;
+    }
+    a{
+        width: 320px;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        background: -webkit-linear-gradient(top,#82F4A3,#4CDBC5); /* Safari 5.1-6.0 */
+        background: -o-linear-gradient(bottom,#82F4A3,#4CDBC5); /* Opera 11.1-12.0 */
+        background: -moz-linear-gradient(bottom,#82F4A3,#4CDBC5);/* Firefox 3.6-15 */
+        background: linear-gradient(to bottom,#82F4A3,#4CDBC5); /* 标准语法 */
+        border-radius: 22px;
+        margin: 0 auto;
+    }
+}
 .question-box{
-    margin: 0 10px;
-    height: 80%;
+    margin: 10px;
+    height: 100%;
+    background-color: #FAFAFA;
+    margin-top: 110px;
     scroll-view{
-        height: 100%;
+        height: 500px;
     }
     .list{
         overflow: hidden;
         margin-bottom: 10px;
+        transition: all ease 0.3s;
+        transform: translateY(50px);
+        transition-delay: 0.3s;
+        opacity: 0;
+        &.list-show{
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    .loading{
+        position: absolute;
+        z-index: 100;
+        left: 55px;
+        top: 0;
+        background-color: #FAFAFA;
+        width: 100%;
+        img{
+            width: 50px;
+            height: 50px;
+        }
     }
     .question-title{
         overflow: hidden;
         width: 100%;
+        position: relative;
         .head-img{
             width: 50px;
             height: 50px;
@@ -202,10 +455,11 @@ export default {
             width: calc( 100% - 50px - 10px - 20px );
             background-color: #fff;
             padding: 8px 8px;
-            border-radius: 15px;
+            border-radius: 3px;
             font-size: 14px;
             margin-top: 8px;
             position: relative;
+            transition: all linear 0.35s;
             &::after{
                 content: '';
                 display: block;
@@ -217,18 +471,46 @@ export default {
                 top: 14px;
 
             }
+            &::before{
+                content: "";
+                display: block;
+                background-color: #FAFAFA;
+                height: 100%;
+                width: 100%;
+                position: absolute;
+                left: -5px;
+                top: 0;
+                transition: left ease 0.5s;
+                z-index: 99;
+            }
+            &.title-show::before{
+                left: 500px;
+            }
         }
     }
+    .question-content{
+        opacity: 0;
+        transform: translateY(400px);
+        transition: all ease 0.5s;
+    }
+    .question-content-show{
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .question-container{
+        height: 538px;
+    }
     .answer-list{
-       position: relative;
-       z-index: 99;
-       overflow: hidden;
+        position: relative;
+        z-index: 99;
+        overflow: hidden;
+        border-radius: 8px;
         ul{
             background-color: #fff;
             margin: 15px auto;
             padding: 10px;
             width: 335px;
-            border-radius: 15px;
+            border-radius: 8px;
             opacity: 1;
             position: relative;
             right: 0;
@@ -236,14 +518,16 @@ export default {
             min-height: 125px;
             transition: all linear 0.35s;
             overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
             li{
-                height: 35px;
-                line-height: 35px;
-                border-radius: 15px;
+                height: 44px;
+                line-height: 44px;
+                border-radius: 22px;
                 text-align: center;
-                border:1px solid red;
-                color: red;
-                margin: 10px 0;
+                border:1px solid #D7D7D7;
+                background-color: #D7D7D7;
+                color: #fff;
+                margin: 15px 0;
                 font-size: 14px;
             }
         }
@@ -270,25 +554,30 @@ export default {
         display: block;
         .name{
             background-color: rgb(77,200,1);
+            background: -webkit-linear-gradient(top,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* Safari 5.1-6.0 */
+            background: -o-linear-gradient(bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* Opera 11.1-12.0 */
+            background: -moz-linear-gradient(bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1));/* Firefox 3.6-15 */
+            background: linear-gradient(to bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* 标准语法 */
             width: calc( 100% - 50px - 10px - 20px );
             display: inline-block;
             padding: 8px 10px;
-            border-radius: 15px;
-            font-size: 14px;
-            min-width: 30px;
-            float: left;
-            margin-right: 10px;
+            border-radius: 3px;
+            font-size: 15px;
+            margin-right: 60px;
             position: relative;
             margin-top: 8px;
             transition: all linear 0.001s;
             transition-delay: 0.5s;
             transform: scale(0);
             opacity: 0;
+            color: #fff;
+            line-height: 21px;
+            min-width: 80px;
             &::after{
                 content: '';
                 display: block;
                 position: absolute;
-                border-left: 5px solid rgb(77,200,1);
+                border-left: 5px solid rgba(130, 244, 163, 1);
                 border-bottom: 5px solid transparent;
                 border-top: 5px solid transparent;
                 right: -4px;
@@ -338,8 +627,9 @@ export default {
 
 
 .physic-step-box{
-    height: 100%;
-    background-color: #f2f2f2;
+    // height: 100%;
+    background-color: #FAFAFA;
+    overflow: hidden;
 }
 .bg{
     position: relative;

@@ -23,7 +23,7 @@
 			</p>
 			<div class="content">
 				<div class="left-con">
-					<a href="../onlineFormulaUser/main">
+					<a href="javascript:;" @click="gotoOnlineFormulaUser">
 						<p class="img">
 							<img src="../../../static/images/znpf.png" alt="">
 						</p>
@@ -302,6 +302,9 @@ export default {
 			}
 		} )
 	},
+	gotoOnlineFormulaUser(){
+		mpvue.switchTab({ url:'../onlineFormulaUser/main'}); 
+	}
     
   },
 
