@@ -153,6 +153,7 @@ export default {
                         message: '提交成功',
                         onClose: () => {
                             wx.setStorageSync('question',res.data.data);
+                            wx.setStorageSync('oldQuestion','');
                             mpvue.navigateTo({ url:'../physicStepTwo/main' });
                         }
                     })

@@ -33,13 +33,32 @@
         </div> -->
         <div class="step">
             <div class="step-con">
-                <p class="title">完成进度{{stepOne*100}}%，还有{{stepTwo}}道题。</p>
+                <p class="title">完成进度{{stepOne*10000/100}}%，还有{{stepTwo}}道题。</p>
                 <p class="step-p"><span :style="{'width':stepOne*310+'px'}"></span></p>
             </div>
         </div>
         <div class="question-box">
             <scroll-view scroll-y="true" :scroll-into-view="scrollInView"  scroll-with-animation>
-                <div :class="['list',item.opacity == '1'?'list-show':'']" v-for="(item,index) in questionList" :key="index" :id="item.scrollId" :style="{'opacity':item.opacity}">
+                <div class="list list-show" v-for="(item,index) in oldQuestion" v-if="oldQuestion.length">
+                    <div class="question-title">
+                        <p class="head-img"><img src="../../../static/images/user.png" alt=""></p>
+                        <div class="question title-show">
+                            <span>{{item.questionTitle}}</span> 
+                        </div>
+                    </div>
+                    <div class="question-content question-content-show">
+                        <div class="question-answer animante-show">
+                            <p class="name">
+                                <span>{{item.questionOption}}</span>
+                                <!-- <van-icon name="edit" @click="closeShow(index)" /> -->
+                            </p>
+                            <p class="head-img">
+                                <img :src="userInfo.imgUrl" alt="">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div :class="['list',item.opacity == '1'?'list-show':'']" v-for="(item,index) in questionList" :key="index" :id="item.scrollId" >
                     <div :class="[item.scrollId == nowId?'question-container':'']">
                         <div :class="['question-title',item.show?'animante-show':'']">
                             <p class="head-img"><img src="../../../static/images/user.png" alt=""></p>
@@ -51,13 +70,13 @@
                         <div :class="['question-content',index == 0 || !item.loading?'question-content-show':'']">
                             <div :class="['answer-list',item.show?'animante-show':'']">
                                 <ul>
-                                    <li @click="clkAnswer(index,data.name,data.questionOption)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}}</li>
+                                    <li :class="[data.current ? 'current' : '']" @click="clkAnswer(index,data.name,data.questionOption)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}}</li>
                                 </ul>
                             </div> 
                             <div :class="['question-answer',item.show?'animante-show':'answer-hide']">
                                 <p class="name">
                                     <span>{{item.answerDetail}}</span>
-                                    <van-icon name="edit" @click="closeShow(index)" />
+                                    <!-- <van-icon name="edit" @click="closeShow(index)" /> -->
                                 </p>
                                 <p class="head-img">
                                     <!-- <img src="../../../static/images/user.png" alt=""> -->
@@ -70,7 +89,7 @@
                 <div class="finsh-box"  id="finsh" v-if="finsh">
                     <img src="../../../static/images/yes.png" alt="">
                     <p class="title">恭喜您，已完成测试</p>
-                    <a href="javascript:;" @click="gotoDetail">立即查看结果(2)</a>
+                    <a href="javascript:;" @click="gotoDetail">立即查看结果</a>
                 </div>
             </scroll-view>
         </div>
@@ -97,49 +116,7 @@ export default {
             formData:{},
             btnText:'下一题',
             answerBool:false,
-            questionList:[
-                // {
-                //     show:false,
-                //     scrollId:'a',
-                //     opacity:'1',
-                //     loading:true,
-                //     questionTitle:"475848468？？",
-                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
-                // },
-                // {
-                //     show:false,
-                //     scrollId:'c',
-                //     opacity:'0',
-                //     loading:false,
-                //     questionTitle:"475848468？？",
-                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
-                // },
-                // {
-                //     show:false,
-                //     scrollId:'d',
-                //     opacity:'0',
-                //     loading:false,
-                //     questionTitle:"475848468？？",
-                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
-                // },
-                // {
-                //     show:false,
-                //     scrollId:'b',
-                //     opacity:'0',
-                //     loading:false,
-                //     questionTitle:"475848468？？",
-                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
-                // },
-                // {
-                //     show:false,
-                //     scrollId:'e',
-                //     opacity:'0',
-                //     loading:false,
-                //     questionTitle:"475848468？？",
-                //     optionList:[{"score":15,"questionOption":"A、经常","id":553},{"score":8,"questionOption":"B、有些","id":554},{"score":0,"questionOption":"C、一般不","id":555},{"score":0,"questionOption":"D、完全不","id":556},{"score":0,"questionOption":"E、没感觉","id":557}]
-                // }
-                
-            ],
+            questionList:[],
             scrollInView:'',
             nowId:'',
             boolNotFir:false,
@@ -148,7 +125,10 @@ export default {
             stepOne:1,
             stepTwo:null,
             finsh:false,
-            userInfo:{}
+            userInfo:{},
+            timer1:null,
+            timer2:null,
+            oldQuestion:[]
         }
     },
     components: {
@@ -192,13 +172,15 @@ export default {
                     console.log(res)
                     if(res.data.code ==1){
                         if(res.data.msg == '提交成功'){
+                            // 获取测评结果
+                            axios({
+                                url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
+                                method:'get'
+                            })
+                            this.stepOne = 1;
                             this.finsh = true;
-                            // // 获取测评结果
-                            // axios({
-                            //     url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
-                            //     method:'get'
-                            // })
-                            mpvue.navigateTo({ url:'../physicStepThree/main?memberEvaluationId='+ this.formData.memberEvaluationId});
+                            this.scrollInView = 'finsh';
+                            this.stepTwo = 0;
                         } else {
                             this.question = res.data.data;
                             wx.setStorageSync('question',res.data.data);
@@ -212,19 +194,18 @@ export default {
                             this.question.opacity = '0';
                             this.question.loading = true;
                             // 删除后面的答题，从新开始
-                            console.log(this.questionList.length - this.nowIndex - 1,this.nowIndex)
-                            // this.questionList.splice(this.nowIndex,this.questionList.length - this.nowIndex - 1);
                             this.questionList = this.questionList.filter( (item,index) => {
                                 return this.nowIndex >= index;
                             } )
                             this.questionList.push(this.question);
 
                             // 进度条改变
-                            this.stepOne = ((this.qIndex - 1) / this.question.totalCount);
+                            this.stepOne = ((this.qIndex - 1) / this.question.totalCount).toFixed(4);
                             this.stepTwo = this.question.totalCount - this.qIndex + 1;
 
-                            console.log(this.questionList)
                             resolve();
+                            clearTimeout(this.timer1);
+                            clearTimeout(this.timer2);
                         }
                     } else {
                         Toast.fail(res.data.msg);
@@ -238,32 +219,41 @@ export default {
             this.nowIndex = index;
             // 调用提交函数
             this.formData.evaluationOptionId = Number(evaluationOptionId);
-            // 吧答案保存在本地
+            // 把答案保存在本地
             this.questionList[index].answerDetail = detail.split('、')[1];
-            console.log(this.questionList[index],detail.split('、')[1])
             this.qIndex++;
             await this.gotoNext();
             if(index <= this.questionList.length){
                 this.questionList[index].show = true;
                 this.nowId = !this.boolNotFir ? this.questionList[index+1].scrollId : '';
                 this.boolNotFir = this.boolNotFir ? false : false;
-                this.questionList[index+1].opacity = 1;
                 
-                setTimeout( () => {
+                this.questionList[index+1].opacity = 1;
+                this.timer1 = setTimeout( () => {
                     this.scrollInView = this.questionList[index+1].scrollId;
-                }, 1500 )
-                setTimeout( () => {
+                }, 1000 )
+                this.timer2 = setTimeout( () => {
                     const obj = Object.assign({},this.questionList[index+1]);
                     this.questionList.splice(index+1,1);
                     this.$set(obj,'loading',false)
                     this.questionList[index+1] = obj;
-                },2100 )
+                },1500 )
             }
         },
         // 展示答案
         closeShow(index){
             this.questionList[index].show = false;
             this.boolNotFir = true;
+            let text = this.questionList[index].answerDetail;
+            // 答案高亮
+            this.questionList[index].optionList = this.questionList[index].optionList.map( (item,index) => {
+                if(item.questionOption.indexOf(text) >= 0){
+                    item.current = true;
+                } else {
+                    item.current = false;
+                }
+                return item;
+            } )
         },
         gotoDetail(){
             mpvue.navigateTo({ url:'../physicStepThree/main?memberEvaluationId='+ this.formData.memberEvaluationId});
@@ -287,6 +277,19 @@ export default {
         console.log(this.question)
     },
     onShow(){
+        // 重置
+        this.questionList = [];
+        this.finsh = false;
+        this.oldQuestion = [];
+
+        this.oldQuestion = wx.getStorageSync('oldQuestion') ? wx.getStorageSync('oldQuestion'):[];
+        if(this.oldQuestion.length){
+            this.oldQuestion = this.oldQuestion.map( item => {
+                item.questionOption = item.questionOption.split('、')[1];
+                return item;
+            } )
+        }
+        console.log(this.oldQuestion)
         this.formData.memberEvaluationId = wx.getStorageSync('question').memberEvaluationId;
         this.question = wx.getStorageSync('question');
         this.question.optionList = this.question.optionList.map(item => {
@@ -298,11 +301,15 @@ export default {
         this.question.scrollId = 'scroll_'+this.question.id;
         this.question.opacity = '1';
         this.question.loading = true;
+        
+        setTimeout( () => {
+            this.scrollInView = 'scroll_'+this.question.id;
+        }, 100)
+
         this.questionList.push(this.question);
         // 进度条改变
-        this.stepOne = ((this.qIndex - 1) / this.question.totalCount);
-        this.stepTwo = this.qIndex == 1? this.question.totalCount : this.question.totalCount - this.qIndex ;
-        console.log(this.qIndex,this.stepTwo)
+        this.stepOne = ((this.qIndex - 1) / this.question.totalCount).toFixed(4);
+        this.stepTwo = this.qIndex == 1? this.question.totalCount : this.question.totalCount - this.qIndex + 1;
         this.getUserInfo();
     },
 }
@@ -372,7 +379,6 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
     border-radius: 8px;
     overflow: hidden;
-    display: none;
     img{
         width: 76px;
         height: 76px;
@@ -413,14 +419,14 @@ export default {
     .list{
         overflow: hidden;
         margin-bottom: 10px;
-        transition: all ease 0.3s;
         transform: translateY(50px);
-        transition-delay: 0.3s;
         opacity: 0;
-        &.list-show{
-            transform: translateY(0);
-            opacity: 1;
-        }
+        transition: transform ease 0.3s,opacity ease 0.3s;
+        transition-delay: 0.2s;
+    }
+    .list-show{
+        transform: translateY(0);
+        opacity: 1;
     }
     .loading{
         position: absolute;
@@ -524,11 +530,16 @@ export default {
                 line-height: 44px;
                 border-radius: 22px;
                 text-align: center;
-                border:1px solid #D7D7D7;
                 background-color: #D7D7D7;
                 color: #fff;
                 margin: 15px 0;
                 font-size: 14px;
+                &.current{
+                    background: -webkit-linear-gradient(top,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* Safari 5.1-6.0 */
+                    background: -o-linear-gradient(bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* Opera 11.1-12.0 */
+                    background: -moz-linear-gradient(bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1));/* Firefox 3.6-15 */
+                    background: linear-gradient(to bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* 标准语法 */
+                }
             }
         }
         &.animante-show{
@@ -572,7 +583,9 @@ export default {
             opacity: 0;
             color: #fff;
             line-height: 21px;
-            min-width: 80px;
+            min-width: 35px;
+            display: block;
+            white-space: nowrap;
             &::after{
                 content: '';
                 display: block;

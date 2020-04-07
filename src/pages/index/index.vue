@@ -1,6 +1,6 @@
 <template>
 	<div class="index-box">
-        <navbar :backVisible="false" :title="'新太健康服务中心'"></navbar>
+        <navbar :backVisible="false" :title="'健呗'"></navbar>
 		<div class="banner-box">
 			<view class="page-section page-section-spacing swiper">
 				<swiper :indicator-dots="swiper.indicatorDots"

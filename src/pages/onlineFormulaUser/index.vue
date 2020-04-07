@@ -269,15 +269,30 @@ export default {
                 data:this.formData
             }).then( res => {
                 if(res.data.code ==1){
-                    Toast({
-                        type: 'success',
-                        message: '配方获取成功',
-                        onClose: () => {
-                            wx.setStorageSync('formula',res.data.data);
-                            wx.setStorageSync('formulaUser',this.formData);
-                            mpvue.navigateTo({ url:'../onlineFormula/main'});
-                        }
-                    });
+                    console.log(res.data.data.length)
+                    if(res.data.data.length){
+                        Toast({
+                            type: 'success',
+                            message: '配方获取成功',
+                            onClose: () => {
+                                console.log(res.data.data)
+                                wx.setStorageSync('formula',res.data.data);
+                                wx.setStorageSync('formulaUser',this.formData);
+                                mpvue.navigateTo({ url:'../onlineFormula/main'});
+                            }
+                        });
+                    } else {
+                        Toast({
+                            type: 'fail',
+                            message: '配方获取失败，请重新获取',
+                            onClose: () => {
+                                
+                               
+                            }
+                        });
+                        
+                    }
+                    
                 }
             } )
         }

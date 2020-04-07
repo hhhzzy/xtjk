@@ -106,7 +106,7 @@ export default {
                     this.info = {
                             nickName:this.userInfo.nickName,
                             sex:this.userInfo.gender == 1?'男':'女',
-                            parentMemberId:null,
+                            parentMemberId:'',
                             imgUrl:this.userInfo.avatarUrl,
                     }
                     this.boolLogin = true;

@@ -1,7 +1,9 @@
 {
     "usingComponents": {
         "van-icon": "/static/vant/icon/index",
-        "van-progress": "/static/vant/progress/index"
+        "van-progress": "/static/vant/progress/index",
+        "van-dialog": "/static/vant/dialog/index",
+        "van-toast": "/static/vant/toast/index"
     },
     "navigationBarTitleText": "我的信息"
 }

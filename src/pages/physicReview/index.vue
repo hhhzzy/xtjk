@@ -18,7 +18,7 @@
             <ul>
                 <li v-for="(item,index) in list" :key="index" @longpress="clickLong(item.id)">
                     <p class="img">
-                        <img src="" alt="">
+                        <img :src="userInfo.imgUrl"  alt="">
                         <span>{{item.evaluationName}}</span>
                     </p>
                     <div class="right">
@@ -51,7 +51,8 @@ import Dialog from '../../../static/vant/dialog/dialog';
 export default {
     data(){
         return{
-            list:[]
+            list:[],
+            userInfo:{},
         }
     },
     components: {
@@ -93,6 +94,7 @@ export default {
             }else {
                 this.list[index].nextQuestion.memberEvaluationId=this.list[index].id;
                 wx.setStorageSync('question',this.list[index].nextQuestion);
+                wx.setStorageSync('oldQuestion',this.list[index].haveAnswerList);
                 mpvue.navigateTo({ url:'../physicStepTwo/main' });
             }
            
@@ -113,13 +115,28 @@ export default {
                     this.getList();
                 })
             })
-        }
+        },
+        getUserInfo(){
+            // 获取用户信息
+            axios({
+                url: 'api/personal/getMemberInfo?memberId='+store.state.user.userInfo.id,
+                method: 'get',
+                data:{
+                    memberId:store.state.user.userInfo.id
+                }
+            }).then( data => {
+                if(data.data.code == 1){
+                    this.userInfo = data.data.data;
+                }
+            } )
+        },
     },
     mounted(){
         
     },
     onShow(){
         this.getList();
+        this.getUserInfo();
     }
 }
 </script>
@@ -228,7 +245,7 @@ ul{
                 height: 50px;
                 border-radius: 50%;
                 display: block;
-                background-color: red;
+                background-color: #f2f2f2;
                 margin-bottom: 5px;
             }
             span{

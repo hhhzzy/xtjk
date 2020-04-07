@@ -3,6 +3,7 @@
         <navbar :backVisible="false" :title="'体质测评'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
         <div class="one-box">
             <div class="step-con">
+                <p class="con">恭喜您，已完成测评！</p>
                 <p class="step-p"><span></span></p>
                 <p class="title">经过健呗测评，您的的体质主要是</p>
                 <p class="main">{{name}}</p>
@@ -11,13 +12,14 @@
         <div class="content">
             <p class="main-title">体质分析得分</p>
             <div class="box">
-                <ul>
+                <ul v-if="info.length">
                     <li v-for="(item,index) in info" :key="index">
                         <span>{{item.key}}</span>
                         <i :style="{'width':item.value / 100 * 230+'px'}"></i>
                         <em>{{item.value}}</em>
                     </li>
                 </ul>
+                <p class="box-con" v-else>平和型体质是我们的追求目标，不偏不斜，体质较好，抵抗力充足，可保持现状，适度增强运动。</p>
                 <p class="con">*每种偏颇质总分100分，分值越高，偏颇程度越严重！</p>
             </div>
         </div>
@@ -74,7 +76,7 @@ export default {
                     }
                     for( var i = 0; i < temp.length-1; i++ ){
                         for(var j = 0; j<temp.length-i-1;j++ ){
-                            if(Number(temp[j].value)>Number(temp[j+1].value)){
+                            if(Number(temp[j].value)<Number(temp[j+1].value)){
                                 //把大的数字放到后面
                                 var swap = temp[j];
                                 temp[j] = temp[j+1];
@@ -82,8 +84,10 @@ export default {
                             }
                         }
                     }
-                    this.info = temp;
-                    this.name = this.info[0].key;
+                    this.info = temp.filter( item => {
+                        return Number(item.value) >= 32;
+                    } );
+                    this.name = this.info.length?this.info[0].key:'平和体质';
                     console.log(this.info)
                 }
             } )
@@ -99,9 +103,8 @@ export default {
         this.GetInfo();
     },
     onLoad(options){
-        console.log(options)
         // this.memberEvaluationId = options.memberEvaluationId;
-        this.memberEvaluationId = 62;
+        this.memberEvaluationId = 87;
     }
 }
 </script>
@@ -123,7 +126,13 @@ export default {
         height: 86px;
         border-radius: 8px;
         margin: 10px auto;
-        margin-top: 50px;
+        margin-top: 40px;
+        .con{
+            text-align: center;
+            color: #4CDBC5;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
     }
     .step-p{
         width: 310px;
@@ -244,6 +253,10 @@ export default {
             margin-top: 12px;
         }
     }
+}
+.box-con{
+    color: #222222;
+    font-size: 15px;
 }
 .tips{
     text-align: center;

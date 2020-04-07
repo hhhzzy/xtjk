@@ -28,7 +28,7 @@
                 <p class="money">
                     账户余额：<a href="../accountDetail/main"><span>{{userInfo.memberAccountMoney / 1000}}元</span></a>
                 </p>
-                <p class="add-p">立即提现</p>
+                <p class="add-p" @click="txClk">立即提现</p>
             </div>
         </div>
         <div class="mine-order">
@@ -121,6 +121,18 @@
                 </li> -->
             </ul>
         </div> 
+        <van-dialog
+            use-slot
+            title="填写提现金额"
+            :show="show"
+            show-cancel-button
+            @close="onClose"
+            @confirm="tx"
+            >
+            <input class="ipt" type="number" v-model="txValue" placeholder="请填写提现金额" />
+        </van-dialog>
+        
+        <van-toast id="van-toast" />
     </div>
 </template>
 <script>
@@ -128,10 +140,14 @@
 import store from '../../store'
 import axios from '../../utils/request.js'
 import navbar from '../../components/navbar'
+import Dialog from '../../../static/vant/dialog/dialog';
+import Toast from '../../../static/vant/toast/toast';
 export default {
     data(){
         return{
-            userInfo:{}
+            userInfo:{},
+            show:false,
+            txValue:null
         }
     },
     components: {
@@ -154,7 +170,38 @@ export default {
         },
         goPhysic(){
             mpvue.switchTab({ url:'../physicReview/main' })
+        },
+        // 提现
+        txClk(){
+            this.show = true;
+        },
+        onClose(){
+            this.show = false;
+        },
+        async tx(){
+            let code = null;
+            await  new Promise( (resolve,reject) => {
+                wx.login({
+                    success: async res => {
+                        // 获取到用户的 code 之后：res.code
+                        code = res.code;
+                        resolve();
+                    }
+                });
+            } )
+            axios({
+                url: 'api/weixinDraw/withdrawal?memberId='+store.state.user.userInfo.id+'&code='+code+'&total_fee='+this.txValue,
+                method: 'get',
+            }).then( data => {
+                if(data.data.code == 1){
+                    Toast.success('提现成功！')
+                    this.getUserInfo();
+                } else {
+                    Toast.fail('提现失败');
+                }
+            } )
         }
+        
     },
     created(){
         this.getUserInfo();
@@ -367,6 +414,18 @@ export default {
     }
     .mine-member{
         height: 214px;
+    }
+    .tips{
+        padding: 0 10px;
+        margin: 5px;
+    }
+    .ipt{
+        padding: 20px 0;
+        padding-left:10px;
+        border-top: 1px solid #f2f2f2;
+        border-bottom: 1px solid #f2f2f2;
+        margin-top: 10px;
+        
     }
 }
 </style>

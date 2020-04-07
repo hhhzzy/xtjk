@@ -2,6 +2,7 @@
 import axios from 'axios'
 import store from '../store'
 const url = 'https://www.xtjianbei.com/'; // 环境配置中的接口地址
+// const url = 'http://47.108.67.109/'; // 环境配置中的接口地址
 const ajax = axios.create({
     baseURL: url, // 请求地址
     timeout: 30000 // 请求超时
