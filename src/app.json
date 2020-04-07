@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/physicStepThree/main",
     "pages/index/main",
+    "pages/physicStepThree/main",
     "pages/mine/main",
     "pages/physicStepTwo/main",
     "pages/physicReview/main",
