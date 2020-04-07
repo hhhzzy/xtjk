@@ -39,7 +39,7 @@
         </div>
         <div class="question-box">
             <scroll-view scroll-y="true" :scroll-into-view="scrollInView"  scroll-with-animation>
-                <div class="list list-show" v-for="(item,index) in oldQuestion" v-if="oldQuestion.length">
+                <div class="list list-show" v-for="(item,index) in oldQuestion" v-if="oldQuestion.length" :key="index">
                     <div class="question-title">
                         <p class="head-img"><img src="../../../static/images/user.png" alt=""></p>
                         <div class="question title-show">
@@ -286,6 +286,11 @@ export default {
         if(this.oldQuestion.length){
             this.oldQuestion = this.oldQuestion.map( item => {
                 item.questionOption = item.questionOption.split('、')[1];
+
+                item.show = true;
+                item.scrollId = 'scroll_'+this.question.id;
+                item.opacity = '1';
+                item.loading = false;
                 return item;
             } )
         }
@@ -297,6 +302,7 @@ export default {
             return item;
         });
         this.qIndex = this.question.nowQuestionNumber?this.question.nowQuestionNumber:1;
+
         this.question.show = false;
         this.question.scrollId = 'scroll_'+this.question.id;
         this.question.opacity = '1';
@@ -305,8 +311,10 @@ export default {
         setTimeout( () => {
             this.scrollInView = 'scroll_'+this.question.id;
         }, 100)
+        // this.questionList = this.questionList.concat(this.oldQuestion);
 
         this.questionList.push(this.question);
+        console.log(this.questionList)
         // 进度条改变
         this.stepOne = ((this.qIndex - 1) / this.question.totalCount).toFixed(4);
         this.stepTwo = this.qIndex == 1? this.question.totalCount : this.question.totalCount - this.qIndex + 1;
