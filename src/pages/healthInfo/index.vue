@@ -6,7 +6,7 @@
             <p class="time">{{detail.updateTime}}</p>
         </div>
         <div class="detail-box">
-            <img :src="detail.imgUrl" alt="">
+            <!-- <img :src="detail.imgUrl" alt=""> -->
             <wxParse :content="detail.content" />
         </div>
         <share></share>

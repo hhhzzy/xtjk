@@ -1,6 +1,6 @@
 <template>
     <div class="health-box">
-        <navbar  :title="'健康咨询'"></navbar>
+        <navbar  :title="'健康资讯'"></navbar>
          <ul>
             <li v-for="(item,index) in healthList" :key="index">
                 <a :href="'../healthInfo/main?id='+item.id">
@@ -48,7 +48,7 @@ export default {
         },
     },
     onShow(){
-        this.list = [];
+        this.healthList = [];
         this.offset = 1;
         this.limit = 15;
         this.getNewsList();

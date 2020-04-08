@@ -39,7 +39,7 @@
         </div>
         <div class="question-box">
             <scroll-view scroll-y="true" :scroll-into-view="scrollInView"  scroll-with-animation>
-                <div class="list list-show" v-for="(item,index) in oldQuestion" v-if="oldQuestion.length" :key="index">
+                <!-- <div class="list list-show" v-for="(item,index) in oldQuestion" v-if="oldQuestion.length" :key="index">
                     <div class="question-title">
                         <p class="head-img"><img src="../../../static/images/user.png" alt=""></p>
                         <div class="question title-show">
@@ -50,14 +50,14 @@
                         <div class="question-answer animante-show">
                             <p class="name">
                                 <span>{{item.questionOption}}</span>
-                                <!-- <van-icon name="edit" @click="closeShow(index)" /> -->
+                                <van-icon name="edit" @click="closeShow(index)" />
                             </p>
                             <p class="head-img">
                                 <img :src="userInfo.imgUrl" alt="">
                             </p>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div :class="['list',item.opacity == '1'?'list-show':'']" v-for="(item,index) in questionList" :key="index" :id="item.scrollId" >
                     <div :class="[item.scrollId == nowId?'question-container':'']">
                         <div :class="['question-title',item.show?'animante-show':'']">
@@ -70,13 +70,13 @@
                         <div :class="['question-content',index == 0 || !item.loading?'question-content-show':'']">
                             <div :class="['answer-list',item.show?'animante-show':'']">
                                 <ul>
-                                    <li :class="[data.current ? 'current' : '']" @click="clkAnswer(index,data.name,data.questionOption)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}}</li>
+                                    <li :class="[data.current ? 'current' : '']" @click="clkAnswer(index,data.id,data.questionOption)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}}</li>
                                 </ul>
                             </div> 
                             <div :class="['question-answer',item.show?'animante-show':'answer-hide']">
                                 <p class="name">
                                     <span>{{item.answerDetail}}</span>
-                                    <!-- <van-icon name="edit" @click="closeShow(index)" /> -->
+                                    <van-icon name="edit" @click="closeShow(index)" />
                                 </p>
                                 <p class="head-img">
                                     <!-- <img src="../../../static/images/user.png" alt=""> -->
@@ -182,6 +182,7 @@ export default {
                             this.scrollInView = 'finsh';
                             this.stepTwo = 0;
                         } else {
+                            console.log(res.data.data,'77777');
                             this.question = res.data.data;
                             wx.setStorageSync('question',res.data.data);
                             this.question.optionList = this.question.optionList.map(item => {
@@ -194,9 +195,9 @@ export default {
                             this.question.opacity = '0';
                             this.question.loading = true;
                             // 删除后面的答题，从新开始
-                            this.questionList = this.questionList.filter( (item,index) => {
-                                return this.nowIndex >= index;
-                            } )
+                            // this.questionList = this.questionList.filter( (item,index) => {
+                            //     return this.nowIndex >= index;
+                            // } )
                             this.questionList.push(this.question);
 
                             // 进度条改变
@@ -216,6 +217,7 @@ export default {
         },
         // 点击答案
         async clkAnswer(index,evaluationOptionId,detail){
+            console.log(index,evaluationOptionId,detail)
             this.nowIndex = index;
             // 调用提交函数
             this.formData.evaluationOptionId = Number(evaluationOptionId);
@@ -285,7 +287,7 @@ export default {
         this.oldQuestion = wx.getStorageSync('oldQuestion') ? wx.getStorageSync('oldQuestion'):[];
         if(this.oldQuestion.length){
             this.oldQuestion = this.oldQuestion.map( item => {
-                item.questionOption = item.questionOption.split('、')[1];
+                item.answerDetail = item.questionOption.split('、')[1];
 
                 item.show = true;
                 item.scrollId = 'scroll_'+this.question.id;
@@ -306,12 +308,12 @@ export default {
         this.question.show = false;
         this.question.scrollId = 'scroll_'+this.question.id;
         this.question.opacity = '1';
-        this.question.loading = true;
+        this.question.loading = false;
         
         setTimeout( () => {
             this.scrollInView = 'scroll_'+this.question.id;
         }, 100)
-        // this.questionList = this.questionList.concat(this.oldQuestion);
+        this.questionList = this.questionList.concat(this.oldQuestion);
 
         this.questionList.push(this.question);
         console.log(this.questionList)

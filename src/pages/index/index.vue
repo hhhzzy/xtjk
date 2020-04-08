@@ -612,7 +612,7 @@ export default {
 			width: 200%;
 			li{
 				float: left;
-				margin-right: 20px;
+				margin-right: 28px;
 				text-align: center;
 				img{
 					width: 100px;
