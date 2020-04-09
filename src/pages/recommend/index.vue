@@ -16,7 +16,7 @@
                     <p>金额</p>
                 </li>
                 <li v-for="(item,index) in use" :key="index">
-                    <p>{{index+1}}</p>
+                    <p>{{index}}</p>
                     <p>{{item}}</p>
                 </li>
             </ul>
@@ -79,6 +79,7 @@ export default {
                 console.log(res);
                 if(res.data.code == 1){
                     this.use = res.data.data;
+                    console.log(this.use)
                 }
             } )
         },

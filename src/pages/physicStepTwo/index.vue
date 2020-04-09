@@ -70,12 +70,12 @@
                         <div :class="['question-content',index == 0 || !item.loading?'question-content-show':'']">
                             <div :class="['answer-list',item.show?'animante-show':'']">
                                 <ul>
-                                    <li :class="[data.current ? 'current' : '']" @click="clkAnswer(index,data.id,data.questionOption)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}}</li>
+                                    <li :class="[data.current ? 'current' : '']" @click="clkAnswer(index,data.id,data.questionOption,item)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}} {{item.show}}</li>
                                 </ul>
                             </div> 
                             <div :class="['question-answer',item.show?'animante-show':'answer-hide']">
                                 <p class="name">
-                                    <span>{{item.answerDetail}}</span>
+                                    <span>{{item.answerDetail}} {{item.show}}</span>
                                     <van-icon name="edit" @click="closeShow(index)" />
                                 </p>
                                 <p class="head-img">
@@ -157,9 +157,9 @@ export default {
             this.a = this.a +1;
             await new Promise( (resolve,reject) => {
                 this.formData.memberId = store.state.user.userInfo.id;
-                this.formData.evaluationQuestionId = this.question.id;
-                this.formData.isEnd = this.question.isEnd;
-                console.log(this.formData.evaluationOptionId)
+                this.formData.evaluationQuestionId = this.question.id ? this.question.id : this.question.evaluationQuestionId;
+                this.formData.isEnd = this.question.isEnd ? this.question.isEnd : 0;
+                console.log(this.formData)
                 if(!this.formData.evaluationOptionId){
                     Toast.fail('请选择答案');
                     return;
@@ -171,40 +171,45 @@ export default {
                 }).then( res => {
                     console.log(res)
                     if(res.data.code ==1){
-                        if(res.data.msg == '提交成功'){
+                        if(res.data.data == 1){
                             // 获取测评结果
-                            axios({
-                                url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
-                                method:'get'
-                            })
+                            // axios({
+                            //     url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
+                            //     method:'get'
+                            // })
                             this.stepOne = 1;
                             this.finsh = true;
                             this.scrollInView = 'finsh';
                             this.stepTwo = 0;
                         } else {
-                            console.log(res.data.data,'77777');
-                            this.question = res.data.data;
-                            wx.setStorageSync('question',res.data.data);
-                            this.question.optionList = this.question.optionList.map(item => {
-                                item.name = String(item.id);
-                                return item;
-                            });
-                            
-                            this.question.show = false;
-                            this.question.scrollId = 'scroll_'+this.question.id;
-                            this.question.opacity = '0';
-                            this.question.loading = true;
-                            // 删除后面的答题，从新开始
-                            // this.questionList = this.questionList.filter( (item,index) => {
-                            //     return this.nowIndex >= index;
-                            // } )
-                            this.questionList.push(this.question);
+                            console.log(this.scrollInView)
+                            if(res.data.data != '0'){
+                                console.log(res.data.data,'77777');
+                                this.question = res.data.data;
+                                wx.setStorageSync('question',res.data.data);
+                                this.question.optionList = this.question.optionList.map(item => {
+                                    item.name = String(item.id);
+                                    return item;
+                                });
+                                this.question.show = false;
+                                this.question.scrollId = 'scroll_'+this.question.id;
+                                this.question.opacity = '0';
+                                this.question.loading = true;
+                                // 删除后面的答题，从新开始
+                                // this.questionList = this.questionList.filter( (item,index) => {
+                                //     return this.nowIndex >= index;
+                                // } )
+                                this.questionList.push(this.question);
 
-                            // 进度条改变
-                            this.stepOne = ((this.qIndex - 1) / this.question.totalCount).toFixed(4);
-                            this.stepTwo = this.question.totalCount - this.qIndex + 1;
-
-                            resolve();
+                                // 进度条改变
+                                this.stepOne = ((this.qIndex - 1) / this.question.totalCount).toFixed(4);
+                                this.stepTwo = this.question.totalCount - this.qIndex + 1;
+                                
+                                resolve(true);
+                            } else {
+                                resolve(false);
+                            }
+                            console.log(this.questionList)
                             clearTimeout(this.timer1);
                             clearTimeout(this.timer2);
                         }
@@ -216,16 +221,18 @@ export default {
 
         },
         // 点击答案
-        async clkAnswer(index,evaluationOptionId,detail){
+        async clkAnswer(index,evaluationOptionId,detail,item){
             console.log(index,evaluationOptionId,detail)
             this.nowIndex = index;
             // 调用提交函数
             this.formData.evaluationOptionId = Number(evaluationOptionId);
             // 把答案保存在本地
             this.questionList[index].answerDetail = detail.split('、')[1];
+            // 修改当前的题目
+            this.question = item;
             this.qIndex++;
-            await this.gotoNext();
-            if(index <= this.questionList.length){
+            let bool = await this.gotoNext();
+            if(index <= this.questionList.length && bool){
                 this.questionList[index].show = true;
                 this.nowId = !this.boolNotFir ? this.questionList[index+1].scrollId : '';
                 this.boolNotFir = this.boolNotFir ? false : false;
@@ -240,6 +247,8 @@ export default {
                     this.$set(obj,'loading',false)
                     this.questionList[index+1] = obj;
                 },1500 )
+            } else {
+                this.$set(this.questionList[index],'show',true)
             }
         },
         // 展示答案
@@ -256,6 +265,7 @@ export default {
                 }
                 return item;
             } )
+            console,log(this.questionList)
         },
         gotoDetail(){
             mpvue.navigateTo({ url:'../physicStepThree/main?memberEvaluationId='+ this.formData.memberEvaluationId});
@@ -290,7 +300,7 @@ export default {
                 item.answerDetail = item.questionOption.split('、')[1];
 
                 item.show = true;
-                item.scrollId = 'scroll_'+this.question.id;
+                item.scrollId = 'scroll_'+item.evaluationQuestionId;
                 item.opacity = '1';
                 item.loading = false;
                 return item;

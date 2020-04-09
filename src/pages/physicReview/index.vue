@@ -28,7 +28,7 @@
                         </div>
                         <div class="btn">
                             <p class="one" v-if="item.isFinish">去调理</p>
-                            <p class="two" v-if="!item.isFinish" @click="add(item.isFinish,index)">继续测评</p>
+                            <p class="two" v-if="!item.isFinish || item.isFinish == 2" @click="add(item.isFinish,index)">继续测评</p>
                             <p class="two" v-else @click="add">重新评测</p>
                         </div>
                         <p class="clearfix"></p>
@@ -89,9 +89,9 @@ export default {
         },
         // 添加测评
         add(value,index){
-            if(value){
+            if(value == 1){
                 mpvue.navigateTo({ url:'../physicStepOne/main' });
-            }else {
+            }else  {
                 this.list[index].nextQuestion.memberEvaluationId=this.list[index].id;
                 wx.setStorageSync('question',this.list[index].nextQuestion);
                 wx.setStorageSync('oldQuestion',this.list[index].haveAnswerList);

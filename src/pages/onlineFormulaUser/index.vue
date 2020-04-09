@@ -79,7 +79,7 @@
                         :is-link="true"
                         :arrow-direction="right"
                         @click="showBodyPopup"
-                        placeholder="请选择个人体质"
+                        placeholder="请选择个人体质（可多选）"
                     >
                     </van-field>
                     <span class="form-tip">（如评测结果含多项体质，选最高项填写）</span>
@@ -130,13 +130,14 @@
                             @close="closeBodyPopup">
                     <van-picker :columns="body"
                                 show-toolbar
-                                title="选择个人体质" 
+                                title="选择个人体质（可多选）" 
                                 @cancel="onCancel"
                                 @confirm="onBodyConfirm"  />
                 </van-popup>
                 
             </div>
         </div>
+        <a class="link">不清楚体质，立即去测评>></a>
         <div class="footer-box">
             <p class="add-p" @click="goPf">获取专属配方</p>
         </div>
@@ -166,7 +167,10 @@ export default {
             body:[],
             bodyList:[],
             bodyShow:false,
-            formData:{},
+            formData:{
+                bodyText:'',
+                bodyTypeId:''
+            },
             weight:null
         }
     },
@@ -237,8 +241,10 @@ export default {
             this.bodyShow = true;
         },
         onBodyConfirm(event){
-            this.formData.bodyTypeId = this.bodyList[event.mp.detail.index].id
-            this.formData.bodyText = event.mp.detail.value;
+            if(this.formData.bodyText.indexOf(event.mp.detail.value) < 0){
+                this.formData.bodyTypeId += (this.formData.bodyTypeId == ''?'':',') + this.bodyList[event.mp.detail.index].id
+                this.formData.bodyText += (this.formData.bodyText == ''?'':',') + event.mp.detail.value;
+            }
             this.bodyShow = false;
         },
         // 绑定年龄
@@ -371,7 +377,7 @@ export default {
     .box{
         width: 354px;
         margin: 0 auto;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
         background-color: #fff;
         border-radius: 8px;
@@ -439,5 +445,11 @@ export default {
             font-size: 16px;
             color: #fff;
         }
+    }
+    .link{
+        padding-left: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #4CDBC5;
     }
 </style>
