@@ -33,6 +33,7 @@ export default {
             offset:1,
             list:[],
             orderState:null, // 订单状态
+            total:null
         }
     },
     components: {
@@ -51,6 +52,7 @@ export default {
                 url: 'api/memberOrder/queryOrderList?limit='+this.limit+'&offset='+this.offset+'&memberId='+store.state.user.userInfo.id+'&orderState='+this.orderState,
                 method: 'get',
             }).then( res => {
+                this.total = res.data.total;
                 if(res.data.rows){
                     if(res.data.rows.length){
                         this.list = this.list.concat(res.data.rows); 
@@ -79,6 +81,7 @@ export default {
 
     },
     onReachBottom () {
+        if(this.total == this.list.length) return;
         this.offset++;
         this.GetList();
 

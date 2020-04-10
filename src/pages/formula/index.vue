@@ -19,7 +19,7 @@
                                 个人体质：{{item.bodyTypeName}}
                             </p>
                             <p class="one">
-                                每日标准热量：{{item.bodyTypeName}}
+                                每日标准热量：{{item.everyNeedHot}}
                             </p>
                         </view>
                         <div class="weui-cell__ft money">￥{{item.recipePrice / 1000}}</div>
@@ -67,6 +67,7 @@ export default {
             }).then( res => {
                 wx.hideLoading();
                 if(res.data.pages >= this.offset){
+                    console.log(res.data)
                     if(res.data.rows.length){
                         this.list = this.list.concat(res.data.rows); 
                     }

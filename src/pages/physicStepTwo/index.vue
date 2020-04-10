@@ -70,12 +70,12 @@
                         <div :class="['question-content',index == 0 || !item.loading?'question-content-show':'']">
                             <div :class="['answer-list',item.show?'animante-show':'']">
                                 <ul>
-                                    <li :class="[data.current ? 'current' : '']" @click="clkAnswer(index,data.id,data.questionOption,item)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}} {{item.show}}</li>
+                                    <li :class="[data.current ? 'current' : '']" @click="clkAnswer(index,data.id,data.questionOption,item)" v-for="(data,ind) in item.optionList"  :key="ind">{{data.questionOption}}</li>
                                 </ul>
                             </div> 
                             <div :class="['question-answer',item.show?'animante-show':'answer-hide']">
                                 <p class="name">
-                                    <span>{{item.answerDetail}} {{item.show}}</span>
+                                    <span>{{item.answerDetail}}</span>
                                     <van-icon name="edit" @click="closeShow(index)" />
                                 </p>
                                 <p class="head-img">
@@ -155,11 +155,11 @@ export default {
         },
         async gotoNext(){
             this.a = this.a +1;
-            await new Promise( (resolve,reject) => {
+            let bool = false;
+            bool = await new Promise( (resolve,reject) => {
                 this.formData.memberId = store.state.user.userInfo.id;
                 this.formData.evaluationQuestionId = this.question.id ? this.question.id : this.question.evaluationQuestionId;
                 this.formData.isEnd = this.question.isEnd ? this.question.isEnd : 0;
-                console.log(this.formData)
                 if(!this.formData.evaluationOptionId){
                     Toast.fail('请选择答案');
                     return;
@@ -169,22 +169,19 @@ export default {
                     method:'POST',
                     data:this.formData
                 }).then( res => {
-                    console.log(res)
                     if(res.data.code ==1){
                         if(res.data.data == 1){
                             // 获取测评结果
-                            // axios({
-                            //     url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
-                            //     method:'get'
-                            // })
+                            axios({
+                                url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
+                                method:'get'
+                            })
                             this.stepOne = 1;
                             this.finsh = true;
                             this.scrollInView = 'finsh';
                             this.stepTwo = 0;
                         } else {
-                            console.log(this.scrollInView)
                             if(res.data.data != '0'){
-                                console.log(res.data.data,'77777');
                                 this.question = res.data.data;
                                 wx.setStorageSync('question',res.data.data);
                                 this.question.optionList = this.question.optionList.map(item => {
@@ -209,7 +206,6 @@ export default {
                             } else {
                                 resolve(false);
                             }
-                            console.log(this.questionList)
                             clearTimeout(this.timer1);
                             clearTimeout(this.timer2);
                         }
@@ -218,11 +214,10 @@ export default {
                     }
                 } )
             } )
-
+            return bool;
         },
         // 点击答案
         async clkAnswer(index,evaluationOptionId,detail,item){
-            console.log(index,evaluationOptionId,detail)
             this.nowIndex = index;
             // 调用提交函数
             this.formData.evaluationOptionId = Number(evaluationOptionId);
@@ -248,7 +243,8 @@ export default {
                     this.questionList[index+1] = obj;
                 },1500 )
             } else {
-                this.$set(this.questionList[index],'show',true)
+                this.questionList[index].show = true;
+                this.questionList = [...this.questionList];
             }
         },
         // 展示答案
@@ -265,7 +261,6 @@ export default {
                 }
                 return item;
             } )
-            console,log(this.questionList)
         },
         gotoDetail(){
             mpvue.navigateTo({ url:'../physicStepThree/main?memberEvaluationId='+ this.formData.memberEvaluationId});

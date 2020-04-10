@@ -160,6 +160,7 @@
 <script>
 import card from '@/components/card'
 import test from '@/components/test'
+import store from '../../store'
 
 import axios from '../../utils/request.js'
 import {imgBaseUrl} from '../../utils/common.js'
@@ -319,11 +320,25 @@ export default {
 	// 获取团队展示
 	this.getTeamList();
     this.getGY();
-    wx.showShareMenu({
-      withShareTicket: true
-    })
-	
+    // 分享
+    // wx.showShareMenu({
+    //   withShareTicket: true
+    // })
   },
+    onShareAppMessage: (res) => {
+        if(res.from == 'menu'){
+            console.log(res);
+            return {
+                title: '健呗+',
+                imageUrl: '', // 图片 URL
+                path: "/pages/index/main?parentMemberId="+store.state.user.userInfo.id
+            };
+        }
+    },
+  onLoad(options){
+      if(options.parentMemberId)
+      wx.setStorageSync('parentMemberId',options.parentMemberId?options.parentMemberId:'');
+  }
 }
 </script>
 

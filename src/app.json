@@ -1,12 +1,12 @@
 {
   "pages": [
+    "pages/index/main",
+    "pages/mine/main",
+    "pages/recommend/main",
     "pages/physicReview/main",
     "pages/onlineFormulaUser/main",
-    "pages/index/main",
     "pages/physicStepThree/main",
-    "pages/mine/main",
     "pages/physicStepTwo/main",
-    "pages/recommend/main",
     "pages/physicStepOne/main",
     "pages/condition/main",
     "pages/addressList/main",

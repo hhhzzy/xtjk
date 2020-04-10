@@ -106,7 +106,7 @@ export default {
                     this.info = {
                             nickName:this.userInfo.nickName,
                             sex:this.userInfo.gender == 1?'男':'女',
-                            parentMemberId:'',
+                            parentMemberId: wx.getStorageSync('parentMemberId')?wx.getStorageSync('parentMemberId'):'',
                             imgUrl:this.userInfo.avatarUrl,
                     }
                     this.boolLogin = true;
@@ -155,7 +155,7 @@ export default {
             }
             console.log(this.info)
             await this.login(this.info)
-
+            wx.removeStorageSync('parentMemberId');
         },
         testTel(value){
             if((/^1[3456789]\d{9}$/.test(value.mp.detail.value))){ 

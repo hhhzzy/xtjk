@@ -14,7 +14,7 @@
                     <div class="level">
                         <a href="../integralDetail/main"> 
                             <span>{{userInfo.nowGradeName}}</span>
-                            <p class="process"></p>
+                            <p class="process"><span :style="{'width':(userInfo.memberIntegral/100)*215+'px'}"></span></p>
                             <span>{{userInfo.nextGradeName}}</span>
                         </a>
                     </div>
@@ -165,6 +165,7 @@ export default {
             }).then( data => {
                 if(data.data.code == 1){
                     this.userInfo = data.data.data;
+                    console.log(this.userInfo)
                 }
             } )
         },
@@ -270,14 +271,14 @@ export default {
                     }
                     .process{
                         float: left;
-                        width: 198px;
+                        width: 150px;
                         height: 10px;
                         background-color: #fff;
                         margin-top: 7px;
                         margin-left: 8px;
                         border-radius: 10px;
                         position: relative;
-                        &::after{
+                        span{
                             position: absolute;
                             content: '';
                             display: block;

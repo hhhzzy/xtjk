@@ -23,7 +23,8 @@ export default {
 		    imgBaseUrl:imgBaseUrl,
             healthList:[],
             limit:15,
-            offset:1
+            offset:1,
+            total:null
         }
     },
   components: {
@@ -37,6 +38,7 @@ export default {
                 url:'api/document/getMessageList?messageType=1&limit='+this.limit+'&offset='+this.offset,
                 method:'get'
             }).then( res => {
+                this.total = res.data.total;
                 if(res.data.rows){
                     this.healthList = this.healthList.concat(res.data.rows);
                     this.healthList = this.healthList.map( item => {
@@ -54,6 +56,7 @@ export default {
         this.getNewsList();
     },
     onReachBottom () {
+        if(this.total == this.healthList.length) return;
         this.offset++;
         this.getNewsList();
 

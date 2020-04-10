@@ -49,13 +49,11 @@ export default {
                 if(res.data.code ==1){
                    this.detail = res.data.data;
                    this.detail.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(this.detail.imgUrl);
-                   console.log(this.detail)
                 }
             } )
         }
     },
     onLoad(options){
-        console.log(options)
         this.id = options.id;
         // 获取详情
         this.getDetail();

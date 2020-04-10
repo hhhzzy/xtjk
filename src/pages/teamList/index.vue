@@ -23,7 +23,8 @@ export default {
 		    imgBaseUrl:imgBaseUrl,
             teamList:[],
             limit:8,
-            offset:1
+            offset:1,
+            total:null
         }
     },
     components: {
@@ -37,6 +38,7 @@ export default {
                 url:'api/document/getMessageList?messageType=2&limit='+this.limit+'&offset='+this.offset,
                 method:'get'
             }).then( res => {
+                this.total = res.data.total;
                 if(res.data.rows){
                     this.teamList = this.teamList.concat(res.data.rows);
                     this.teamList = this.teamList.map( item => {
@@ -55,6 +57,7 @@ export default {
         this.getTeamList();
     },
     onReachBottom () {
+        if(this.total == this.teamList.length) return;
         this.offset++;
         this.getTeamList();
 
@@ -68,7 +71,8 @@ ul{
         overflow: hidden;
         padding: 20px;
         width: 305px;
-        height: 107px;
+        // height: 107px;
+        height: 700px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
         margin: 10px 0;
         p{
