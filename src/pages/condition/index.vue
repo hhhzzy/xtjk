@@ -1,8 +1,7 @@
 <template>
     <div>
         <navbar :title="'调理建议'"></navbar>
-        <img src="../../../static/images/tl1.png" alt="">
-        <img src="../../../static/images/tl3.png" alt="">
+        <img src="../../../static/images/tljy.png" alt="">
     </div>
 </template>
 <script>
@@ -21,7 +20,7 @@ export default {
 <style lang="less" scoped>
     img{
         width: 375px;
-        height: 580px;
+        height: 1500px;
         display: block;
         margin:  0 auto;
         &:nth-of-type(2){

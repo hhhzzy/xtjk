@@ -545,7 +545,7 @@ export default {
                 line-height: 44px;
                 border-radius: 22px;
                 text-align: center;
-                background-color: #D7D7D7;
+                background-color:#fc8c04;
                 color: #fff;
                 margin: 15px 0;
                 font-size: 14px;

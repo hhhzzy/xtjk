@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/condition/main",
     "pages/mine/main",
     "pages/recommend/main",
     "pages/physicReview/main",
@@ -8,7 +9,6 @@
     "pages/physicStepThree/main",
     "pages/physicStepTwo/main",
     "pages/physicStepOne/main",
-    "pages/condition/main",
     "pages/addressList/main",
     "pages/orderList/main",
     "pages/mineInfo/main",
@@ -38,7 +38,7 @@
     "pages/health/main",
     "pages/logs/main",
     "pages/register/main"
-  ],
+  ], 
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
