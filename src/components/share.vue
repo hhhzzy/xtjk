@@ -5,12 +5,12 @@
             <p class="list"><img src="../../static/images/wx.png" alt=""></p>
             <p class="list"><img src="../../static/images/pyq.png" alt=""></p>
         </div>
-        <div>
+        <!-- <div>
             <painter :customStyle="customStyle" @imgOK="onImgOk" :palette="imgDraw" />
         </div>
         <div class="share-img" v-if="showBool">
             <img :src="imgUrl" alt="" v-if="imgUrl" style="width:340px;height:500px;"  @longpress="clickLong()">
-        </div>
+        </div> -->
     </div>
 </template>
 <script>

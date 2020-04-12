@@ -1,6 +1,5 @@
 {
     "usingComponents": {
-        "painter": "/static/painter/painter"
     },
     "navigationBarTitleText": "健康咨询详情" 
 }

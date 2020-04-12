@@ -89,7 +89,7 @@ export default {
         },
         // 添加测评
         add(value,index){
-            if(value == 1){
+            if(value){
                 mpvue.navigateTo({ url:'../physicStepOne/main' });
             }else  {
                 this.list[index].nextQuestion.memberEvaluationId=this.list[index].id;
@@ -101,7 +101,6 @@ export default {
         },
         // 长按
         clickLong(id){
-            console.log(11111)
             Dialog.confirm({
                 title: '提示',
                 message: '是否删除该条测评？删除后不可恢复！'
@@ -111,7 +110,6 @@ export default {
                     url: 'api/evaluation/deleteEvaluation?memberEvaluationId='+id,
                     method: 'get',
                 }).then( res => {
-                    console.log(res)
                     this.getList();
                 })
             })

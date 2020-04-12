@@ -1,7 +1,7 @@
 <template>
     <div>
         <navbar :title="'调理建议'"></navbar>
-        <img src="../../../static/images/tljy.png" alt="">
+        <img src="../../../static/images/tljy.jpg" alt="">
     </div>
 </template>
 <script>

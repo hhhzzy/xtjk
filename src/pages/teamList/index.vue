@@ -71,8 +71,7 @@ ul{
         overflow: hidden;
         padding: 20px;
         width: 305px;
-        // height: 107px;
-        height: 700px;
+        height: 107px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
         margin: 10px 0;
         p{

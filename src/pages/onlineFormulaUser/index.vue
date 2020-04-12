@@ -83,6 +83,7 @@
                     >
                     </van-field>
                     <span class="form-tip">（如评测结果含多项体质，选最高项填写）</span>
+                    <a class="link" @click="gotoCp">不清楚体质，立即去测评>></a>
                 </van-cell-group>
                 <!-- 性别弹窗 -->
                 <van-popup  :show="sexShow"  
@@ -127,17 +128,29 @@
                 <!-- 个人体质 -->
                 <van-popup  :show="bodyShow"  
                             position="bottom" 
+                            custom-style="height: 40%"
                             @close="closeBodyPopup">
-                    <van-picker :columns="body"
+                    <!-- <van-picker :columns="body"
                                 show-toolbar
                                 title="选择个人体质（可多选）" 
                                 @cancel="onCancel"
-                                @confirm="onBodyConfirm"  />
+                                @confirm="onBodyConfirm"  /> -->
+                            <div class="picker-top">
+                                <p class="cancel" @click="closeBodyPopup">取消</p>
+                                <p class="title">选择个人体质（可多选）</p>
+                                <p class="sure" @click="closeBodyPopup">确认</p>
+                            </div>
+                            <ul class="picker-ul"  >
+                                <li v-for="(item,index) in bodyList" :key="index" @click="selectBody(item)" :class="[item.current?'current':'']">
+                                    {{item.bodyTypeName}}
+                                    <van-icon name="success" color="#4CDBC5" />
+                                </li>
+                            </ul>
+                                
                 </van-popup>
                 
             </div>
         </div>
-        <a class="link">不清楚体质，立即去测评>></a>
         <div class="footer-box">
             <p class="add-p" @click="goPf">获取专属配方</p>
         </div>
@@ -247,6 +260,22 @@ export default {
             }
             this.bodyShow = false;
         },
+        selectBody(item){
+            if(!item.current){
+                if(this.formData.bodyTypeId.indexOf(item.id) < 0 ){
+                    this.formData.bodyTypeId += (this.formData.bodyTypeId == ''?'':',') +item.id;
+                    this.formData.bodyText += (this.formData.bodyText == ''?'':',') + item.bodyTypeName;
+                }
+            } else{
+                if(this.formData.bodyTypeId.indexOf(item.id) >= 0 ){
+                    this.formData.bodyTypeId = this.formData.bodyTypeId.split(',').filter( data => data != item.id ).toString();
+                    this.formData.bodyText = this.formData.bodyText.split(',').filter( data => data != item.bodyTypeName ).toString();
+                } 
+            }
+            item.current = !item.current;
+            this.bodyList = [...this.bodyList];
+            console.log(this.formData.bodyTypeId);
+        },
         // 绑定年龄
         ageTest(event){
             this.formData.userAge = event.mp.detail;
@@ -301,6 +330,9 @@ export default {
                     
                 }
             } )
+        },
+        gotoCp(){
+            mpvue.switchTab({ url:'../physicReview/main' })
         }
     },
     async mounted(){
@@ -338,10 +370,10 @@ export default {
                 method:'get'
             }).then( res => {
                 if(res.data.code ==1){
-                    this.bodyList = res.data.data;
-                    res.data.data.forEach(item => {
-                        this.body.push(item.bodyTypeName);
-                    });;
+                    this.bodyList = res.data.data.map(item => {
+                        item.current = false;
+                        return item; 
+                    });
                 }
             } )
     }
@@ -448,8 +480,67 @@ export default {
     }
     .link{
         padding-left: 10px;
-        margin-bottom: 10px;
         font-size: 14px;
         color: #4CDBC5;
+    }
+    .picker-top{
+        height: 44px;
+        line-height: 44px;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(235,237,240,0.5);
+        position: fixed;
+        width: 100%;
+        background-color: #fff;
+        z-index: 222;
+        .cancel{
+            font-size: 14px;
+            color: #1989fa;
+            float: left;
+            width:20%;
+            padding-left: 10px;
+            text-align: left;
+        }
+        .title{
+            color: #000;
+            font-size: 16px;
+            float: left;
+            text-align: center;
+            width: 60%;
+        }
+        .sure{
+            font-size: 14px;
+            color: #1989fa;
+            float: left;
+            width: calc( 20% - 20px );
+            text-align: right;
+            padding-right:10px ;
+        }
+    }
+    .picker-ul{
+        overflow: hidden;
+        margin-top:60px;
+        li{
+            height: 44px;
+            line-height: 44px;
+            color: #323233;
+            text-align: center;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(235,237,240,0.5);
+            position: relative;
+            /deep/ van-icon{
+                display: none;
+                position: absolute;
+                font-size: 18px;
+                top: 0;
+                right: 10px;
+
+            }
+            &.current{
+                /deep/ van-icon{
+                    display: block;
+                }
+                color: #4CDBC5;
+            }
+        }
     }
 </style>

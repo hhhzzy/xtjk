@@ -1,11 +1,11 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/condition/main",
     "pages/mine/main",
-    "pages/recommend/main",
     "pages/physicReview/main",
     "pages/onlineFormulaUser/main",
+    "pages/condition/main",
+    "pages/recommend/main",
     "pages/physicStepThree/main",
     "pages/physicStepTwo/main",
     "pages/physicStepOne/main",
@@ -36,7 +36,6 @@
     "pages/addressAdd/main",
     "pages/healthInfo/main",
     "pages/health/main",
-    "pages/logs/main",
     "pages/register/main"
   ], 
   "window": {
@@ -84,11 +83,6 @@
       "pagePath": "pages/index/main",
       "icon": "static/tabs/home.png",
       "activeIcon": "static/tabs/home-active.png"
-    }, {
-      "name": "订单",
-      "pagePath": "pages/logs/main",
-      "icon": "static/tabs/orders.png",
-      "activeIcon": "static/tabs/orders-active.png"
     }],
     "position": "bottom"
   }

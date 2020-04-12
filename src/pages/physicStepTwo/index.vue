@@ -169,17 +169,21 @@ export default {
                     method:'POST',
                     data:this.formData
                 }).then( res => {
+                    console.log(res)
                     if(res.data.code ==1){
-                        if(res.data.data == 1){
+                        if(res.data.data == '1'){
                             // 获取测评结果
-                            axios({
-                                url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
-                                method:'get'
-                            })
-                            this.stepOne = 1;
-                            this.finsh = true;
-                            this.scrollInView = 'finsh';
-                            this.stepTwo = 0;
+                            setTimeout( () => {
+                                axios({
+                                    url:'api/evaluation/getEvaluationResult?memberEvaluationId='+ this.formData.memberEvaluationId,
+                                    method:'get'
+                                })
+                                this.stepOne = 1;
+                                this.finsh = true;
+                                this.scrollInView = 'finsh';
+                                this.stepTwo = 0;
+                            }, 1500)
+                            resolve(false);
                         } else {
                             if(res.data.data != '0'){
                                 this.question = res.data.data;
@@ -228,23 +232,45 @@ export default {
             this.qIndex++;
             let bool = await this.gotoNext();
             if(index <= this.questionList.length && bool){
-                this.questionList[index].show = true;
-                this.nowId = !this.boolNotFir ? this.questionList[index+1].scrollId : '';
-                this.boolNotFir = this.boolNotFir ? false : false;
-                
-                this.questionList[index+1].opacity = 1;
-                this.timer1 = setTimeout( () => {
-                    this.scrollInView = this.questionList[index+1].scrollId;
-                }, 1000 )
-                this.timer2 = setTimeout( () => {
-                    const obj = Object.assign({},this.questionList[index+1]);
-                    this.questionList.splice(index+1,1);
-                    this.$set(obj,'loading',false)
-                    this.questionList[index+1] = obj;
-                },1500 )
+                // 答案高亮
+                this.questionList[index].optionList = this.questionList[index].optionList.map( (item,index) => {
+                    if(item.questionOption.indexOf(detail.split('、')[1]) >= 0){
+                        item.current = true;
+                    } else {
+                        item.current = false;
+                    }
+                    return item;
+                } )
+                setTimeout( () => {
+                    this.questionList[index].show = true;
+                    this.nowId = !this.boolNotFir ? this.questionList[index+1].scrollId : '';
+                    this.boolNotFir = this.boolNotFir ? false : false;
+                    
+                    this.questionList[index+1].opacity = 1;
+                    this.timer1 = setTimeout( () => {
+                        this.scrollInView = this.questionList[index+1].scrollId;
+                    }, 1000 )
+                    this.timer2 = setTimeout( () => {
+                        const obj = Object.assign({},this.questionList[index+1]);
+                        this.questionList.splice(index+1,1);
+                        this.$set(obj,'loading',false)
+                        this.questionList[index+1] = obj;
+                    },1500 )
+                }, 500)
             } else {
-                this.questionList[index].show = true;
-                this.questionList = [...this.questionList];
+                // 答案高亮
+                this.questionList[index].optionList = this.questionList[index].optionList.map( (item,index) => {
+                    if(item.questionOption.indexOf(detail.split('、')[1]) >= 0){
+                        item.current = true;
+                    } else {
+                        item.current = false;
+                    }
+                    return item;
+                } )
+                setTimeout( () =>{
+                    this.questionList[index].show = true;
+                    this.questionList = [...this.questionList];
+                }, 1000)
             }
         },
         // 展示答案
@@ -477,7 +503,7 @@ export default {
             background-color: #fff;
             padding: 8px 8px;
             border-radius: 3px;
-            font-size: 14px;
+            font-size: 16px;
             margin-top: 8px;
             position: relative;
             transition: all linear 0.35s;
@@ -545,8 +571,8 @@ export default {
                 line-height: 44px;
                 border-radius: 22px;
                 text-align: center;
-                background-color:#fc8c04;
-                color: #fff;
+                background-color:#D7D7D7;
+                color: #fc8c04;
                 margin: 15px 0;
                 font-size: 14px;
                 &.current{
@@ -554,6 +580,7 @@ export default {
                     background: -o-linear-gradient(bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* Opera 11.1-12.0 */
                     background: -moz-linear-gradient(bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1));/* Firefox 3.6-15 */
                     background: linear-gradient(to bottom,rgba(130, 244, 163, 1),rgba(76, 219, 197, 1)); /* 标准语法 */
+                    color: #fff  ;
                 }
             }
         }

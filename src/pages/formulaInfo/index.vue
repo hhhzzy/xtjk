@@ -32,7 +32,7 @@
                 </li>
                 <li>
                     <p class="title">每日标准热量:</p>
-                    <p class="cont">{{hotNum}}Kcal</p>
+                    <p class="cont">{{info.everyNeedHot}}Kcal</p>
                 </li>
                 <li>
                     <p class="title">特殊告知:</p>
