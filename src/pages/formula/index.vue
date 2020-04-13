@@ -19,7 +19,7 @@
                                 个人体质：{{item.bodyTypeName}}
                             </p>
                             <p class="one">
-                                每日标准热量：{{item.everyNeedHot}}
+                                每日标准热量：{{item.everyNeedHot}}Kcal
                             </p>
                         </view>
                         <div class="weui-cell__ft money">￥{{item.recipePrice / 1000}}</div>
@@ -54,7 +54,7 @@ export default {
         },
         // 进入我的配方
         getPf(){
-            mpvue.navigateTo({ url:'../onlineFormulaUser/main' })
+            mpvue.switchTab({ url:'../onlineFormulaUser/main' })
         },
         // 获取配方列表
         GetList(){

@@ -11,7 +11,7 @@
             <p class="con">支出情况：￥3179.55</p>
         </div> -->
         <div class="detail-box">
-            <img :src="detail.imgUrl" alt="">
+            <!-- <img :src="detail.imgUrl" alt=""> -->
             <wxParse :content="detail.content" />
         </div>
         <div class="share-box">

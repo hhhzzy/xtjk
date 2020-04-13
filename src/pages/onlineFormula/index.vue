@@ -7,8 +7,11 @@
                     <p class="picture">
                         <img :src="imgUrl" alt="">
                     </p>
-                    <p class="name">{{userInfo.userName}}</p>
-                    <a href="javascript:;" class="right"><img src="../../../static/images/right.png" alt=""></a>
+                    <div class="left">
+                        <p class="name">{{userInfo.userName}}</p>
+                        <p class="info">每日标准热量：{{formulaData.everyNeedHot}}Kcal</p>
+                    </div>
+                    <!-- <a href="javascript:;" class="right"><img src="../../../static/images/right.png" alt=""></a> -->
                 </div>
                 <div class="user-info">
                     <p class="year">
@@ -27,7 +30,7 @@
             </div>
         </div>
         <p class="content" v-if="hotNum">
-            以下配方是根据您目前的身体情况私人定制，一人一方，建议每日摄入热量维持在<i>{{hotNum}}Kcal</i>以内，按配方服用。
+            以下配方是根据您目前的身体情况私人定制，一人一方，按配方服用。
         </p>
         <div class="btn-box">
             <p :class="['one',currentIndex == 1?'current':'']" @click="switchFormula('one')">配方一</p>
@@ -121,7 +124,7 @@ export default {
             addressShow:false,
             addressList:[],
             addressData:[],
-            receiveAddressId:null,
+            receiveAddressId:null
            
         }
     },
@@ -343,12 +346,20 @@ export default {
                 height: 40px;
             }
         }
+        .left{
+            float: left;
+        }
         .name{
             font-size: 16px;
             color: rgba(29, 29, 29, 1);
-            float: left;
             margin-left: 15px;
             margin-top: 5px;
+            font-weight: 500;
+        }
+        .info{
+            font-size: 16px;
+            color: rgba(29, 29, 29, 1);
+            margin-left: 15px;
             font-weight: 500;
         }
         .right{
@@ -364,7 +375,7 @@ export default {
     .user-info{
         float: left;
         width: 100%;
-        margin-top: 20px;
+        margin-top: 10px;
         p{
             font-size: 14px;
             color: #333;
@@ -381,6 +392,10 @@ export default {
                 color: #1D1D1DFF;
                 font-size: 15px;
                 display: block;
+                height: 24px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space:nowrap;
             }
         }
     }

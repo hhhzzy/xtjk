@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/onlineFormula/main",
     "pages/mine/main",
     "pages/physicReview/main",
     "pages/onlineFormulaUser/main",
@@ -12,7 +13,6 @@
     "pages/addressList/main",
     "pages/orderList/main",
     "pages/mineInfo/main",
-    "pages/onlineFormula/main",
     "pages/formula/main",
     "pages/authorize/main",
     "pages/public/main",
