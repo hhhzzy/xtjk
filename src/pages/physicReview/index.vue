@@ -32,7 +32,7 @@
                             <p class="two" v-else @click="add">重新评测</p>
                         </div>
                         <p class="clearfix"></p>
-                        <p v-if="item.isFinish" class="title"><span v-for="(data,ind) in item.resultList" :key="ind">{{data.bodyTypeName}}{{data.score != '0'?data.score+'0分':'0分'}}、</span> </p>
+                        <p v-if="item.isFinish" class="title"><span v-for="(data,ind) in item.resultList" :key="ind">{{data.bodyTypeName}}{{data.score != '0'?data.score+'分':'0分'}}、</span> </p>
                         <p v-else class="title">您还未测评完</p>
                     </div>
                 </li>
@@ -92,7 +92,9 @@ export default {
             if(value){
                 mpvue.navigateTo({ url:'../physicStepOne/main' });
             }else  {
-                this.list[index].nextQuestion.memberEvaluationId=this.list[index].id;
+                console.log(this.list[index].nextQuestion.nowQuestionNumber)
+                wx.setStorageSync('nowQuestionNumber',this.list[index].nextQuestion.nowQuestionNumber);
+                wx.setStorageSync('memberEvaluationId',this.list[index].id);
                 wx.setStorageSync('question',this.list[index].nextQuestion);
                 wx.setStorageSync('oldQuestion',this.list[index].haveAnswerList);
                 mpvue.navigateTo({ url:'../physicStepTwo/main' });

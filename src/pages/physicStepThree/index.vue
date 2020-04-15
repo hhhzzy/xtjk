@@ -103,8 +103,7 @@ export default {
         this.GetInfo();
     },
     onLoad(options){
-        // this.memberEvaluationId = options.memberEvaluationId;
-        this.memberEvaluationId = 87;
+        this.memberEvaluationId = options.memberEvaluationId;
     }
 }
 </script>

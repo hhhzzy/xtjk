@@ -230,6 +230,12 @@ export default {
             // 修改当前的题目
             this.question = item;
             this.qIndex++;
+            wx.setStorageSync('nowQuestionNumber',this.qIndex);
+            // 把当前题目变成已回答过的题目
+            let setOldQuestion = this.question;
+            setOldQuestion.questionOption = detail;
+            this.oldQuestion.push(setOldQuestion);
+            wx.setStorageSync('oldQuestion',this.oldQuestion);
             let bool = await this.gotoNext();
             if(index <= this.questionList.length && bool){
                 // 答案高亮
@@ -321,20 +327,19 @@ export default {
                 item.answerDetail = item.questionOption.split('、')[1];
 
                 item.show = true;
-                item.scrollId = 'scroll_'+item.evaluationQuestionId;
+                item.scrollId = 'scroll_'+item.evaluationQuestionId?item.evaluationQuestionId:item.id;
                 item.opacity = '1';
                 item.loading = false;
                 return item;
             } )
         }
-        console.log(this.oldQuestion)
-        this.formData.memberEvaluationId = wx.getStorageSync('question').memberEvaluationId;
+        this.formData.memberEvaluationId = wx.getStorageSync('memberEvaluationId');
         this.question = wx.getStorageSync('question');
         this.question.optionList = this.question.optionList.map(item => {
             item.name = String(item.id);
             return item;
         });
-        this.qIndex = this.question.nowQuestionNumber?this.question.nowQuestionNumber:1;
+        this.qIndex = wx.getStorageSync('nowQuestionNumber')?wx.getStorageSync('nowQuestionNumber'):1;
 
         this.question.show = false;
         this.question.scrollId = 'scroll_'+this.question.id;
@@ -347,7 +352,6 @@ export default {
         this.questionList = this.questionList.concat(this.oldQuestion);
 
         this.questionList.push(this.question);
-        console.log(this.questionList)
         // 进度条改变
         this.stepOne = ((this.qIndex - 1) / this.question.totalCount).toFixed(4);
         this.stepTwo = this.qIndex == 1? this.question.totalCount : this.question.totalCount - this.qIndex + 1;

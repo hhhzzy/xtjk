@@ -122,7 +122,7 @@ export default {
             this.relaShow = true;
         },
         onConfirmRela(event){
-            this.formData.evaluationRelation = this.relationList[event.mp.detail.index].id
+            this.formData.evaluationRelation = this.relationList[event.mp.detail.index].dictionaryCode
             this.formData.evaluationRelationText = event.target.value;
             this.relaShow = false;
         },
@@ -152,6 +152,8 @@ export default {
                         type:'success',
                         message: '提交成功',
                         onClose: () => {
+                            wx.setStorageSync('memberEvaluationId',res.data.data.memberEvaluationId);
+                            wx.setStorageSync('nowQuestionNumber',1);
                             wx.setStorageSync('question',res.data.data);
                             wx.setStorageSync('oldQuestion','');
                             mpvue.navigateTo({ url:'../physicStepTwo/main' });
@@ -171,7 +173,8 @@ export default {
                 this.relationList = res.data.data;
                 res.data.data.forEach(item => {
                     this.relation.push(item.dictionaryValue);
-                });;
+                });
+                console.log(this.relationList)
             }
 		} )
     }
