@@ -62,7 +62,9 @@ export default {
             userInfo:{},
             sex:['男','女'],
             sexShow:false,
-            address:{}
+            address:{
+                receiveAddress:''
+            }
         }
     },
     components: {
@@ -107,7 +109,8 @@ export default {
                 if(res.data.code == 1 && res.data.data.length >= 1){
                     res.data.data.forEach(item => {
                         if(item.isDefault == 1) {
-                            this.address = item;
+                            this.address.receiveAddress = item.receiveAddress;
+                            console.log(this.address.receiveAddress)
                         }
                     });
                 }

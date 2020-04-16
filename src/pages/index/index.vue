@@ -66,7 +66,10 @@
 				<ul>
 					<li v-for="(item,index) in healthList" :key="index">
 						<a :href="'../healthInfo/main?id='+item.id">
-							<p>{{item.title}}</p>
+							<p>
+								<span>{{item.title}}</span>
+								<span class="two">{{item.sub_title}}</span>
+							</p>
 							<img :src="item.imgUrl" alt="">
 						</a>
 					</li>
@@ -608,6 +611,10 @@ export default {
 					float: left;
 					width: 240px;
 					font-weight: bold;
+					.two{
+						font-size: 14px;
+						display: block;
+					}
 				}
 				img{
 					width: 65px;

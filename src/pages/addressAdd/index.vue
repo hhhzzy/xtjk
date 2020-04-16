@@ -213,7 +213,6 @@ export default {
         }
     },
     mounted(){
-        this.getUserInfo();
     },
     onLoad(option){
         console.log(option)
@@ -223,6 +222,13 @@ export default {
             this.GetAddress(this.id);
         }
         this.option = option;
+    },
+    onShow(){
+        this.address = {
+                default:'是',
+                receiveName:''
+            },
+        this.getUserInfo();
     }
 }
 </script>

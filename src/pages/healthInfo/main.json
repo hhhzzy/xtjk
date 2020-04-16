@@ -1,5 +1,6 @@
 {
     "usingComponents": {
+        "txv-video": "plugin://myPlugin/video"
     },
     "navigationBarTitleText": "健康咨询详情" 
 }

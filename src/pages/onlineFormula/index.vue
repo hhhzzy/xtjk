@@ -33,13 +33,18 @@
             以下配方是根据您目前的身体情况私人定制，一人一方，按配方服用。
         </p>
         <div class="btn-box">
-            <p :class="['one',currentIndex == 1?'current':'']" @click="switchFormula('one')">配方一</p>
-            <p :class="['one',currentIndex == 2?'current':'']" @click="switchFormula('two')">配方二</p>
+            <div v-if="list.length == 2">
+                <p :class="['one',currentIndex == 1?'current':'']" @click="switchFormula('one')">配方一</p>
+                <p :class="['one',currentIndex == 2?'current':'']" @click="switchFormula('two')">配方二</p>
+            </div>
+            <div v-if="list.length == 1">
+                <p :class="['one full-p',currentIndex == 1?'current':'']" @click="switchFormula('one')">配方一</p>
+            </div>
         </div>
         <div class="food-box">
            <div :class="[boolDetail?'':'food-list']" v-for="(item,index) in formulaData.foodMap" :key="index">
                <p class="tit">热源{{index+1}}</p>
-                <p class="con">{{item.foodName}}   X {{item.foodNumber*formulaData.overDay}}份数</p>
+                <p class="con">{{item.foodName}}   X {{item.foodNumber*formulaData.overDay}}份</p>
            </div>
            <p class="title">该配方包含食材{{foodNum}}种，总热量{{hotNum*formulaData.overDay}}Kcal。</p>
            <p class="food-btn" @click="seeDetail">
@@ -48,7 +53,7 @@
                <img v-else  src="../../../static/images/down.png" alt="">
            </p>
            <div class="food-tip">
-               以优惠<span>￥{{formulaData.discountPrice / 1000}}</span>
+               已优惠<span>￥{{formulaData.discountPrice / 1000}}</span>
                小计<i>￥{{formulaData.recipePrice*formulaData.overDay / 1000}}</i>
            </div>
         </div>
@@ -438,6 +443,9 @@ export default {
         background: linear-gradient(to bottom,#82F4A3,#4CDBC5); /* 标准语法 */
         line-height: 60px;
         color: #fff;
+    }
+    .full-p{
+        width: 100%;
     }
 }
 .food-box{

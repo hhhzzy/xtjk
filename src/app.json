@@ -1,18 +1,19 @@
 {
   "pages": [
+    "pages/health/main",
     "pages/index/main",
-    "pages/onlineFormula/main",
+    "pages/recommend/main",
+    "pages/mineInfo/main",
     "pages/mine/main",
+    "pages/addressList/main",
     "pages/physicReview/main",
+    "pages/onlineFormula/main",
     "pages/onlineFormulaUser/main",
     "pages/condition/main",
-    "pages/recommend/main",
     "pages/physicStepThree/main",
     "pages/physicStepTwo/main",
     "pages/physicStepOne/main",
-    "pages/addressList/main",
     "pages/orderList/main",
-    "pages/mineInfo/main",
     "pages/formula/main",
     "pages/authorize/main",
     "pages/public/main",
@@ -35,7 +36,6 @@
     "pages/teamInfo/main",
     "pages/addressAdd/main",
     "pages/healthInfo/main",
-    "pages/health/main",
     "pages/register/main"
   ], 
   "window": {
@@ -85,5 +85,11 @@
       "activeIcon": "static/tabs/home-active.png"
     }],
     "position": "bottom"
+  },
+  "plugins": {
+    "myPlugin": {
+      "version": "1.2.4",
+      "provider": "wxa75efa648b60994b"
+    }
   }
 }

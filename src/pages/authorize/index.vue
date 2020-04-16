@@ -109,8 +109,24 @@ export default {
                             parentMemberId: wx.getStorageSync('parentMemberId')?wx.getStorageSync('parentMemberId'):'',
                             imgUrl:this.userInfo.avatarUrl,
                     }
-                    this.boolLogin = true;
-                    console.log(this.token)
+                    // 获取openid
+                    const appid = 'wxd81d6b44c20f7e1f';
+                    const secret = '90b0268e365267167154827e401b2130';
+                    await new Promise( (resolve,reject) => {
+                        wx.request({
+                            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + this.code + '&grant_type=authorization_code',
+                            data: {},
+                            header: {
+                                'content-type': 'json'
+                            },
+                            success:  (res) => {
+                                this.info.appId = res.data.openid;
+                                resolve();
+                            }
+                        })
+                    } )
+                    // this.boolLogin = true;
+                    await this.login(this.info)
                 }
             });
         },

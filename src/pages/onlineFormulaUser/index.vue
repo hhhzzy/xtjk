@@ -82,7 +82,7 @@
                         placeholder="请选择个人体质（可多选）"
                     >
                     </van-field>
-                    <span class="form-tip">（如评测结果含多项体质，选最高项填写）</span>
+                    <span class="form-tip">（请按自身体质检查，可多选）</span>
                     <a class="link" @click="gotoCp">不清楚体质，立即去测评>></a>
                 </van-cell-group>
                 <!-- 性别弹窗 -->

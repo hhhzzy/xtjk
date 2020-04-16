@@ -3,7 +3,9 @@
         <navbar :title="'我的推荐'"></navbar>
         <div class="detail">
             <p><em>我的推广账号：</em><i>{{user.memberPhone}}</i></p>
-            <p><em>我的推广链接：</em><i>{{link}}</i><button class="share" open-type="share">分享</button></p>
+            <p><em>我的推广链接：</em>
+            <!-- <i>{{link}}</i> -->
+            <button class="share" open-type="share">立即邀请好友</button></p>
              <!-- <span @click="onShareAppMessage">复制</span>  -->
             <!-- <p><em>专属推荐二维码：</em> <img src="http://47.108.67.109/api/service/upload/getImg?imgUrl=C%3A%5Cworkspace%5Cth_management%5Cupload%5Cimg%5C1584688727161%E7%A8%BF%E5%AE%9A%E8%AE%BE%E8%AE%A1%E5%AF%BC%E5%87%BA-20200320-151839.png" alt="">  <span @click="upload">下载图片</span></p> -->
         </div>
@@ -180,7 +182,7 @@ export default {
                 margin-left: 10px;
                 display: inline-block;
                 border:none;
-                width: 40px;
+                width: 102px;
                 height: 25px;
                 text-align: center;
                 line-height: 25px;

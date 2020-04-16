@@ -32,7 +32,14 @@
                             <p class="two" v-else @click="add">重新评测</p>
                         </div>
                         <p class="clearfix"></p>
-                        <p v-if="item.isFinish" class="title"><span v-for="(data,ind) in item.resultList" :key="ind">{{data.bodyTypeName}}{{data.score != '0'?data.score+'分':'0分'}}、</span> </p>
+                        <p v-if="item.isFinish" class="title">
+                            <template v-if="item.resultList.length">
+                                <span v-for="(data,ind) in item.resultList" :key="ind">{{data.bodyTypeName}}{{data.score != '0'?data.score+'分':'0分'}}、</span> 
+                            </template>
+                            <template v-else>
+                                平和体质
+                            </template>
+                        </p>
                         <p v-else class="title">您还未测评完</p>
                     </div>
                 </li>
@@ -64,11 +71,10 @@ export default {
                 url: 'api/evaluation/getEvaluationList?memberId='+Number(store.state.user.userInfo.id),
                 method: 'get',
             }).then( res => {
-                console.log(res.data.data)
                 if(res.data.data){
                     this.list = res.data.data.map( item => {
                         if(item.resultList){
-                            const temp = item.resultList;
+                            let temp = item.resultList;
                             for( var i = 0; i < temp.length-1; i++ ){
                                 for(var j = 0; j<temp.length-i-1;j++ ){
                                     if(Number(temp[j].score)>Number(temp[j+1].score)){
@@ -79,10 +85,15 @@ export default {
                                     }
                                 }
                             }
+                            temp = temp.filter( item => {
+                                return Number(item.value) >= 32;
+                            } );
                             item.resultList = temp;
                         }
                         return item;
                     } );
+                    console.log(res.data.data)
+                    // this.name = this.info.length?this.info[0].key:'平和体质';
                     
                 }
             })
@@ -92,7 +103,6 @@ export default {
             if(value){
                 mpvue.navigateTo({ url:'../physicStepOne/main' });
             }else  {
-                console.log(this.list[index].nextQuestion.nowQuestionNumber)
                 wx.setStorageSync('nowQuestionNumber',this.list[index].nextQuestion.nowQuestionNumber);
                 wx.setStorageSync('memberEvaluationId',this.list[index].id);
                 wx.setStorageSync('question',this.list[index].nextQuestion);
@@ -329,7 +339,7 @@ ul{
                         height: 17px;
                         position: absolute;
                         left: 0;
-                        top: 0;
+                        top: 2px;
                     }
                 }
         }

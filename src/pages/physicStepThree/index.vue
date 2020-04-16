@@ -88,7 +88,6 @@ export default {
                         return Number(item.value) >= 32;
                     } );
                     this.name = this.info.length?this.info[0].key:'平和体质';
-                    console.log(this.info)
                 }
             } )
         },

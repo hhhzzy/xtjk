@@ -5,7 +5,7 @@
 
             <li v-for="(item,index) in addressList" :key="index">
                 <p class="img">
-                    <img src="" alt="">
+                    <img src="../../../static/images/address.png" alt="">
                 </p>
                 <div class="center">
                     <div class="one">
@@ -96,6 +96,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .address-list-box{
+    height: 100%;
+    background-color: #fff;
     ul{
         li{
             padding: 10px 10px 10px 20px;
@@ -106,7 +108,6 @@ export default {
                 width: 54px;
                 height: 54px;
                 border-radius: 50%;
-                background-color: red;
                 float: left;
                 img{
                     width: 54px;

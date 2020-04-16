@@ -7,6 +7,7 @@
         </div>
         <div class="detail-box">
             <!-- <img :src="detail.imgUrl" alt=""> -->
+            <txv-video vid="h0033lg61p7" playerid="txv1" :autoplay="true"></txv-video>
             <wxParse :content="detail.content" />
         </div>
         <share></share>
@@ -40,6 +41,9 @@ export default {
             }).then( res => {
                 if(res.data.code ==1){
                    this.detail = res.data.data;
+                   this.detail.content = this.detail.content.replace(/<img src="/g,'<img src="'+ this.imgBaseUrl+'api/');
+                   this.detail.content += "<txv-video vid='h0033lg61p7' playerid='txv1' :autoplay='true'></txv-video>"
+                   console.log(this.detail.content)
                    this.detail.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(this.detail.imgUrl);
                 }
             } )
