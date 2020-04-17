@@ -47,8 +47,10 @@ export default {
                 method:'get'
             }).then( res => {
                 if(res.data.code ==1){
+                    console.log(res.data.data)
                    this.detail = res.data.data;
-                   this.detail.content = this.detail.content.replace(/<img src="/g,'<img src="'+ this.imgBaseUrl+'api/');
+                //    this.detail.content = this.detail.content.replace(/<img src="/g,'<img src="'+ this.imgBaseUrl+'api/');
+                    console.log(this.detail)
                    this.detail.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(this.detail.imgUrl);
                 }
             } )
