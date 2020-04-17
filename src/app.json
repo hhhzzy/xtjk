@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/health/main",
     "pages/index/main",
+    "pages/condition/main",
+    "pages/health/main",
     "pages/recommend/main",
     "pages/mineInfo/main",
     "pages/mine/main",
@@ -9,7 +10,6 @@
     "pages/physicReview/main",
     "pages/onlineFormula/main",
     "pages/onlineFormulaUser/main",
-    "pages/condition/main",
     "pages/physicStepThree/main",
     "pages/physicStepTwo/main",
     "pages/physicStepOne/main",

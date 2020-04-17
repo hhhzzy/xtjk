@@ -4,7 +4,10 @@
          <ul>
             <li v-for="(item,index) in teamList" :key="index">
                 <a :href="'../teamInfo/main?id='+item.id">
-                    <p>{{item.title}}</p>
+                    <p>
+                        <span>{{item.title}}</span>
+                        <span class="two">{{item.sub_title}}</span>
+                    </p>
                     <img :src="item.imgUrl" alt="">
                 </a>
             </li>
@@ -81,6 +84,11 @@ ul{
             width: 240px;
             font-weight: bold;
             width: 204px;
+            .two{
+                font-size: 14px;
+                display: block;
+                font-weight: initial;
+            }
         }
         img{
             width: 100px;

@@ -1,20 +1,26 @@
 <template>
     <div>
         <navbar :title="'调理建议'"></navbar>
-        <img src="../../../static/images/tljy.jpg" alt="">
+        <img :src="imgUrl" alt="">
     </div>
 </template>
 <script>
+import {imgBaseUrl} from '../../utils/common.js'
 import navbar from '../../components/navbar'
 export default {
     data(){
         return {
-
+            imgBaseUrl:imgBaseUrl,
+            imgUrl:''
         }
     },
     components: {
         navbar
     },
+    mounted(){
+        this.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent('C:/workspace/th_api/source/message.png ');
+       
+    }
 }
 </script>
 <style lang="less" scoped>

@@ -613,7 +613,8 @@ export default {
 					font-weight: bold;
 					.two{
 						font-size: 14px;
-						display: block;
+                        display: block;
+                        font-weight: initial;
 					}
 				}
 				img{
