@@ -1,6 +1,6 @@
 <template>
     <div class="formula-user-box">
-        <navbar :backVisible="true" :title="'在线配方'"></navbar>
+        <navbar :backVisible="false" :title="'在线配方'"></navbar>
         <p class="tips">
            <img src="../../../static/images/notice.png" alt="">
             <span>不同的调理目的和身体素质将影响配方构成，请 如实告知。</span>
@@ -332,7 +332,7 @@ export default {
             mpvue.switchTab({ url:'../physicReview/main' })
         }
     },
-    async mounted(){
+    async onShow(){
         // 获取用户信息
         this.formData.userName = store.state.user.userInfo.nickName;
         this.formData.memberId = store.state.user.userInfo.id;

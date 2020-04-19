@@ -176,7 +176,7 @@ export default {
                 });
             } )
             axios({
-                url: 'api/weixinpay/getPublicSign?memberId='+store.state.user.userInfo.id+'&body=用户捐赠'+'&code='+code+'&total_fee='+1,
+                url: 'api/weixinpay/getPublicSign?memberId='+store.state.user.userInfo.id+'&body=用户捐赠'+'&code='+code+'&total_fee='+this.formData.transactionMoney*100,
                 method: 'get',
             }).then( res => { 
                 const data = res.data.data;
@@ -193,18 +193,23 @@ export default {
                         wx.showLoading({
                             title: '加载中',
                         })
-                        axios({
-                            url:'api/public/addPublicTransaction',
-                            method:'post',
-                            data:that.formData
-                        }).then( res => {
-                            wx.hideLoading();
-                            if(res.data.code ==1){
-                                Toast.success('捐赠成功！');
-                                that.show = false;
-                                that.getDonate();
-                            }
-                        } )
+                        if(res.data.code ==1){
+                            Toast.success('捐赠成功！');
+                            that.show = false;
+                            that.getDonate();
+                        }
+                        // axios({
+                        //     url:'api/public/addPublicTransaction',
+                        //     method:'post',
+                        //     data:that.formData
+                        // }).then( res => {
+                        //     wx.hideLoading();
+                        //     if(res.data.code ==1){
+                        //         Toast.success('捐赠成功！');
+                        //         that.show = false;
+                        //         that.getDonate();
+                        //     }
+                        // } )
                         
                     },
                     fail (res) { 
@@ -254,7 +259,6 @@ page{
 .donate-box{
     height: 100%;
     background-color: #f2f2f2;
-    overflow: hidden;
     padding-bottom: 100px;
 }
 .donate-content{
@@ -425,6 +429,7 @@ page{
     padding-bottom: 10px;
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
+    margin-bottom: 60px;
     .title{
         font-size: 17px;
         position: relative;

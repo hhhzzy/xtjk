@@ -300,7 +300,7 @@ export default {
             this.addressShow = false;
         }
     },
-    mounted(){
+    onShow(){
         // 获取配方详情
         
         // 获取数据

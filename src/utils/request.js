@@ -7,6 +7,7 @@ const ajax = axios.create({
     baseURL: url, // 请求地址
     timeout: 30000 // 请求超时
 })
+let loginToast = 0;
 ajax.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8' // post 的 请求头设置
 // 自定义请求
 ajax.defaults.adapter = function (config){
@@ -31,9 +32,34 @@ ajax.defaults.adapter = function (config){
           header:header,
           success:(res)=>{ 
               if(res.data.code == -1){
-                mpvue.navigateTo({ 
-                    url: '../authorize/main'
-                })
+                // mpvue.navigateTo({ 
+                //     url: '../authorize/main'
+                // })
+                loginToast++;
+                if(loginToast == 1){
+
+                    wx.showModal({
+                        title: '提示',
+                        content: '为获取更好的服务，请先登录使用！',
+                        cancelText:'暂不登录',
+                        confirmText:'登录',
+                        success: function(res) {
+                            if (res.confirm) {
+                                mpvue.navigateTo({ 
+                                    url: '../authorize/main'
+                                })
+                            } else {
+                                loginToast = 0;
+                            }
+                        }
+                    })
+                }
+                  
+                // wx.setStorageSync('boolLogin','1');
+                // mpvue.switchTab({ 
+                //     url: '../mine/main'
+                // })
+                return resolve(res);
               }else{
                 return resolve(res);
               }

@@ -31,20 +31,26 @@ const actions  = {
                     commit('SET_USER',data.data.data.user);
                     wx.setStorageSync('token', data.data.data.token);
                     wx.setStorageSync('userInfo', data.data.data.user);
+                    wx.removeStorageSync('boolLogin');
                     mpvue.switchTab({ 
                         url: '../index/main'
                     })
                     resolve();
                 } else {
-                    Toast({
-                        type: 'fail',
-                        message: data.data.msg,
-                        onClose: () => {
-                            mpvue.navigateTo({ 
-                                url: '../authorize/main'
-                            })
-                        }
-                    });
+                    console.log(545555)
+                    // Toast({
+                    //     type: 'fail',
+                    //     message: data.data.msg,
+                    //     onClose: () => {
+                    //         mpvue.navigateTo({ 
+                    //             url: '../authorize/main'
+                    //         })
+                    //     }
+                    // });
+                    wx.showModal({
+                        title: '提示',
+                        content: data.data.msg,
+                    })
                 }
             } ).catch( err => {
                 reject(err);

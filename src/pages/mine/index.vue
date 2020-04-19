@@ -1,8 +1,8 @@
 <template>
     <div class="mine-box">
         <navbar :backVisible="true" :title="'我的'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
-        <div class="mine-one">
-            <div class="top">
+        <div class="mine-one" :style="{'height':boolLogin != '1'?'125px':'75px'}">
+            <div class="top" v-if="boolLogin != '1'">
                 <p class="img">
                     <a href="../mineInfo/main"> <img :src="userInfo.imgUrl" alt=""></a>
                 </p>
@@ -14,7 +14,7 @@
                     <div class="level">
                         <a href="../integralDetail/main"> 
                             <span>{{userInfo.nowGradeName}}</span>
-                            <p class="process"><span :style="{'width':(userInfo.memberIntegral/100)*215+'px'}"></span></p>
+                            <p class="process"><span :style="{'width':(userInfo.memberIntegral/userInfo.differentGrade)*215+'px'}"></span></p>
                             <span>{{userInfo.nextGradeName}}</span>
                         </a>
                     </div>
@@ -24,7 +24,13 @@
                     </div>
                 </div>
             </div>
-            <div class="bottom">
+            <div class="login-btn" v-if="boolLogin == '1'" >
+                <p class="img">
+                    <a href="../mineInfo/main"> <img src="../../../static/images/address.png" alt=""></a>
+                </p>
+                <p @click="GotoLogin" class="login"> 点击登录用户</p>
+            </div>
+            <div class="bottom" v-if="boolLogin != '1'">
                 <p class="money">
                     账户余额：<a href="../accountDetail/main"><span>{{userInfo.memberAccountMoney / 1000}}元</span></a>
                 </p>
@@ -145,9 +151,12 @@ import Toast from '../../../static/vant/toast/toast';
 export default {
     data(){
         return{
-            userInfo:{},
+            userInfo:{
+               
+            },
             show:false,
-            txValue:null
+            txValue:null,
+            boolLogin:'0'
         }
     },
     components: {
@@ -191,7 +200,7 @@ export default {
                 });
             } )
             axios({
-                url: 'api/weixinDraw/withdrawal?memberId='+store.state.user.userInfo.id+'&code='+code+'&total_fee='+this.txValue,
+                url: 'api/weixinDraw/withdrawal?memberId='+store.state.user.userInfo.id+'&code='+code+'&total_fee='+this.txValue*100,
                 method: 'get',
             }).then( data => {
                 if(data.data.code == 1){
@@ -201,13 +210,23 @@ export default {
                     Toast.fail('提现失败');
                 }
             } )
+        },
+        GotoLogin(){
+            mpvue.navigateTo({ 
+                url: '../authorize/main'
+            })
         }
         
     },
     created(){
-        this.getUserInfo();
+        // this.getUserInfo();
     },
     onShow(){
+        if(!wx.getStorageSync('token')){
+            this.boolLogin = '1';
+        } else {
+            this.boolLogin = '0';
+        }
         this.getUserInfo();
     }
 }
@@ -427,6 +446,23 @@ export default {
         border-bottom: 1px solid #f2f2f2;
         margin-top: 10px;
         
+    }
+    .login-btn{
+        overflow: hidden;
+        height: 90px;
+        .img{
+            float: left;
+        }
+        img{
+            width: 56px;
+            height: 56px;
+        }
+        .login{
+            float: left;
+            margin-left: 10px;
+            color: #fff;
+            margin-top: 15px;
+        }
     }
 }
 </style>

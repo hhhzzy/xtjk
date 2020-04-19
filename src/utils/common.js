@@ -59,9 +59,9 @@ export async function wxpay(memberId,memberOrderId,text,total_fee){
                     content: '付款失败，请重新支付！',
                     success (res) {
                       if (res.confirm) {
-                        mpvue.navigateTo({ url:'../orderInfo/main?orderId='+memberOrderId })
+                        // mpvue.navigateTo({ url:'../orderInfo/main?orderId='+memberOrderId })
                       } else if (res.cancel) {
-                        mpvue.navigateTo({ url:'../orderInfo/main?orderId='+memberOrderId })
+                        // mpvue.navigateTo({ url:'../orderInfo/main?orderId='+memberOrderId })
                       }
                     }
                 })

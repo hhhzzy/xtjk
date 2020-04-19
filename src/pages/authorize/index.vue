@@ -84,9 +84,11 @@ export default {
                 //用户按了允许授权按钮
                 this.allowLogin();
                 console.log('用户按了允许授权按钮')
+                wx.removeStorageSync('showToast');
             } else {
                 //用户按了拒绝按钮
                 console.log('用户按了拒绝按钮')
+                wx.setStorageSync('showToast','1');
             }
         },
         ...mapActions({
@@ -110,21 +112,22 @@ export default {
                             imgUrl:this.userInfo.avatarUrl,
                     }
                     // 获取openid
-                    const appid = 'wxd81d6b44c20f7e1f';
-                    const secret = '90b0268e365267167154827e401b2130';
-                    await new Promise( (resolve,reject) => {
-                        wx.request({
-                            url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + this.code + '&grant_type=authorization_code',
-                            data: {},
-                            header: {
-                                'content-type': 'json'
-                            },
-                            success:  (res) => {
-                                this.info.appId = res.data.openid;
-                                resolve();
-                            }
-                        })
-                    } )
+                    // const appid = 'wxd81d6b44c20f7e1f';
+                    // const secret = '90b0268e365267167154827e401b2130';
+                    // await new Promise( (resolve,reject) => {
+                    //     wx.request({
+                    //         url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + this.code + '&grant_type=authorization_code',
+                    //         data: {},
+                    //         header: {
+                    //             'content-type': 'json'
+                    //         },
+                    //         success:  (res) => {
+                    //             this.info.appId = res.data.openid;
+                    //             resolve();
+                    //         }
+                    //     })
+                    // } )
+                    this.info.appId = this.code;
                     // this.boolLogin = true;
                     await this.login(this.info)
                 }

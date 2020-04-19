@@ -11,7 +11,6 @@
             <!-- <p class="con">支出后余额：￥{{detail.afterPublicMoney / 1000}}</p> -->
         </div>
         <div class="detail-box">
-            <img :src="detail.imgUrl" alt="">
             <wxParse :content="detail.content" />
         </div>
         <div class="share-box">
@@ -47,10 +46,8 @@ export default {
                 method:'get'
             }).then( res => {
                 if(res.data.code ==1){
-                    console.log(res.data.data)
                    this.detail = res.data.data;
-                //    this.detail.content = this.detail.content.replace(/<img src="/g,'<img src="'+ this.imgBaseUrl+'api/');
-                    console.log(this.detail)
+                   this.detail.content = this.detail.content.replace(/<img src="/g,'<img src="'+ this.imgBaseUrl+'api/');
                    this.detail.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(this.detail.imgUrl);
                 }
             } )

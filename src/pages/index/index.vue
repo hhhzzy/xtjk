@@ -330,7 +330,6 @@ export default {
   },
     onShareAppMessage: (res) => {
         if(res.from == 'menu'){
-            console.log(res);
             return {
                 title: '健呗+',
                 imageUrl: '', // 图片 URL

@@ -34,7 +34,7 @@
                     <p>用户名</p>
                     <p>注册时间</p>
                 </li>
-                <li v-for="(item,index) in info.rows" :key="index">
+                <li v-for="(item,index) in info" :key="index">
                     <p>{{index+1}}</p>
                     <p>{{item.nickName}}</p>
                     <p>{{item.createTime}}</p>
@@ -68,10 +68,10 @@ export default {
                 url: 'api/personal/getChildrenList?memberId='+store.state.user.userInfo.id+'&limit=100&offset=1',
                 method: 'get'
             }).then( res => {
-                console.log(res);
-                if(res.data.code == 1){
-                    this.info = res.data.data;
+                if(res.data.rows){
+                    this.info = res.data.rows;
                 }
+                console.log(res)
             } )
         },
         GetUse(){

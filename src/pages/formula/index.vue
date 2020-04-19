@@ -58,14 +58,14 @@ export default {
         },
         // 获取配方列表
         GetList(){
-            wx.showLoading({
-                title: '加载中',
-            })
+            // wx.showLoading({
+            //     title: '加载中',
+            // })
             axios({
                 url:'api/recipe/queryRecipeList?memberId='+store.state.user.userInfo.id+'&offset='+this.offset+'&limit='+this.limit,
                 method:'GET',
             }).then( res => {
-                wx.hideLoading();
+                // wx.hideLoading();
                 if(res.data.pages >= this.offset){
                     console.log(res.data)
                     if(res.data.rows.length){
