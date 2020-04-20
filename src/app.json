@@ -1,13 +1,14 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/welfare/main",
+    "pages/physicReview/main",
     "pages/condition/main",
     "pages/health/main",
     "pages/recommend/main",
     "pages/mineInfo/main",
     "pages/mine/main",
     "pages/addressList/main",
-    "pages/physicReview/main",
     "pages/onlineFormula/main",
     "pages/onlineFormulaUser/main",
     "pages/physicStepThree/main",
@@ -26,7 +27,6 @@
     "pages/donate/main",
     "pages/integralDetail/main",
     "pages/orderInfo/main",
-    "pages/welfare/main",
     "pages/suggest/main",
     "pages/tc/main",
     "pages/accountDetail/main",

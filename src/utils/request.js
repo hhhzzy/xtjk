@@ -36,8 +36,8 @@ ajax.defaults.adapter = function (config){
                 //     url: '../authorize/main'
                 // })
                 loginToast++;
+                console.log(loginToast)
                 if(loginToast == 1){
-
                     wx.showModal({
                         title: '提示',
                         content: '为获取更好的服务，请先登录使用！',
@@ -48,9 +48,8 @@ ajax.defaults.adapter = function (config){
                                 mpvue.navigateTo({ 
                                     url: '../authorize/main'
                                 })
-                            } else {
-                                loginToast = 0;
                             }
+                            loginToast = 0;
                         }
                     })
                 }

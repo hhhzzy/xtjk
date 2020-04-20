@@ -84,11 +84,9 @@ export default {
                 //用户按了允许授权按钮
                 this.allowLogin();
                 console.log('用户按了允许授权按钮')
-                wx.removeStorageSync('showToast');
             } else {
                 //用户按了拒绝按钮
                 console.log('用户按了拒绝按钮')
-                wx.setStorageSync('showToast','1');
             }
         },
         ...mapActions({

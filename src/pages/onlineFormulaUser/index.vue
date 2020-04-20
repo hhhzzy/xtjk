@@ -344,6 +344,7 @@ export default {
             }).then( res => {
                 if(res.data.code ==1){
                     this.workList = res.data.data;
+                    this.work = [];
                     res.data.data.forEach(item => {
                         this.work.push(item.natureName);
                     });;
@@ -356,6 +357,7 @@ export default {
             }).then( res => {
                 if(res.data.code ==1){
                     this.directionList = res.data.data;
+                    this.direction = [];
                     res.data.data.forEach(item => {
                         this.direction.push(item.condiName);
                     });;
