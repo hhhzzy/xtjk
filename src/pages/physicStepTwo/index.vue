@@ -128,7 +128,8 @@ export default {
             userInfo:{},
             timer1:null,
             timer2:null,
-            oldQuestion:[]
+            oldQuestion:[],
+            onceClick:true
         }
     },
     components: {
@@ -154,6 +155,7 @@ export default {
             this.boolBtn = true;
         },
         async gotoNext(){
+            this.onceClick = false;
             this.a = this.a +1;
             let bool = false;
             bool = await new Promise( (resolve,reject) => {
@@ -169,7 +171,6 @@ export default {
                     method:'POST',
                     data:this.formData
                 }).then( res => {
-                    console.log(res)
                     if(res.data.code ==1){
                         if(res.data.data == '1'){
                             // 获取测评结果
@@ -222,6 +223,7 @@ export default {
         },
         // 点击答案
         async clkAnswer(index,evaluationOptionId,detail,item){
+            if(!this.onceClick) return;
             this.nowIndex = index;
             // 调用提交函数
             this.formData.evaluationOptionId = Number(evaluationOptionId);
@@ -229,8 +231,10 @@ export default {
             this.questionList[index].answerDetail = detail.split('、')[1];
             // 修改当前的题目
             this.question = item;
-            this.qIndex++;
-            wx.setStorageSync('nowQuestionNumber',this.qIndex);
+            if(!item.questionOption){
+                this.qIndex++;
+                wx.setStorageSync('nowQuestionNumber',this.qIndex);
+            }
             // 把当前题目变成已回答过的题目
             let setOldQuestion = this.question;
             setOldQuestion.questionOption = detail;
@@ -240,7 +244,7 @@ export default {
             if(index <= this.questionList.length && bool){
                 // 答案高亮
                 this.questionList[index].optionList = this.questionList[index].optionList.map( (item,index) => {
-                    if(item.questionOption.indexOf(detail.split('、')[1]) >= 0){
+                    if(item.id ==  evaluationOptionId){
                         item.current = true;
                     } else {
                         item.current = false;
@@ -255,18 +259,20 @@ export default {
                     this.questionList[index+1].opacity = 1;
                     this.timer1 = setTimeout( () => {
                         this.scrollInView = this.questionList[index+1].scrollId;
-                    }, 1000 )
+                    }, 800 )
                     this.timer2 = setTimeout( () => {
-                        const obj = Object.assign({},this.questionList[index+1]);
-                        this.questionList.splice(index+1,1);
-                        this.$set(obj,'loading',false)
-                        this.questionList[index+1] = obj;
-                    },1500 )
+                        this.questionList[index+1].loading = false;
+                        this.questionList = [...this.questionList];
+                        // const obj = Object.assign({},this.questionList[index+1]);
+                        // this.questionList.splice(index+1,1);
+                        // this.$set(obj,'loading',false)
+                        // this.questionList[index+1] = obj;
+                    },800 )
                 }, 500)
             } else {
                 // 答案高亮
                 this.questionList[index].optionList = this.questionList[index].optionList.map( (item,index) => {
-                    if(item.questionOption.indexOf(detail.split('、')[1]) >= 0){
+                    if(item.id ==  evaluationOptionId){
                         item.current = true;
                     } else {
                         item.current = false;
@@ -278,12 +284,15 @@ export default {
                     this.questionList = [...this.questionList];
                 }, 1000)
             }
+            setTimeout( () => {
+                this.onceClick = true;
+            }, 1000)
         },
         // 展示答案
         closeShow(index){
             this.questionList[index].show = false;
             this.boolNotFir = true;
-            let text = this.questionList[index].answerDetail;
+            let text = this.questionList[index].questionOption;
             // 答案高亮
             this.questionList[index].optionList = this.questionList[index].optionList.map( (item,index) => {
                 if(item.questionOption.indexOf(text) >= 0){

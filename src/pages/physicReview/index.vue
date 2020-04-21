@@ -27,7 +27,7 @@
                             <p class="sex">{{item.evaluationSex}}</p>
                         </div>
                         <div class="btn">
-                            <p class="one" v-if="item.isFinish">去调理</p>
+                            <p class="one" v-if="item.isFinish" @click="GotoTl">去调理</p>
                             <p class="two" v-if="!item.isFinish || item.isFinish == 2" @click="add(item.isFinish,index)">继续测评</p>
                             <p class="two" v-else @click="add">重新评测</p>
                         </div>
@@ -77,7 +77,7 @@ export default {
                             let temp = item.resultList;
                             for( var i = 0; i < temp.length-1; i++ ){
                                 for(var j = 0; j<temp.length-i-1;j++ ){
-                                    if(Number(temp[j].score)>Number(temp[j+1].score)){
+                                    if(Number(temp[j].score)<Number(temp[j+1].score)){
                                         //把大的数字放到后面
                                         var swap = temp[j];
                                         temp[j] = temp[j+1];
@@ -86,7 +86,7 @@ export default {
                                 }
                             }
                             temp = temp.filter( item => {
-                                return Number(item.value) >= 32;
+                                return Number(item.score) >= 32;
                             } );
                             item.resultList = temp;
                         }
@@ -140,6 +140,9 @@ export default {
                 }
             } )
         },
+        GotoTl(){
+            mpvue.switchTab({ url:'../onlineFormulaUser/main' })
+        }
     },
     mounted(){
         
