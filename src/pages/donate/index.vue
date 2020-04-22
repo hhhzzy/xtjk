@@ -9,23 +9,24 @@
                 <p class="money">
                     {{publicAccountMoney / 1000}}
                 </p>
-                <p class="title">公益金总额（元）</p>
+                <p class="title">爱心池总金额（元）</p>
             </div>
             <div class="donate-btn">
-                <p class="btn" @click="showDonate">爱心捐赠</p>
+                <p class="btn" @click="showDonate">爱心商城</p>
             </div>
             <div class="donate-con">
-                <p>健呗公益互助项目，旨在弘扬中华民族“互帮互助”的传统美德，帮助平台内会员在特殊情况下渡过难关，解决问题。我们的公益理念是“我为人人，人人为我”。救助对象实行权限制，即你需要先成为【公益会员】,才能发起公益救助申请。</p> 
-                <p>如何成为【公益会员】？</p>
-                <p>捐赠不低于20元公益金，自捐赠日开始一定时间后，自动升级为公益会员。</p>
+                <p>健呗感恩回馈，旨在感恩在平台的爱心消费者，帮助平台内爱心会员在特殊情况下渡过难关，解决问题。我们的理念是“人人为我，我为人人”。救助对象实行权限制，即你需要取得【爱心会员】资格,，符合平台感恩救助规则，才能发起救助申请。</p> 
+                <p>如何成为【爱心会员】？</p>
+                <p>1：在爱心商城够买任意商品，且注册时间满足一定期限；</p>
+                <p>2：在平台内消费达到一定金额后自动升级为爱心会员；</p>
             </div>
         </div>
         <div class="donate-list">
-            <p class="title">最新捐赠播报</p>
+            <p class="title">最新爱心会员播报</p>
             <ul>
                 <li v-for="(item,index) in donateList" :key="index">
                     <p>{{item.nickName}}</p>
-                    <p>捐赠{{item.transactionMoney}}</p>
+                    <p>爱心消费了{{item.transactionMoney}}元</p>
                     <p>{{item.createTime}}</p>
                 </li>
             </ul>
@@ -36,10 +37,13 @@
         <van-popup :show="show" closeable @close="onClose">
             <div class="donate-show">
                 <p class="title">
-                    爱心捐赠 <span>让公益成为一种习惯</span>
+                    爱心商城 <span>让我们一起爱，一起被爱！</span>
                 </p>
+                <p class="con">爱心商城所有商品均为我公司自主产品，经专家团队结合国内外顶尖研究机构成果，研发而成</p>
                 <ul class="money">
-                    <li :class="current == index?'current':''" @click="getMoney(item,index)" v-for="(item,index) in moneyList" :key="index">{{item}}元</li>
+                    <li :class="current == index?'current':''" @click="getMoney(item.money,index)" v-for="(item,index) in moneyList" :key="index">
+                        {{item.money}}{{item.content}}
+                    </li>
                 </ul>
                 <div class="ipt-box">
                     <input type="number" placeholder="自定义金额" @change="changeMoney">
@@ -69,6 +73,7 @@
                 <p class="con">2、平台内【有病无处医】的会员本人公益救助；</p> 
                 <p class="con">3、平台内公益会员医患纠纷免费法律援助；</p> 
                 <p class="con">4、平台组织的其他公益项目，如慰问敬老院等活动；</p> 
+                <p>特别说明：爱心商城</p>
 
             </div>
         </van-popup>
@@ -89,7 +94,28 @@ export default {
             checkNum:1,
             donateList:[],
             checked:false,
-            moneyList:[10,20,30,40,50],
+            moneyList:[
+                {
+                    money:10,
+                    content:'（定制版健呗高血压日常饮食宜忌表）'
+                },
+                {
+                    money:15,
+                    content:'（定制版健呗高血压日常饮食宜忌表+定制版健呗糖尿病日常饮食宜忌表）'
+                },
+                {
+                    money:20,
+                    content:'（定制版健呗食物血糖生成指数表）'
+                },
+                {
+                    money:25,
+                    content:'（定制版健呗食物血糖生成表+定制版健呗高血压日常饮食宜忌表）'
+                },
+                {
+                    money:30,
+                    content:'（定制版健呗高血压、糖尿病日常饮食宜忌表+健呗血糖生成指数表）'
+                }
+            ],
             current:null,
             formData:{
                 transactionMoney:null
@@ -289,6 +315,11 @@ page{
             float: left;
         }
     }
+    .con{
+        padding: 0 10px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
     /deep/ van-checkbox{
         float: left;
         font-size: 14px;
@@ -301,7 +332,7 @@ page{
         padding: 0 10px;
         li{
             float: left;
-            width: 59px;
+            width: 325px;
             height: 33px;
             text-align: center;
             line-height: 33px;

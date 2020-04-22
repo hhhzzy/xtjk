@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/donate/main",
     "pages/index/main",
     "pages/physicReview/main",
     "pages/physicStepTwo/main",
@@ -24,7 +25,6 @@
     "pages/rescueJoin/main",
     "pages/donateJoin/main",
     "pages/donateList/main",
-    "pages/donate/main",
     "pages/integralDetail/main",
     "pages/orderInfo/main",
     "pages/suggest/main",

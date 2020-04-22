@@ -78,11 +78,11 @@
 		</div>
 		<div class="tab-box">
 			<p class="main-title">
-				公益互助
+				感恩回馈
 			</p>
 			<div class="gy-content">
 				<div class="one">
-					<p class="title">公益总金额</p>
+					<p class="title">爱心池总金额</p>
 					<p class="money">{{publicAccountMoney / 1000}}元</p>
 					<ul>
 						<li>
@@ -116,13 +116,13 @@
 						<li>
 							<a href="../welfare/main">
 								<img src="../../../static/images/gyxw.png" alt="">
-								<span>公益新闻</span>
+								<span>爱心新闻</span>
 							</a>
 						</li>
 						<li>
 							<a href="../donate/main">
 								<img src="../../../static/images/wdjz.png" alt="">
-								<span>我的捐赠</span>
+								<span>爱心商城</span>
 							</a>
 						</li>
 						<li>

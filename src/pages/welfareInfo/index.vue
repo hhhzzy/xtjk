@@ -12,14 +12,8 @@
         </div>
         <div class="detail-box">
             <wxParse :content="detail.content" />
-        </div>
-        <div class="share-box">
-            <div class="left"><button open-type='share'>分享让更多人看到</button></div>
-            <div class="right">
-                <p class="list"><img src="../../../static/images/wx.png" alt=""></p>
-                <p class="list"><img src="../../../static/images/pyq.png" alt=""></p>
-            </div>
-        </div>
+        </div>        
+        <share></share>
     </div>
 </template>
 <script>
@@ -27,6 +21,7 @@ import axios from '../../utils/request.js'
 import wxParse from 'mpvue-wxparse'
 import {imgBaseUrl} from '../../utils/common.js'
 import navbar from '../../components/navbar'
+import share from '../../components/share'
 export default {
     data(){
         return{
@@ -37,7 +32,8 @@ export default {
     },
     components: {
         wxParse,
-        navbar
+        navbar,
+        share
     },
     methods:{
         getDetail(){
@@ -114,7 +110,8 @@ export default {
         color: #666;
         line-height: 25px;
     }
-}.share-box{
+}
+.share-box{
     overflow: hidden;
     .left{
         background-image: url("../../../static/images/矩形 2.png");

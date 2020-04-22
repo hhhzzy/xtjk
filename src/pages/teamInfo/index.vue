@@ -5,22 +5,11 @@
             <p class="title">{{detail.title}}</p>
             <p class="time">{{detail.updateTime}}</p>
         </div>
-        <!-- <div class="content-box">
-            <p class="title">公益金支出情况</p>
-            <p class="con">支出情况：￥3179.55</p>
-            <p class="con">支出情况：￥3179.55</p>
-        </div> -->
         <div class="detail-box">
             <!-- <img :src="detail.imgUrl" alt=""> -->
             <wxParse :content="detail.content" />
         </div>
-        <div class="share-box">
-            <div class="left"><button open-type='share'>分享让更多人看到</button></div>
-            <div class="right">
-                <p class="list"><img src="../../../static/images/wx.png" alt=""></p>
-                <p class="list"><img src="../../../static/images/pyq.png" alt=""></p>
-            </div>
-        </div>
+        <share></share>
     </div>
 </template>
 <script>
@@ -28,6 +17,7 @@ import axios from '../../utils/request.js'
 import wxParse from 'mpvue-wxparse'
 import {imgBaseUrl} from '../../utils/common.js'
 import navbar from '../../components/navbar'
+import share from '../../components/share'
 export default {
     data(){
         return{
@@ -38,7 +28,8 @@ export default {
     },
     components: {
         wxParse,
-        navbar
+        navbar,
+        share
     },
     methods:{
         getDetail(){

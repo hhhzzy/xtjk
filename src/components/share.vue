@@ -2,48 +2,49 @@
     <div class="share-box">
         <div class="left"><button open-type='share'>分享让更多人看到</button></div>
         <div class="right">
-            <p class="list"><img src="../../static/images/wx.png" alt=""></p>
-            <p class="list"><img src="../../static/images/pyq.png" alt=""></p>
+            <!-- <p class="list"><img src="../../static/images/wx.png" alt=""></p> -->
+            <p class="list"><img src="../../static/images/pyq.png" @click="sharePyq" alt=""></p>
         </div>
-        <!-- <div>
+        <div>
             <painter :customStyle="customStyle" @imgOK="onImgOk" :palette="imgDraw" />
         </div>
-        <div class="share-img" v-if="showBool">
-            <img :src="imgUrl" alt="" v-if="imgUrl" style="width:340px;height:500px;"  @longpress="clickLong()">
-        </div> -->
+        <div class="share-img" v-if="showBool" @click="CloseImg">
+            <img :src="imgUrl" alt="" v-if="imgUrl" style="width:340px;height:340px;"  @longpress="clickLong()">
+        </div>
     </div>
 </template>
 <script>
+import {imgBaseUrl} from '../utils/common.js'
 export default {
     data(){
         return {
+		    imgBaseUrl:imgBaseUrl,
             customStyle: 'position: absolute; top: -9999rpx;',
             imgDraw: {
                 width: '680rpx',
-                height: '1200rpx',
-                background: 'https://qiniu-image.qtshe.com/20190506share-bg.png',
-                borderRadius: '10px',
+                height: '680rpx',
+                // background: imgBaseUrl+'api/service/upload/getImg?imgUrl='+'C:/workspace/th_api/source/appletCode.jpg',
+                // borderRadius: '10px',
                 views: [
                     {
-                        type: 'text',
-                        text: `邀请您参与助力活动`,
+                        type: 'image',
+                        url: imgBaseUrl+'api/service/upload/getImg?imgUrl='+'C:/workspace/th_api/source/appletCode.jpg',
                         css: {
-                            top: '576rpx',
-                            left: '375rpx',
-                            align: 'center',
-                            fontSize: '28rpx',
-                            color: '#3c3c3c'
+                            top: '0',
+                            left: '40rpx',
+                            width: '600rpx',
+                            height: '600rpx'
                         }
                     },
                     {
-                        type: 'image',
-                        url: 'https://qiniu-image.qtshe.com/20190605index.jpg',
-                        borderRadius: '100rpx',
+                        type: 'text',
+                        text: '长按保存图片，分享到朋友圈',
                         css: {
-                            top: '834rpx',
-                            left: '470rpx',
-                            width: '200rpx',
-                            height: '200rpx'
+                            top: '620rpx',
+                            left: '340rpx',
+                            align: 'center',
+                            fontSize: '28rpx',
+                            color: '#3c3c3c'
                         }
                     }
                 ]
@@ -64,8 +65,9 @@ export default {
             let path = '';
             await new Promise( (resolve,reject) => {
                     wx.downloadFile({
-                        url: this.imgUrl, 
+                        url: this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+'C:/workspace/th_api/source/appletCode.jpg', 
                         success: (res) => {
+                            console.log(res);
                             path =  res.tempFilePath;
                             resolve();
                         }
@@ -75,7 +77,7 @@ export default {
                 filePath: path,
                 success: (res) => {
                     wx.showToast({
-                        title: '保存成功，请在朋友圈分享',
+                        title: '保存成功，请前往朋友圈分享',
                         icon: 'none'
                     })
                     this.showBool = false;
@@ -99,6 +101,10 @@ export default {
                     })
                 }
             })
+        },
+        // 关闭分享图层
+        CloseImg(){
+            this.showBool = false;
         }
     }
 }
@@ -157,6 +163,11 @@ export default {
             transform: translate(-50%,-50%);
             left: 50%;
             top: 50%;
+        }
+        .tip{
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
         }
     }
 }

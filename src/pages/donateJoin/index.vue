@@ -36,7 +36,7 @@
                 <div class="line">或</div>
                 <div class="list">
                     <van-checkbox icon-size="16px"   shape="square"  checked-color="#07c160" :value="isOk.three" @change="changeThree">
-                       消费金额 > {{info.consumerMoney}}元
+                       消费金额 > {{info.consumerMoney / 1000}}元
                     </van-checkbox>
                     <span v-if="isOk.three">OK</span>
                     <a v-else href="#" @click="goComThree">去完成</a>
