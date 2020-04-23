@@ -183,6 +183,14 @@ export default {
         },
         // 提现
         txClk(){
+            if((this.userInfo.memberAccountMoney / 1000) < 1){
+                wx.showToast({
+                    title: "余额小于1元，不能提现！",
+                    icon: 'none',
+                    duration: 2000
+                });
+                return;
+            }
             this.show = true;
         },
         onClose(){
@@ -222,12 +230,14 @@ export default {
         // this.getUserInfo();
     },
     onShow(){
-        console.log(wx.getStorageSync('token'))
-        if(!wx.getStorageSync('token')){
-            this.boolLogin = '1';
-        } else {
-            this.boolLogin = '0';
-        }
+        wx.checkSession({
+    　　　　success:(res) => {
+                this.boolLogin = '0';
+    　　　　},
+    　　　　fail: (res) =>{
+               this.boolLogin = '1';
+    　　　　}
+    　　})
         this.getUserInfo();
     }
 }

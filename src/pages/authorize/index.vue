@@ -2,11 +2,15 @@
 <div>
     <view v-if="canIUse">
         <div v-if="!boolLogin">
-            <view class='content'>
+            <view class='content' v-if="!boolPhone">
                 <view>申请获取以下权限</view>
                 <text>获得你的公开信息(昵称，头像等)</text>
             </view>
-            <button class='bottom' type='primary' open-type="getUserInfo" @getuserinfo="bindGetUserInfo">点击授权</button>
+            <view class='content' v-if="boolPhone">
+                <view>请授权获取用户的手机以便获取更好的体验</view>
+            </view>
+            <button v-if="!boolPhone" class='bottom' type='primary' open-type="getUserInfo" @getuserinfo="bindGetUserInfo">点击授权</button>
+            
         </div>
         <view v-else class="page">
             <view class="weui-form">
@@ -37,11 +41,13 @@
             </view>
           
             <view class="weui-form__opr-area sub-btn">
-                <button open-type="getPhoneNumber" @bindgetphonenumber="getPhoneNumber">登录</button>
                 <!-- <van-button type="primary" size="large"  @click="GoLogin()">登录</van-button> -->
             </view>
             </view>
         </view>
+        <div v-if="boolPhone">
+            <button type='primary' class='bottom' open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取手机号</button>
+        </div> 
     </view>
 
     <view v-else>
@@ -69,7 +75,10 @@ export default {
             code:'', // 微信返回的code
             yzmText:'获取验证码',
             timer:null,
-            boolYzm:false
+            boolYzm:false,
+            boolPhone:false,
+            encryptedData:null,
+            iv:null
         }
     },
     computed:{
@@ -90,6 +99,29 @@ export default {
                 console.log('用户按了拒绝按钮')
             }
         },
+        async getPhoneNumber(res){
+            this.encryptedData = res.mp.detail.encryptedData;
+            this.iv = res.mp.detail.iv;
+            const user = wx.getStorageSync('userInfo');
+            if(res.mp.detail.errMsg == 'getPhoneNumber:ok'){
+                axios({
+                    url:'api/getUserInfo',
+                    method:'post',
+                    data:{
+                        encryptedData:this.encryptedData,
+                        iv:this.iv,
+                        session_key:wx.getStorageSync('session_key'),
+                        memberId:user.id
+                    }
+                }).then( res => {
+                    wx.setStorageSync('userInfo', res.data.data.user);
+                    wx.setStorageSync('token', res.data.data.token);
+                    mpvue.switchTab({ 
+                        url: '../index/main'
+                    })
+                } )
+            }
+        },
         ...mapActions({
             login:'user/login'
         }),
@@ -98,7 +130,7 @@ export default {
             wx.login({
                 success: async res => {
                     // 获取到用户的 code 之后：res.code
-                    console.log(res.code);
+                    console.log(res);
                     console.log(this.userInfo)
                     this.code = res.code;
                     wx.setStorageSync('code', this.code);
@@ -129,14 +161,16 @@ export default {
                     this.info.appId = this.code;
                     // this.boolLogin = true;
                     await this.login(this.info)
+                    if(wx.getStorageSync('isRegist') == '1'){
+                        this.boolPhone = true;
+                    } else {
+                        mpvue.switchTab({ 
+                            url: '../index/main'
+                        })
+                    }
+                    return;
                 }
             });
-        },
-        
-        getPhoneNumber(e){
-            console.log(e.detail.errMsg)
-            console.log(e.detail.iv)
-            console.log(e.detail.encryptedData)
         },
         // 登录
         async GoLogin(){

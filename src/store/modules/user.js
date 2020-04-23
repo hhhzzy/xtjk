@@ -29,12 +29,11 @@ const actions  = {
                 if(data.data.code == 1){
                     commit('SET_TOKEN',data.data.data.token);
                     commit('SET_USER',data.data.data.user);
+                    wx.setStorageSync('isRegist',data.data.data.isRegist);
+                    wx.setStorageSync('session_key',data.data.data.session_key);
                     wx.setStorageSync('token', data.data.data.token);
                     wx.setStorageSync('userInfo', data.data.data.user);
                     wx.removeStorageSync('boolLogin');
-                    mpvue.switchTab({ 
-                        url: '../index/main'
-                    })
                     resolve();
                 } else {
                     console.log(545555)

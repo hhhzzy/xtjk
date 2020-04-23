@@ -112,10 +112,10 @@
                             @close="closeDirectionPopup">
                     <van-picker :columns="direction"
                                 show-toolbar
-                                visible-item-count="8"
+                                visible-item-count="10"
                                 custom-class="height:370px;"
                                 active-class="active"
-                                default-index="3"
+                                default-index="2"
                                 title="请选择调理方向" 
                                 @cancel="onCancel"
                                 @confirm="onDirectionConfirm"  />
