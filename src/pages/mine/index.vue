@@ -222,6 +222,7 @@ export default {
         // this.getUserInfo();
     },
     onShow(){
+        console.log(wx.getStorageSync('token'))
         if(!wx.getStorageSync('token')){
             this.boolLogin = '1';
         } else {

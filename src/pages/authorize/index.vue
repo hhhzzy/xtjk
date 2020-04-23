@@ -213,10 +213,9 @@ export default {
         
     },
     mounted(){
-        console.log(wx.getStorageSync('token'))
         wx.checkSession({
     　　　　success: function(res){
-    　　　　　　 console.log("处于登录态");
+    　　　　　　 console.log(wx.getStorageSync('token'),"处于登录态");
                 //用户已经授权过
                 if(wx.getStorageSync('token')){
                     mpvue.switchTab({ 
@@ -225,6 +224,7 @@ export default {
                 }
     　　　　},
     　　　　fail: (res) =>{
+                wx.removeStorageSync('token')
     　　　　　　 console.log("需要重新登录");
     　　　　}
     　　})

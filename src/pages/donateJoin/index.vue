@@ -28,7 +28,7 @@
                 </div>
                 <div class="list">
                     <van-checkbox icon-size="16px"   shape="square"  checked-color="#07c160" :value="isOk.two" @change="changeTwo">
-                       完成首笔捐赠 
+                       完成任意一笔爱心商城消费 
                     </van-checkbox>
                     <span v-if="isOk.two">OK</span>
                     <a v-else href="../donate/main">去完成</a>

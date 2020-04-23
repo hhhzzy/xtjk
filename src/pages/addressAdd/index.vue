@@ -142,6 +142,8 @@ export default {
                             }
                             else if(this.type == 'online'){
                                 mpvue.navigateTo({ url:'../onlineFormula/main' })
+                            }else if(this.type == 'donate'){
+                                mpvue.navigateTo({ url:'../donate/main' })
                             } else {
                                 mpvue.navigateTo({ url:'../addressList/main'})
                             }

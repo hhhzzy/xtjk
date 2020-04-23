@@ -3,7 +3,9 @@
         "van-popup": "/static/vant/popup/index",
         "van-radio": "/static/vant/radio/index",
         "van-checkbox": "/static/vant/checkbox/index",
-        "van-toast": "/static/vant/toast/index"
+        "van-picker": "/static/vant/picker/index",
+        "van-toast": "/static/vant/toast/index",
+        "van-field": "/static/vant/field/index"
     },
     "navigationBarTitleText": "公益捐赠" 
 }

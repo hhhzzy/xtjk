@@ -42,14 +42,23 @@
                 <p class="con">爱心商城所有商品均为我公司自主产品，经专家团队结合国内外顶尖研究机构成果，研发而成</p>
                 <ul class="money">
                     <li :class="current == index?'current':''" @click="getMoney(item.money,index)" v-for="(item,index) in moneyList" :key="index">
-                        {{item.money}}{{item.content}}
+                        {{item.money}}元{{item.content}}
                     </li>
                 </ul>
-                <div class="ipt-box">
+                <!-- <div class="ipt-box">
                     <input type="number" placeholder="自定义金额" @change="changeMoney">
                     <span>元</span>
                 </div>
-                <p class="tips">*不可低于10元</p>
+                <p class="tips">*不可低于10元</p> -->
+                <van-field
+                        label="*收货地址："
+                        readonly
+                        :is-link="true"
+                        :value="addressInfo"
+                        :arrow-direction="right"
+                        @click="addressClick"
+                        placeholder="请选择收货地址"
+                    />
                 <div class="checked-box">
                     <van-checkbox icon-size="16px"   shape="square"  checked-color="#07c160" :value="checked" @change="onChange">
                         我同意<span class="one">《公益捐助》</span>规则，
@@ -78,6 +87,16 @@
             </div>
         </van-popup>
         <van-toast id="van-toast" />
+        
+        <van-popup  :show="addressShow"  
+                    position="bottom" 
+                    @close="closeAddressPopup">
+            <van-picker :columns="addressList"
+                        show-toolbar
+                        title="请选择地址" 
+                        @cancel="onCancel"
+                        @confirm="onConfirm"  />
+        </van-popup>
     </div>
 </template>
 <script>
@@ -122,7 +141,11 @@ export default {
             },
             publicAccountMoney:null,
             seeShow:false,
-            imgList:''
+            imgList:'',
+            addressShow:false,
+            addressList:[],
+            addressData:[],
+            addressInfo:'点击选择地址'
         }
     },
     components: {
@@ -157,7 +180,6 @@ export default {
             } )
         },
         showDonate(){
-            console.log(1)
             this.show = true;
         },
         onChange(event){
@@ -170,17 +192,21 @@ export default {
             this.formData.transactionMoney = data;
             this.current = index;
         },
-        changeMoney(event){
-            this.formData.transactionMoney = Number(event.mp.detail.value);
-            this.current = null;
-        },
+        // changeMoney(event){
+        //     this.formData.transactionMoney = Number(event.mp.detail.value);
+        //     this.current = null;
+        // },
         async donate(){
-            if(!this.checked){
-                Toast.fail('请选择我同意');
+            if(!this.formData.transactionMoney){
+                Toast.fail('请选择购买的商品！');
                 return;
             }
-            if(Number(this.formData.transactionMoney) <10){
-                Toast.fail('不能小于10元');
+            if(!this.formData.addressId){
+                Toast.fail('请选择收货地址！');
+                return;
+            }
+            if(!this.checked){
+                Toast.fail('请选择我同意');
                 return;
             }
             this.formData.updateUserId = store.state.user.userInfo.id;
@@ -268,6 +294,46 @@ export default {
                 }
             } )
         },
+        async addressClick(){
+            await this.GetAddress();
+        },
+        async GetAddress(){
+            // 获取收获地址
+            await new Promise( (resolve,reject) => {
+                axios({
+                        url:'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
+                        method:'GET'
+                    }).then( res => {
+                        console.log(res.data.code == 1 , res.data.data.length >= 1,'');
+                        if(res.data.code == 1 && res.data.data.length >= 1){
+                            this.boolBuy = true
+                            this.addressShow = true;
+                            this.addressData = res.data.data;
+                            this.addressList = res.data.data.map( item => {
+                                return item.receiveAddress;
+                            } )
+                            this.addressShow = true;
+                        } else {
+                            Toast({
+                                type: 'fail',
+                                message: '没有收货地址，请添加',
+                                onClose: () => {
+                                    mpvue.navigateTo({ url:'../addressAdd/main?type=donate'});
+                                }
+                            });
+                        }
+                        resolve();
+                    } )
+            } )
+        },
+        onConfirm(value){
+            this.formData.addressId = this.addressData[value.mp.detail.index].id;
+            this.addressInfo = this.addressData[value.mp.detail.index].receiveAddress;
+            this.addressShow = false;
+        },
+        onCancel(){
+            this.addressShow = false;
+        }
     },
     mounted(){
         this.getDonate();
@@ -332,13 +398,14 @@ page{
         padding: 0 10px;
         li{
             float: left;
-            width: 325px;
-            height: 33px;
-            text-align: center;
-            line-height: 33px;
+            width: 305px;
+            text-align: left;
+            padding: 5px 5px;
             border:1px solid rgba(228, 228, 228, 1);
             color: #FF9900;
             margin-right: 5px;
+            font-size: 13px;
+            margin-bottom: 5px;
 
             &:last-child{
                 margin-right: 0;
@@ -347,6 +414,11 @@ page{
                 border-color: #FF9900;
             }
         }
+    }
+    .address{
+        padding: 5px 10px;
+        font-size: 14px;
+        color: #333;
     }
     .ipt-box{
         font-size: 14px;

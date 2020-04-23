@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/donate/main",
     "pages/index/main",
+    "pages/donate/main",
     "pages/physicReview/main",
     "pages/physicStepTwo/main",
     "pages/welfare/main",
