@@ -1,15 +1,15 @@
 <template>
     <div class="donate-list-box">
-        <navbar :title="'我的捐赠'"></navbar>
+        <navbar :title="'我的消费'"></navbar>
         <p class="main-title">
-            我的捐赠
+            我的消费
         </p>
         <div class="table-box">
             <ul>
                 <li class="li-title">
                     <p>序号</p>
-                    <p>捐赠时间</p>
-                    <p>捐赠金额</p>
+                    <p>消费时间</p>
+                    <p>消费金额</p>
                 </li>
                 <li v-for="(item,index) in donateList" :key="index">
                     <p>{{index+1}}</p>

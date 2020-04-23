@@ -1,6 +1,6 @@
 <template>
     <div class="welfare-box">
-        <navbar :title="'公益新闻'"></navbar>
+        <navbar :title="'爱心新闻'"></navbar>
         <ul>
             <li v-for="(item,index) in list" :key="index">
                 <a :href="'../welfareInfo/main?id='+item.id">

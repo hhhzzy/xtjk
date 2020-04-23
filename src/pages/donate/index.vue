@@ -1,6 +1,6 @@
 <template>
     <div class="donate-box">
-        <navbar :title="'公益捐赠'"></navbar>
+        <navbar :title="'爱心商城'"></navbar>
         <div class="donate-content">
             <div class="img"> 
                 <img :src="imgList" alt="">
@@ -32,7 +32,7 @@
             </ul>
         </div>
         <div class="footer-box">
-            <a href="../donateList/main" class="my-p">我的捐赠</a>
+            <a href="../donateList/main" class="my-p">我的消费</a>
         </div>
         <van-popup :show="show" closeable @close="onClose">
             <div class="donate-show">
@@ -61,7 +61,7 @@
                     />
                 <div class="checked-box">
                     <van-checkbox icon-size="16px"   shape="square"  checked-color="#07c160" :value="checked" @change="onChange">
-                        我同意<span class="one">《公益捐助》</span>规则，
+                        我同意<span class="one">《爱心商城消费须知》</span>，
                     </van-checkbox>
                     <a class="two" @click="seeClick">点此查看>></a>
                 </div>
@@ -70,18 +70,20 @@
         </van-popup>
         <van-popup :show="seeShow" closeable @close="onSeeClose">
             <div class="see-box">
-                <p style="margin-top:25px;">捐赠不低于20元公益金，自捐赠日开始一定时间后，自动升级为公益会员。</p> 
-                <p>【公益会员享受以下权益：】</p> 
+                <p style="margin-top:25px;">购买任意爱心商品后，自购买日开始一定时间后，自动升级为爱心会员。</p> 
+                <p>须知1：爱心商城商品为定制版本，不支持退货。</p>
+                <p>须知2：爱心商城商品均不包邮；如需电子版本，请在购买时备注。</p>
+                <p>【爱心会员享受以下权益：】</p> 
                 <p class="con">1、可提交满足救助规则的救助申请；</p> 
-                <p class="con">2、可申请成为公益监督员，监督平台公益金使用。</p> 
-                <p>【公益基金池的来源：】</p> 
-                <p class="con">1、平台营收留存公益金；</p> 
-                <p class="con">2、平台会员捐赠。</p> 
-                <p>【公益金支出方向：】</p> 
-                <p class="con">1、平台内【有病无钱医】的会员本人公益救助；</p> 
-                <p class="con">2、平台内【有病无处医】的会员本人公益救助；</p> 
-                <p class="con">3、平台内公益会员医患纠纷免费法律援助；</p> 
-                <p class="con">4、平台组织的其他公益项目，如慰问敬老院等活动；</p> 
+                <p class="con">2、可申请成为爱心监督员，监督平台对爱心资金的使用。</p> 
+                <p>【爱心基金池的来源：】</p> 
+                <p class="con">1、平台正常营收提留不高于3%金额，注入爱心池；</p> 
+                <p class="con">2、爱心商城收益注入爱心池。</p> 
+                <p>【爱心金支出方向：】</p> 
+                <p class="con">1、平台内【有病无钱医】的会员本人爱心救助；</p> 
+                <p class="con">2、平台内【有病无处医】的会员本人爱心救助；</p> 
+                <p class="con">3、平台内爱心会员医患纠纷法律援助；</p> 
+                <p class="con">4、平台组织的其他爱心项目，如慰问敬老院等活动；</p> 
                 <p>特别说明：爱心商城</p>
 
             </div>
@@ -449,7 +451,7 @@ page{
     background-color: #fff;
     width: 325px;
     margin: 0 auto;
-    height: 400px;
+    height: 475px;
     padding: 10px;
     p{
         font-size: 14px;

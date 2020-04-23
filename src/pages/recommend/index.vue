@@ -148,6 +148,7 @@ export default {
         this.GetInfo();
         this.GetUse();
         this.user = store.state.user.userInfo;
+        console.log(this.user)
     }
 }
 </script>

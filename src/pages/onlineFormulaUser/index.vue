@@ -108,9 +108,14 @@
                 <!-- 调理方向 -->
                 <van-popup  :show="directionShow"  
                             position="bottom" 
+                            custom-style="height:70%;"
                             @close="closeDirectionPopup">
                     <van-picker :columns="direction"
                                 show-toolbar
+                                visible-item-count="8"
+                                custom-class="height:370px;"
+                                active-class="active"
+                                default-index="3"
                                 title="请选择调理方向" 
                                 @cancel="onCancel"
                                 @confirm="onDirectionConfirm"  />
@@ -360,7 +365,7 @@ export default {
                     this.direction = [];
                     res.data.data.forEach(item => {
                         this.direction.push(item.condiName);
-                    });;
+                    });
                 }
             } )
         // 获取个人体质
@@ -541,5 +546,11 @@ export default {
                 color: #4CDBC5;
             }
         }
+    }
+    /deep/ .active{
+        color: #4CDBC5!important;
+    }
+    /deep/ .van-picker-column__item--selected{
+        color: red!important;
     }
 </style>

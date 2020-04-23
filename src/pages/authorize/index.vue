@@ -37,7 +37,8 @@
             </view>
           
             <view class="weui-form__opr-area sub-btn">
-                <van-button type="primary" size="large"  @click="GoLogin()">登录</van-button>
+                <button open-type="getPhoneNumber" @bindgetphonenumber="getPhoneNumber">登录</button>
+                <!-- <van-button type="primary" size="large"  @click="GoLogin()">登录</van-button> -->
             </view>
             </view>
         </view>
@@ -131,6 +132,12 @@ export default {
                 }
             });
         },
+        
+        getPhoneNumber(e){
+            console.log(e.detail.errMsg)
+            console.log(e.detail.iv)
+            console.log(e.detail.encryptedData)
+        },
         // 登录
         async GoLogin(){
             this.info.memberPhone = this.telphone;
@@ -217,11 +224,11 @@ export default {
     　　　　success: function(res){
     　　　　　　 console.log(wx.getStorageSync('token'),"处于登录态");
                 //用户已经授权过
-                if(wx.getStorageSync('token')){
-                    mpvue.switchTab({ 
-                        url: '../index/main'
-                    })
-                }
+                // if(wx.getStorageSync('token')){
+                //     mpvue.switchTab({ 
+                //         url: '../index/main'
+                //     })
+                // }
     　　　　},
     　　　　fail: (res) =>{
                 wx.removeStorageSync('token')

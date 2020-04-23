@@ -6,7 +6,7 @@
             <p class="time">{{detail.updateTime}}</p>
         </div>
         <div class="content-box">
-            <p class="title">公益金支出情况</p>
+            <p class="title">爱心支出情况</p>
             <p class="con">支出情况：￥{{detail.activityPrice / 1000}}</p>
             <!-- <p class="con">支出后余额：￥{{detail.afterPublicMoney / 1000}}</p> -->
         </div>
