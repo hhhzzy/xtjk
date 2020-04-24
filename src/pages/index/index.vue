@@ -338,7 +338,7 @@ export default {
         }
     },
   onLoad(options){
-      if(options.parentMemberId)
+      console.log(options.parentMemberId)
       wx.setStorageSync('parentMemberId',options.parentMemberId?options.parentMemberId:'');
   }
 }

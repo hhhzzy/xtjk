@@ -53,7 +53,7 @@ ajax.defaults.adapter = function (config){
                         }
                     })
                 }
-                  
+                console.log(1111)  
                 // wx.setStorageSync('boolLogin','1');
                 // mpvue.switchTab({ 
                 //     url: '../mine/main'

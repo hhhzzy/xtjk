@@ -156,7 +156,7 @@ export default {
             },
             show:false,
             txValue:null,
-            boolLogin:'0'
+            boolLogin:'1'
         }
     },
     components: {
@@ -173,8 +173,10 @@ export default {
                 }
             }).then( data => {
                 if(data.data.code == 1){
+                    this.boolLogin = '0';
                     this.userInfo = data.data.data;
-                    console.log(this.userInfo)
+                } else if(data.data.code == '-1') { // token过期，需要重新登录
+                    this.boolLogin = '1';
                 }
             } )
         },
@@ -230,14 +232,6 @@ export default {
         // this.getUserInfo();
     },
     onShow(){
-        wx.checkSession({
-    　　　　success:(res) => {
-                this.boolLogin = '0';
-    　　　　},
-    　　　　fail: (res) =>{
-               this.boolLogin = '1';
-    　　　　}
-    　　})
         this.getUserInfo();
     }
 }

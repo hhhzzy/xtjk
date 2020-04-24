@@ -1,7 +1,6 @@
 
 import axios from '../../utils/request.js'
 import Toast from '../../../static/vant/toast/toast'
-
 const state = {
     token: wx.getStorageSync('token'),
     userInfo:wx.getStorageSync('userInfo')
@@ -34,6 +33,7 @@ const actions  = {
                     wx.setStorageSync('token', data.data.data.token);
                     wx.setStorageSync('userInfo', data.data.data.user);
                     wx.removeStorageSync('boolLogin');
+                    wx.removeStorageSync('parentMemberId');
                     resolve();
                 } else {
                     console.log(545555)

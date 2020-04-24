@@ -103,6 +103,7 @@ export default {
             this.encryptedData = res.mp.detail.encryptedData;
             this.iv = res.mp.detail.iv;
             const user = wx.getStorageSync('userInfo');
+            console.log(user);
             if(res.mp.detail.errMsg == 'getPhoneNumber:ok'){
                 axios({
                     url:'api/getUserInfo',
@@ -114,11 +115,14 @@ export default {
                         memberId:user.id
                     }
                 }).then( res => {
+                    console.log(res)
                     wx.setStorageSync('userInfo', res.data.data.user);
                     wx.setStorageSync('token', res.data.data.token);
                     mpvue.switchTab({ 
                         url: '../index/main'
                     })
+                } ).catch( err => {
+                    Toast.fail('手机号获取失败，请重新获取！')
                 } )
             }
         },
@@ -142,22 +146,6 @@ export default {
                             parentMemberId: wx.getStorageSync('parentMemberId')?wx.getStorageSync('parentMemberId'):'',
                             imgUrl:this.userInfo.avatarUrl,
                     }
-                    // 获取openid
-                    // const appid = 'wxd81d6b44c20f7e1f';
-                    // const secret = '90b0268e365267167154827e401b2130';
-                    // await new Promise( (resolve,reject) => {
-                    //     wx.request({
-                    //         url: 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + this.code + '&grant_type=authorization_code',
-                    //         data: {},
-                    //         header: {
-                    //             'content-type': 'json'
-                    //         },
-                    //         success:  (res) => {
-                    //             this.info.appId = res.data.openid;
-                    //             resolve();
-                    //         }
-                    //     })
-                    // } )
                     this.info.appId = this.code;
                     // this.boolLogin = true;
                     await this.login(this.info)
@@ -256,43 +244,14 @@ export default {
     mounted(){
         wx.checkSession({
     　　　　success: function(res){
-    　　　　　　 console.log(wx.getStorageSync('token'),"处于登录态");
                 //用户已经授权过
-                // if(wx.getStorageSync('token')){
-                //     mpvue.switchTab({ 
-                //         url: '../index/main'
-                //     })
-                // }
     　　　　},
     　　　　fail: (res) =>{
+                // 授权过期或者没有授权
                 wx.removeStorageSync('token')
     　　　　　　 console.log("需要重新登录");
     　　　　}
     　　})
-        // wx.getSetting({
-        //     success: (res) => {
-        //         if (res.authSetting['scope.userInfo']) {
-        //             wx.getUserInfo({
-        //                 success: function(res) {
-        //                     // 用户已经授权过,不需要显示授权页面,所以不需要改变 isHide 的值
-        //                     // 根据自己的需求有其他操作再补充
-        //                     // 我这里实现的是在用户授权成功后，调用微信的 wx.login 接口，从而获取code
-        //                     wx.login({
-        //                         success: res => {
-        //                             // 获取到用户的 code 之后：res.code
-        //                             console.log("用户的code:" + res.code);
-                                    
-        //                         }
-        //                     });
-        //                 }
-        //             });
-        //         } else {
-        //             // 用户没有授权
-        //             // 改变 isHide 的值，显示授权页面
-                    
-        //         }
-        //     }
-        // });
     }
 }
 </script>

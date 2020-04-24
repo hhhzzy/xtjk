@@ -147,7 +147,7 @@ export default {
     onShow(){
         this.GetInfo();
         this.GetUse();
-        this.user = store.state.user.userInfo;
+        this.user = wx.getStorageSync('userInfo');
         console.log(this.user)
     }
 }
