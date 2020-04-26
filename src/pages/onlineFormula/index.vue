@@ -324,6 +324,7 @@ export default {
         this.list = wx.getStorageSync('formula');
         this.formulaData = this.list[0];
         this.hotNum = null;
+        this.recommend = [];
         this.formulaData.foodMap.forEach(item => {
             this.hotNum += item.foodHot;
         });
