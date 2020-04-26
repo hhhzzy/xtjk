@@ -297,6 +297,7 @@ export default {
         },
         // 获取配方
         goPf(){
+            console.log(this.formData)
             if(!this.formData.userName || !this.formData.userSex ||!this.formData.userAge ||!this.formData.bodyTypeId
                ||!this.formData.userHeight ||!this.formData.userWeight ||!this.formData.workNatureId ||!this.formData.condiDirectionId){
                    Toast.fail('以上数据，请必填');
@@ -322,14 +323,16 @@ export default {
                         Toast({
                             type: 'fail',
                             message: '配方获取失败，请重新获取',
-                            onClose: () => {
-                                
-                               
-                            }
                         });
                         
                     }
                     
+                } else {
+                    console.log(res);
+                    Toast({
+                        type: 'fail',
+                        message: res.data.msg,
+                    });
                 }
             } )
         },
@@ -339,6 +342,11 @@ export default {
     },
     async onShow(){
         // 获取用户信息
+        this.formData = {
+            bodyText:'',
+            bodyTypeId:''
+        }
+        this.weight = null;
         this.formData.userName = store.state.user.userInfo.nickName;
         this.formData.memberId = store.state.user.userInfo.id;
         this.formData.userSex = store.state.user.userInfo.sex;

@@ -82,7 +82,7 @@
 			</p>
 			<div class="gy-content">
 				<div class="one">
-					<p class="title">爱心池总金额</p>
+					<p class="title">爱心商城收益金额</p>
 					<p class="money">{{publicAccountMoney / 1000}}元</p>
 					<ul>
 						<li>
@@ -299,7 +299,7 @@ export default {
 			if(res.data.code ==1){
 			this.gyList = res.data.data.map( item => {
 							// item.nickName = item.nickName.slice(0,1)+'**';
-							this.gyInfo += item.nickName+'捐赠了'+item.transactionMoney+'元                                         ';
+							this.gyInfo += item.nickName+'捐赠了'+(item.transactionMoney / 1000)+'元                                         ';
 							return item;
 						} );
 				console.log(res)
@@ -314,15 +314,10 @@ export default {
 
   mounted () {
 	this.getBanner();
-	// 获取公益金额
-	this.getPublicAccountMoney();
-	// 获取捐赠记录
-	this.getPublicTransaction();
 	// 获取新闻信息
 	this.getNewsList();
 	// 获取团队展示
 	this.getTeamList();
-    this.getGY();
     // 分享
     // wx.showShareMenu({
     //   withShareTicket: true
@@ -340,6 +335,13 @@ export default {
   onLoad(options){
       console.log(options.parentMemberId)
       wx.setStorageSync('parentMemberId',options.parentMemberId?options.parentMemberId:'');
+  },
+  onShow(){
+	  	this.getGY();
+		// 获取公益金额
+		this.getPublicAccountMoney();
+		// 获取捐赠记录
+		this.getPublicTransaction();
   }
 }
 </script>

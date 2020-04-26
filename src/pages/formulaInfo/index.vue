@@ -49,10 +49,10 @@
                 配方食材构成
             </p>
             <div class="info">
-                <p>该配方包含食材{{foodNum}}种，总热量{{hotNum*info.overDay}}Kcal。</p>
+                <p>该配方包含食材{{foodNum}}种，总热量{{hotNum}}Kcal。</p>
                 <div v-for="(item,index) in info.foodMap" :key="index">
                     <p class="title">热源{{index+1}}：</p>
-                    <p class="cont">{{item.foodName}}   X {{item.foodWeight}}克 X {{info.overDay}}天</p>
+                    <p class="cont">{{item.foodName}}   X {{item.foodWeight}}克</p>
                 </div>
                 <p></p>
             </div>
@@ -60,7 +60,7 @@
         
         <div class="footer-box">
             <p class="del-p" @click="del">删除配方</p>
-            <p class="add-p" @click="buy">共￥{{info.recipePrice*info.overDay / 1000}}，立即付款</p>
+            <p class="add-p" @click="buy">共￥{{info.recipePrice / 1000}}，立即付款</p>
         </div>
         <van-toast id="van-toast" />
         <van-dialog id="van-dialog" />
@@ -70,6 +70,7 @@
             <van-picker :columns="addressList"
                         show-toolbar
                         title="请选择地址" 
+                        cancel-button-text="添加新地址" 
                         @cancel="onCancel"
                         @confirm="onConfirm"  />
         </van-popup>
@@ -203,6 +204,7 @@ export default {
             wxpay(store.state.user.userInfo.id,this.memberOrderId,'配方订单支付',1);
         },
         onCancel(){
+            mpvue.navigateTo({ url:'../addressAdd/main?type=formula&formulaId='+this.id});
             this.addressShow = false;
         }
     },

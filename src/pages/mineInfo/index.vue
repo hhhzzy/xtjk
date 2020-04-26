@@ -94,7 +94,6 @@ export default {
                 if(data.data.code == 1){
                     this.userInfo = data.data.data;
                 }
-                console.log(this.userInfo)
             } )
         },
         gotoAddress(){
@@ -105,19 +104,18 @@ export default {
                 url:'api/personal/getMemberReceiveAddressList?memberId='+store.state.user.userInfo.id,
                 method:'GET'
             }).then( res => {
-                console.log(res,'');
                 if(res.data.code == 1 && res.data.data.length >= 1){
                     res.data.data.forEach(item => {
                         if(item.isDefault == 1) {
                             this.address.receiveAddress = item.receiveAddress;
-                            console.log(this.address.receiveAddress)
                         }
                     });
                 }
             } )
         }
     },
-    mounted(){
+    onShow(){
+        this.address.receiveAddress = '';
         this.getUserInfo();
         this.GetAddress();
 

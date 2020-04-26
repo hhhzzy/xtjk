@@ -14,7 +14,7 @@
                 <li v-for="(item,index) in donateList" :key="index">
                     <p>{{index+1}}</p>
                     <p>{{item.createTime}}</p>
-                    <p>{{item.transactionMoney}}</p>
+                    <p>{{item.transactionMoney / 1000}}</p>
                 </li>
             </ul>
         </div>

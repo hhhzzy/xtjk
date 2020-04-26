@@ -22,7 +22,7 @@
                 <p class="title">配方情况</p>
                 <p class="tips">该配方包含食材{{foodNum}}种，总热量{{foodHot}}Kcal。</p>
                 <div class="content">
-                    <p v-for="(item,index) in info.foodMap" :key="index"><span class="tit">热源{{index+1}}:</span><span class="con">{{item.foodName}} X {{item.foodWeight * info.overDay}}克</span></p>
+                    <p v-for="(item,index) in info.foodMap" :key="index"><span class="tit">热源{{index+1}}:</span><span class="con">{{item.foodName}} X {{item.foodWeight}}克</span></p>
                 </div>
                 <div class="content fs-box">
                     <p v-for="(item,index) in info.foodList" :key="index"><span class="tit">辅助食{{index+1}}:</span><span class="con">{{item}}</span></p>
@@ -86,7 +86,7 @@ export default {
                     this.info = res.data.data;
                     this.foodNum = this.info.foodMap.length;
                     this.info.foodMap.forEach(item => {
-                        this.foodHot += item.foodHot * this.info.overDay;
+                        this.foodHot += item.foodHot;
                     });
                 }
                 wx.hideLoading() 

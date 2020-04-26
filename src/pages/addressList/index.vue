@@ -89,7 +89,7 @@ export default {
             mpvue.navigateTo({ url:'../addressAdd/main?type=edit&id='+value })
         }
     },
-    mounted(){
+    onShow(){
         this.getAddressList();
     }
 }

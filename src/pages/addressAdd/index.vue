@@ -42,7 +42,7 @@
                 <p class="del-p" @click="delAddress">删除</p>
                 <p class="save-p" @click="saveAddress">保存</p>
             </div>
-            <div class="save-box" v-if="type=='add' || type=='formula' || type=='online'">
+            <div class="save-box" v-if="type=='add' || type=='formula' || type=='online' || type == 'donate'">
                 <p class="save-p" @click="saveAddress">保存</p>
             </div>
         </div>
@@ -138,14 +138,16 @@ export default {
                         message: '提交成功',
                         onClose: () => {
                             if(this.type == 'formula'){
-                                mpvue.navigateTo({ url:'../formulaInfo/main?id='+this.option.formulaId })
+                                wx.navigateBack();
+                                // mpvue.navigateTo({ url:'../formulaInfo/main?id='+this.option.formulaId })
                             }
                             else if(this.type == 'online'){
-                                mpvue.navigateTo({ url:'../onlineFormula/main' })
+                                wx.navigateBack();
+                                // mpvue.navigateTo({ url:'../onlineFormula/main' })
                             }else if(this.type == 'donate'){
-                                mpvue.navigateTo({ url:'../donate/main' })
+                                wx.navigateBack();
                             } else {
-                                mpvue.navigateTo({ url:'../addressList/main'})
+                                wx.navigateBack();
                             }
                         }
                     });
@@ -208,8 +210,13 @@ export default {
                     url: 'api/personal/deleteAddress?memberId='+store.state.user.userInfo.id+'&receiveAddressId='+this.id,
                     method: 'get',
                 }).then( data => {
-                   Toast.success('删除成功');
-                   this.GetAddress(this.id);
+                   Toast({
+                        type: 'success',
+                        message: '删除成功',
+                        onClose: () => {
+                            wx.navigateBack();
+                        }
+                    });
                 } )
             })
         }

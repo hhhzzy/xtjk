@@ -44,9 +44,9 @@
         <div class="food-box">
            <div :class="[boolDetail?'':'food-list']" v-for="(item,index) in formulaData.foodMap" :key="index">
                <p class="tit">热源{{index+1}}</p>
-                <p class="con">{{item.foodName}}   X {{item.foodNumber*formulaData.overDay}}份</p>
+                <p class="con">{{item.foodName}}   X {{item.foodNumber}}份</p>
            </div>
-           <p class="title">该配方包含食材{{foodNum}}种，总热量{{hotNum*formulaData.overDay}}Kcal。</p>
+           <p class="title">该配方包含食材{{foodNum}}种，总热量{{hotNum}}Kcal。</p>
            <p class="food-btn" @click="seeDetail">
                {{seeText}} 
                <img v-if="seeText !='点击查看详细'" class="current" src="../../../static/images/down.png" alt="">
@@ -54,7 +54,7 @@
            </p>
            <div class="food-tip">
                已优惠<span>￥{{formulaData.discountPrice / 1000}}</span>
-               小计<i>￥{{formulaData.recipePrice*formulaData.overDay / 1000}}</i>
+               小计<i>￥{{formulaData.recipePrice / 1000}}</i>
            </div>
         </div>
         <div class="tj-box">
@@ -86,7 +86,7 @@
             <p class="save-p" @click="savePf">保存配方</p>
             <p class="buy-p" @click="buySave">
                 立即购买
-                <span>(共计￥{{formulaData.recipePrice*formulaData.overDay / 1000}})</span>
+                <span>(共计￥{{formulaData.recipePrice / 1000}})</span>
             </p>
         </div>
         <van-toast id="van-toast" />
@@ -96,6 +96,7 @@
             <van-picker :columns="addressList"
                         show-toolbar
                         title="请选择地址" 
+                        cancel-button-text="添加新地址" 
                         @cancel="onCancel"
                         @confirm="onConfirm"  />
         </van-popup>
@@ -297,6 +298,7 @@ export default {
             wxpay(store.state.user.userInfo.id,memberOrderId,'配方订单支付',1);
         },
         onCancel(){
+            mpvue.navigateTo({ url:'../addressAdd/main?type=online'});
             this.addressShow = false;
         }
     },
@@ -305,8 +307,10 @@ export default {
         
         // 获取数据
         this.userInfo = wx.getStorageSync('formulaUser');
+        this.currentIndex = 1;
         this.list = wx.getStorageSync('formula');
         this.formulaData = this.list[0];
+        this.hotNum = null;
         this.formulaData.foodMap.forEach(item => {
             this.hotNum += item.foodHot;
         });

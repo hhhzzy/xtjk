@@ -9,7 +9,7 @@
                 <p class="money">
                     {{publicAccountMoney / 1000}}
                 </p>
-                <p class="title">爱心池总金额（元）</p>
+                <p class="title">爱心商城收益总额（元）</p>
             </div>
             <div class="donate-btn">
                 <p class="btn" @click="showDonate">爱心商城</p>
@@ -26,7 +26,7 @@
             <ul>
                 <li v-for="(item,index) in donateList" :key="index">
                     <p>{{item.nickName}}</p>
-                    <p>爱心消费了{{item.transactionMoney}}元</p>
+                    <p>爱心消费了{{item.transactionMoney / 1000}}元</p>
                     <p>{{item.createTime}}</p>
                 </li>
             </ul>
@@ -65,7 +65,7 @@
                     </van-checkbox>
                     <a class="two" @click="seeClick">点此查看>></a>
                 </div>
-                <div class="donate-sure" @click="donate">确定捐赠</div> 
+                <div class="donate-sure" @click="donate">确定购买</div> 
             </div>
         </van-popup>
         <van-popup :show="seeShow" closeable @close="onSeeClose">
@@ -91,11 +91,11 @@
         <van-toast id="van-toast" />
         
         <van-popup  :show="addressShow"  
-                    position="bottom" 
-                    @close="closeAddressPopup">
+                    position="bottom" >
             <van-picker :columns="addressList"
                         show-toolbar
-                        title="请选择地址" 
+                        title="请选择地址"
+                        cancel-button-text="添加新地址" 
                         @cancel="onCancel"
                         @confirm="onConfirm"  />
         </van-popup>
@@ -230,11 +230,11 @@ export default {
                 });
             } )
             axios({
-                url: 'api/weixinpay/getPublicSign?memberId='+store.state.user.userInfo.id+'&body=用户捐赠'+'&code='+code+'&total_fee='+this.formData.transactionMoney*100,
+                url: 'api/weixinpay/getPublicSign?memberId='+store.state.user.userInfo.id+'&body=用户捐赠'+'&code='+code+'&total_fee='+this.formData.transactionMoney*100+'&addressId='+this.formData.addressId,
                 method: 'get',
             }).then( res => { 
                 const data = res.data.data;
-                console.log(data)
+                console.log(res)
                 wx.hideLoading();
                 // 3.调取二维码支付
                 wx.requestPayment({
@@ -244,10 +244,8 @@ export default {
                     signType: 'MD5',
                     paySign: data.paySign,
                     success (res) { 
-                        wx.showLoading({
-                            title: '加载中',
-                        })
-                        if(res.data.code ==1){
+                        console.log(res);
+                        if(res.errMsg == 'requestPayment:ok'){
                             Toast.success('捐赠成功！');
                             that.show = false;
                             that.getDonate();
@@ -267,7 +265,6 @@ export default {
                         
                     },
                     fail (res) { 
-                        console.log(that)
                         wx.showModal({
                             title: '提示',
                             content: '付款失败，请重新支付！',
@@ -275,6 +272,11 @@ export default {
                     }
                 })
             } ).catch( err => {
+                console.log(err);
+                wx.showModal({
+                    title: '提示',
+                    content: '付款失败，请重新支付！',
+                })
                 reject(err);
             } )
         },
@@ -334,6 +336,7 @@ export default {
             this.addressShow = false;
         },
         onCancel(){
+            mpvue.navigateTo({ url:'../addressAdd/main?type=donate'});
             this.addressShow = false;
         }
     },
@@ -341,8 +344,10 @@ export default {
         this.getDonate();
     },
     onShow(){
+        this.show = false;
         this.getPublicAccountMoney();
         this.GetImg();
+        this.getDonate();
     }
 }
 </script>
@@ -564,10 +569,13 @@ page{
             overflow: hidden;
             p{
                 float: left;
-                width: 33%;
+                width: 40%;
                 font-size: 14px;
                 text-align: left;
                 color: rgba(0, 0, 0, 1);
+                &:first-child{
+                    width: 20%;
+                }
             }
         }
     }
