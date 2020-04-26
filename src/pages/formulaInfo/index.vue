@@ -138,7 +138,7 @@ export default {
                             type: 'success',
                             message: '删除成功',
                             onClose: () => {
-                                mpvue.navigateTo({ url:'../formula/main'});
+                                wx.navigateBack();
                             }
                         });
                     }

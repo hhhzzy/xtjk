@@ -18,6 +18,15 @@
                         placeholder="请输入姓名"
                     />
                     <van-field
+                        label="调理方向："
+                        readonly
+                        :value="formData.directionText"
+                        :is-link="true"
+                        :arrow-direction="right"
+                        @click="showDirectionPopup"
+                        placeholder="请选择调理方向"
+                    />
+                    <van-field
                         label="性别："
                         readonly
                         :is-link="true"
@@ -52,15 +61,6 @@
                         :is-link="true"
                         :arrow-direction="right"
                         placeholder="请选择活动强度"
-                    />
-                    <van-field
-                        label="调理方向："
-                        readonly
-                        :value="formData.directionText"
-                        :is-link="true"
-                        :arrow-direction="right"
-                        @click="showDirectionPopup"
-                        placeholder="请选择调理方向"
                     />
                     <van-field
                         readonly

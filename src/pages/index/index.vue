@@ -299,7 +299,7 @@ export default {
 			if(res.data.code ==1){
 			this.gyList = res.data.data.map( item => {
 							// item.nickName = item.nickName.slice(0,1)+'**';
-							this.gyInfo += item.nickName+'捐赠了'+(item.transactionMoney / 1000)+'元                                         ';
+							this.gyInfo += item.nickName+'消费了'+(item.transactionMoney / 1000)+'元                                         ';
 							return item;
 						} );
 				console.log(res)

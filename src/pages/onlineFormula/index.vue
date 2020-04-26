@@ -130,7 +130,8 @@ export default {
             addressShow:false,
             addressList:[],
             addressData:[],
-            receiveAddressId:null
+            receiveAddressId:null,
+            boolSub:true
            
         }
     },
@@ -163,9 +164,14 @@ export default {
         // 获取推荐食材
         GetOtherFood(){
             axios({
-                url:'api/recipe/queryOtherFood?memberId='+store.state.user.userInfo.id,
-                method:'get',
-                data:this.formData
+                url:'api/recipe/queryOtherFood',
+                method:'post',
+                data:{
+                    memberId:store.state.user.userInfo.id,
+                    condiDicretionId:this.userInfo.condiDirectionId,
+                    bodyTypeId:this.userInfo.bodyTypeId,
+                    isDiabetes:this.userInfo.isDiabetes
+                }
             }).then( res => {
                 if(res.data.code ==1){
                     this.recommend = res.data.data.map( item => {
@@ -199,12 +205,12 @@ export default {
         },
         // 保存配方
         savePf(){
+            if(!this.boolSub) return;
             const form = Object.assign({},this.userInfo);
             form.recipeList = encodeURI(this.formulaData.recipeList);
             form.recipeName = this.recipeName;
             form.recipePrice = this.formulaData.recipePrice;
-            console.log(this.recipeName)
-            console.log(form)
+            this.boolSub = false;
             axios({
                 url:'api/recipe/saveMemberRecipe',
                 method:'post',
@@ -217,8 +223,12 @@ export default {
                         message: '配方保存成功',
                         onClose: () => {
                             mpvue.navigateTo({ url:'../formula/main'});
+                            this.boolSub = true;
                         }
                     });
+                } else {
+                    this.boolSub = true;
+                    Toast.fail(data.msg);
                 }
             } )
         },
@@ -299,6 +309,9 @@ export default {
         },
         onCancel(){
             mpvue.navigateTo({ url:'../addressAdd/main?type=online'});
+            this.addressShow = false;
+        },
+        closeAddressPopup(){
             this.addressShow = false;
         }
     },

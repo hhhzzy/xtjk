@@ -90,7 +90,8 @@
         </van-popup>
         <van-toast id="van-toast" />
         
-        <van-popup  :show="addressShow"  
+        <van-popup  :show="addressShow" 
+                    @close="closeAddress"
                     position="bottom" >
             <van-picker :columns="addressList"
                         show-toolbar
@@ -337,6 +338,9 @@ export default {
         },
         onCancel(){
             mpvue.navigateTo({ url:'../addressAdd/main?type=donate'});
+            this.addressShow = false;
+        },
+        closeAddress(){
             this.addressShow = false;
         }
     },

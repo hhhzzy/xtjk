@@ -2,7 +2,10 @@
     <div class="rescue-box">
         <navbar :title="'救助申请'"></navbar>
         <div class="content">
-            <p class="con">申请救助的说明文本、介绍或吸引用户的文本在这里</p>
+            <p class="con">
+                <span>真情健呗人，你我是一家。</span> 
+                <span>但愿世间皆美好，爱心呵护靠大家~</span> 
+            </p>
             <div class="form-box">
                 <p class="title">申请救助人信息</p>
                  <van-cell-group>
@@ -144,15 +147,16 @@ export default {
                     data:this.formData
                 }).then( data => {
                     wx.hideLoading();
-                    if(data.data.code == 1){
-                        Toast.success({
-                            mask: false,
-                            message: '新增成功',
-                            onClose: () => {
-                                console.log(5555)
-                                mpvue.switchTab({ url:'../index/main' })
-                            }
-                        });
+                        if(data.data.code == 1){
+                            Toast.success({
+                                mask: false,
+                                message: '新增成功',
+                                onClose: () => {
+                                    mpvue.switchTab({ url:'../index/main' })
+                                }
+                            });
+                        } else {
+                            Toast.fail(data.data.msg);
                         }
                     } )
             }
@@ -179,10 +183,14 @@ export default {
         overflow: hidden;
         .con{
             padding: 10px;
-            font-size: 14px;
-            min-height: 80px;
+            font-size: 15px;
+            min-height: 60px;
             border-bottom: 2px solid #f2f2f2;
             color: #868686FF;
+            text-align: center;
+            span{
+                display: block;
+            }
         }
     }
     .form-box{

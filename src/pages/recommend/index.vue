@@ -20,7 +20,7 @@
                 </li>
                 <li v-for="(item,index) in use" :key="index">
                     <p>{{index}}</p>
-                    <p>{{item}}</p>
+                    <p>{{item / 1000}}元</p>
                 </li>
             </ul>
         </div>

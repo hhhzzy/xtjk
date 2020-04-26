@@ -63,6 +63,7 @@ VantComponent({
         onClickOverlay() {
             this.$emit('click-overlay');
             if (this.data.closeOnClickOverlay) {
+                console.log(this.data.closeOnClickOverlay)
                 this.$emit('close');
             }
         },
