@@ -1,6 +1,6 @@
 <template>
     <div class="mine-box">
-        <navbar :backVisible="true" :title="'我的'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
+        <navbar :backVisible="false" :title="'我的'" :linearOne="'#82F4A3'" :linearTwo="'#6ae7b1'"></navbar>
         <div class="mine-one" :style="{'height':boolLogin != '1'?'125px':'75px'}">
             <div class="top" v-if="boolLogin != '1'">
                 <p class="img">

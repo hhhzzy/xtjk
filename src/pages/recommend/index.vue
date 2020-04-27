@@ -56,7 +56,8 @@ export default {
             user:{},
             link:'这是链接',
             src:"../../../static/images/yzf.png",
-            use:[]
+            use:[],
+            qrcode:''
         }
     },
     components: {
@@ -97,44 +98,58 @@ export default {
         },
         // 下载图片
         async upload(){
-            // let path = '';
-            // await new Promise( (resolve,reject) => {
-            //         wx.downloadFile({
-            //             url: 'http://47.108.67.109/api/service/upload/getImg?imgUrl=C%3A%5Cworkspace%5Cth_management%5Cupload%5Cimg%5C1584688727161%E7%A8%BF%E5%AE%9A%E8%AE%BE%E8%AE%A1%E5%AF%BC%E5%87%BA-20200320-151839.png', //仅为示例，并非真实的资源
-            //             success: (res) => {
-            //                 path =  res.tempFilePath;
-            //                 resolve();
-            //             }
-            //         })
-            // } )
-            // wx.saveImageToPhotosAlbum({
-            //     filePath: path,
-            //     success: (res) => {
-            //         wx.showToast({
-            //             title: '保存成功',
-            //             icon: 'none'
-            //         })
+            let imgPath = '';
+            wx.showLoading({
+                title: '保存中',
+            })
+            await new Promise( (resolve,reject) => {
+                axios({
+                    url: 'api/getWeixinQrCode?memberId='+store.state.user.userInfo.id,
+                    method: 'get'
+                }).then( res => {
+                    if(res.data.code == '1'){
+                        var array = wx.base64ToArrayBuffer(res.data.data)
+                        var base64 = wx.arrayBufferToBase64(array)
+                        imgPath = wx.env.USER_DATA_PATH+'/test.png';
+                        resolve();
+                    } else {
+                        wx.showToast({
+                            title: res.msg,
+                            icon: 'none'
+                        })
+                    }
+                } )
+            } )
+            wx.saveImageToPhotosAlbum({
+                filePath: imgPath,
+                success: (res) => {
+                    wx.hideLoading();
+                    wx.showToast({
+                        title: '保存成功',
+                        icon: 'none'
+                    })
                    
-            //     },
-            //     fail: (res) => {
-            //         wx.getSetting({
-            //             success: res => {
-            //                 let authSetting = res.authSetting
-            //                 if (!authSetting['scope.writePhotosAlbum']) {
-            //                     wx.showModal({
-            //                         title: '提示',
-            //                         content: '您未开启保存图片到相册的权限，请点击确定去开启权限！',
-            //                         success(res) {
-            //                         if (res.confirm) {
-            //                             wx.openSetting()
-            //                         }
-            //                         }
-            //                     })
-            //                 }
-            //             }
-            //         })
-            //     }
-            // })
+                },
+                fail: (res) => {
+                    wx.hideLoading();
+                    wx.getSetting({
+                        success: res => {
+                            let authSetting = res.authSetting
+                            if (!authSetting['scope.writePhotosAlbum']) {
+                                wx.showModal({
+                                    title: '提示',
+                                    content: '您未开启保存图片到相册的权限，请点击确定去开启权限！',
+                                    success(res) {
+                                    if (res.confirm) {
+                                        wx.openSetting()
+                                    }
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            })
         }
     },
     onShareAppMessage: (res) => {

@@ -333,8 +333,14 @@ export default {
         }
     },
   onLoad(options){
-      console.log(options.parentMemberId)
-      wx.setStorageSync('parentMemberId',options.parentMemberId?options.parentMemberId:'');
+      	console.log(options)
+		if(options.scene){
+			const scene = options.scene?decodeURIComponent(options.scene):'';
+			wx.setStorageSync('parentMemberId',scene);
+		} else{
+			wx.setStorageSync('parentMemberId',options.parentMemberId?options.parentMemberId:'');	
+		}
+
   },
   onShow(){
 	  	this.getGY();
