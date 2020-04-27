@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/recommend/main",
     "pages/index/main",
     "pages/onlineFormula/main",
     "pages/donate/main",
@@ -8,7 +9,6 @@
     "pages/welfare/main",
     "pages/condition/main",
     "pages/health/main",
-    "pages/recommend/main",
     "pages/mineInfo/main",
     "pages/mine/main",
     "pages/addressList/main",
