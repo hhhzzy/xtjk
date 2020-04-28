@@ -67,7 +67,6 @@ export default {
                     wx.downloadFile({
                         url: this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+'C:/workspace/th_api/source/appletCode.jpg', 
                         success: (res) => {
-                            console.log(res);
                             path =  res.tempFilePath;
                             resolve();
                         }

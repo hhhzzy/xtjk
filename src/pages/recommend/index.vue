@@ -99,6 +99,7 @@ export default {
         // 下载图片
         async upload(){
             let imgPath = '';
+            let base64 = '';
             wx.showLoading({
                 title: '保存中',
             })
@@ -108,9 +109,9 @@ export default {
                     method: 'get'
                 }).then( res => {
                     if(res.data.code == '1'){
-                        var array = wx.base64ToArrayBuffer(res.data.data)
-                        var base64 = wx.arrayBufferToBase64(array)
-                        imgPath = wx.env.USER_DATA_PATH+'/test.png';
+                        var array = wx.base64ToArrayBuffer(res.data.data);
+                        base64 = wx.arrayBufferToBase64(array)
+                        imgPath = wx.env.USER_DATA_PATH + '/test.png';
                         resolve();
                     } else {
                         wx.showToast({
@@ -120,34 +121,48 @@ export default {
                     }
                 } )
             } )
-            wx.saveImageToPhotosAlbum({
-                filePath: imgPath,
-                success: (res) => {
-                    wx.hideLoading();
-                    wx.showToast({
-                        title: '保存成功',
-                        icon: 'none'
-                    })
-                   
-                },
-                fail: (res) => {
-                    wx.hideLoading();
-                    wx.getSetting({
-                        success: res => {
-                            let authSetting = res.authSetting
-                            if (!authSetting['scope.writePhotosAlbum']) {
-                                wx.showModal({
-                                    title: '提示',
-                                    content: '您未开启保存图片到相册的权限，请点击确定去开启权限！',
-                                    success(res) {
-                                    if (res.confirm) {
-                                        wx.openSetting()
+            //  获取处理文件的方法
+            const fs = wx.getFileSystemManager()
+            //  先保存为本地临时文件
+            fs.writeFile({
+                filePath:imgPath,
+                data:base64,
+                encoding:'base64',
+                success: res => {
+                    console.log(res);
+                    wx.saveImageToPhotosAlbum({
+                        filePath: imgPath,
+                        success: (res) => {
+                            wx.hideLoading();
+                            wx.showToast({
+                                title: '保存成功',
+                                icon: 'none'
+                            })
+                        
+                        },
+                        fail: (res) => {
+                            wx.hideLoading();
+                            wx.getSetting({
+                                success: res => {
+                                    let authSetting = res.authSetting
+                                    if (!authSetting['scope.writePhotosAlbum']) {
+                                        wx.showModal({
+                                            title: '提示',
+                                            content: '您未开启保存图片到相册的权限，请点击确定去开启权限！',
+                                            success(res) {
+                                            if (res.confirm) {
+                                                wx.openSetting()
+                                            }
+                                            }
+                                        })
                                     }
-                                    }
-                                })
-                            }
+                                }
+                            })
                         }
                     })
+                },
+                fail: err => {
+                    console.log(err)
                 }
             })
         }
