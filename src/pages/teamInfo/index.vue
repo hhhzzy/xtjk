@@ -7,7 +7,7 @@
         </div>
         <div class="detail-box">
             <!-- <img :src="detail.imgUrl" alt=""> -->
-            <wxParse :content="detail.content" />
+            <wxParse :content="detail.content" :imageProp="imageProp" />
         </div>
         <share></share>
     </div>
@@ -23,7 +23,10 @@ export default {
         return{
 		    imgBaseUrl:imgBaseUrl,
             id:'',
-            detail:{}
+            detail:{},
+            imageProp:{
+                mode:'widthFix'
+            }
         }
     },
     components: {

@@ -6,7 +6,7 @@
             <p class="time">{{detail.updateTime}}</p>
         </div>
         <div class="detail-box">
-            <wxParse :content="detail.content" />
+            <wxParse :content="detail.content" :imageProp="imageProp" />
         </div>
         <share></share>
     </div>
@@ -23,7 +23,9 @@ export default {
 		    imgBaseUrl:imgBaseUrl,
             id:'',
             detail:{},
-
+            imageProp:{
+                mode:'widthFix'
+            }
         }
     },
     components: {
@@ -108,4 +110,6 @@ export default {
         line-height: 25px;
     }
 }
+
+
 </style>

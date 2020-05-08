@@ -2,15 +2,17 @@
 <div>
     <view v-if="canIUse">
         <div v-if="!boolLogin">
-            <view class='content' v-if="!boolPhone">
-                <view>申请获取以下权限</view>
-                <text>获得你的公开信息(昵称，头像等)</text>
-            </view>
-            <view class='content' v-if="boolPhone">
-                <view>请授权获取用户的手机以便获取更好的体验</view>
-            </view>
-            <button v-if="!boolPhone" class='bottom' type='primary' open-type="getUserInfo" @getuserinfo="bindGetUserInfo">点击授权</button>
-            
+            <div v-if="boolPower">
+                <view class='content' v-if="!boolPhone">
+                    <view>申请获取以下权限</view>
+                    <text>获得你的公开信息(昵称，头像等)</text>
+                </view>
+                <view class='content' v-if="boolPhone">
+                    <view>请授权获取用户的手机以便获取更好的体验</view>
+                </view>
+                <button v-if="!boolPhone" class='bottom' type='primary' open-type="getUserInfo" @getuserinfo="bindGetUserInfo">点击授权</button>
+            </div>
+            <div v-else class="sj-wx">请升级微信</div> 
         </div>
         <view v-else class="page">
             <view class="weui-form">
@@ -78,7 +80,8 @@ export default {
             boolYzm:false,
             boolPhone:false,
             encryptedData:null,
-            iv:null
+            iv:null,
+            boolPower:true
         }
     },
     computed:{
@@ -252,6 +255,11 @@ export default {
     　　　　　　 console.log("需要重新登录");
     　　　　}
     　　})
+    },
+    onShow(){
+        console.log(wx.canIUse('button.open-type.getUserInfo'))
+        // 判断小程序的API，回调，参数，组件等是否在当前版本可用。  为false 提醒用户升级微信版本
+        this.boolPower = wx.canIUse('button.open-type.getUserInfo');
     }
 }
 </script>
@@ -335,5 +343,9 @@ export default {
 }
 .no-sub{
     color: #ccc;
+}
+.sj-wx{
+    text-align: center;
+    margin-top: 100px;
 }
 </style>
