@@ -1,6 +1,6 @@
 <template>
     <div class="team-box">
-        <navbar :title="'名医团队'"></navbar>
+        <navbar :title="'明星榜'"></navbar>
          <ul>
             <li v-for="(item,index) in teamList" :key="index">
                 <a :href="'../teamInfo/main?id='+item.id">

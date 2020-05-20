@@ -143,7 +143,7 @@
 		</div>
 		<div class="tab-box">
 			<p class="main-title" >
-				名医团队
+				明星榜
 				<a href="../teamList/main">更多></a>
 			</p>
 			<div class="team-box">
