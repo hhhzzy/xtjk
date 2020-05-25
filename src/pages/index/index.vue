@@ -285,7 +285,8 @@ export default {
 					this.teamList = res.data.data.map( item => {
 						item.imgUrl = this.imgBaseUrl+'api/service/upload/getImg?imgUrl='+encodeURIComponent(item.imgUrl);
 						return item;
-					});
+                    });
+                    console.log(this.teamList)
 				}
 			}
 		} )
@@ -639,11 +640,13 @@ export default {
 		overflow: hidden;
 		ul{
 			overflow: hidden;
-			width: 200%;
 			li{
 				float: left;
-				margin-right: 28px;
-				text-align: center;
+				margin-right: 27px;
+                text-align: center;
+                &:nth-of-type(3n){
+                    margin-right: 0;
+                }
 				img{
 					width: 100px;
 					height: 110px;
